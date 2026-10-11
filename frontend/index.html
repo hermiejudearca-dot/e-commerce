@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Honeybail Admin Panel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <h2>HONEYBAIL</h2>
+    <p>Admin Panel</p>
+
+    <button onclick="showPage('dashboard')">Dashboard</button>
+    <button onclick="showPage('orders')">Orders</button>
+    <button onclick="showPage('products')">Products</button>
+    <button onclick="showPage('customers')">Customers</button>
+    <button onclick="showPage('reports')">Reports</button>
+    <button onclick="showPage('cart')">Cart Activity</button>
+    <button onclick="showPage('favorites')">Favorites</button>
+    <button onclick="showPage('settings')">Settings</button>
+  </aside>
+
+  <main id="content">
+    <h1>Welcome back, Admin!</h1>
+    <p>Manage your Honeybail store here.</p>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
