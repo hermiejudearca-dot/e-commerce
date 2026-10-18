@@ -1,22 +1,14 @@
 from django.contrib import admin
-from django.urls import path
-from django.http import JsonResponse
-from product.views import product_list
+from django.urls import path, include
+from django.shortcuts import redirect
 
 
 def home(request):
-    return JsonResponse({
-        "message": "Welcome to HONEYBAIL E-commerce Backend!",
-        "status": "running",
-        "endpoints": {
-            "admin": "/admin/",
-            "products": "/api/products/"
-        }
-    })
+    return redirect("http://127.0.0.1:5500/index.html")
 
 
 urlpatterns = [
-    path("", home, name="home"),
     path("admin/", admin.site.urls),
-    path("api/products/", product_list, name="product_list"),
+    path("api/", include("product.urls")),
+    path("", home, name="home"),
 ]
