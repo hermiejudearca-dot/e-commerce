@@ -53,3 +53,10 @@ Thumbs.db
 # Logs
 # =========================
 *.log
+# Local environment and Python files
+.env
+**/.env
+venv/
+**/venv/
+__pycache__/
+*.py[cod]
