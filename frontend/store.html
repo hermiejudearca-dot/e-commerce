@@ -1,0 +1,1639 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta name="theme-color" content="#DDF3FF">
+
+  <meta
+    name="description"
+    content="Shop your favorite sweet treats at Honeybail."
+  >
+
+  <title>Honeybail | Shop</title>
+
+  <link rel="stylesheet" href="store.css">
+</head>
+
+<body>
+
+  <!-- ==========================================
+       HEADER AND NAVIGATION
+       ========================================== -->
+
+  <header class="top">
+    <div class="navwrap">
+
+      <a
+        href="#shop"
+        class="brand"
+        data-page="shop"
+      >
+        🍯 HONEYBAIL
+      </a>
+
+      <nav aria-label="Main navigation">
+
+        <button
+          type="button"
+          data-page="shop"
+        >
+          Shop
+        </button>
+
+        <button
+          type="button"
+          data-page="favorites"
+        >
+          ♡ Favorites
+        </button>
+
+        <button
+          type="button"
+          data-page="cart"
+        >
+          🛒 Cart
+          <span id="cartCount">0</span>
+        </button>
+
+        <button
+          type="button"
+          data-page="orders"
+        >
+          My Orders
+        </button>
+
+        <button
+          type="button"
+          id="account"
+          data-page="login"
+        >
+          Login
+        </button>
+
+        <button
+          type="button"
+          id="logout"
+          hidden
+        >
+          Logout
+        </button>
+
+      </nav>
+    </div>
+  </header>
+
+
+  <!-- ==========================================
+       HONEYBAIL HERO
+       ========================================== -->
+
+  <section class="hero" id="hero">
+
+    <div class="herowrap">
+
+      <div class="eyebrow">
+        HONEYBAIL · SWEET TREATS
+      </div>
+
+      <h1>
+        Small Treats,
+        <br>
+        Big Happiness.
+      </h1>
+
+      <p>
+        Delicious little moments,
+        made sweeter for you.
+      </p>
+
+      <button
+        type="button"
+        class="light"
+        data-page="shop"
+      >
+        Explore Treats ↓
+      </button>
+
+    </div>
+
+    <div class="heroart" aria-hidden="true">
+      🍩
+    </div>
+
+  </section>
+
+
+  <!-- ==========================================
+       MAIN CONTENT
+       ========================================== -->
+
+  <main class="wrap">
+
+    <div
+      id="notice"
+      role="status"
+      aria-live="polite"
+    ></div>
+
+
+    <!-- ========================================
+         SHOP PAGE
+         ======================================== -->
+
+    <section id="shopPage">
+
+      <div class="sectionhead">
+
+        <div>
+          <p class="eyebrow">
+            HANDPICKED FOR YOU
+          </p>
+
+          <h2>Our Products</h2>
+
+          <p class="muted">
+            Fresh favorites from our
+            Honeybail collection.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          id="refresh"
+          class="outline"
+        >
+          ↻ Refresh
+        </button>
+
+      </div>
+
+      <!-- Products rendered by store.js -->
+
+      <div
+        id="products"
+        class="productgrid"
+      ></div>
+
+    </section>
+
+
+    <!-- ========================================
+         LOGIN PAGE
+         ======================================== -->
+
+    <section id="loginPage" hidden>
+
+      <form
+        id="loginForm"
+        class="auth card"
+      >
+
+        <h2>Welcome back!</h2>
+
+        <p class="muted">
+          Sign in to save your treats.
+        </p>
+
+        <label>
+          Email
+
+          <input
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+          >
+        </label>
+
+        <label>
+          Password
+
+          <input
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+          >
+        </label>
+
+        <button
+          type="submit"
+          class="primary"
+        >
+          Login
+        </button>
+
+        <p>
+          New here?
+
+          <a
+            href="#register"
+            data-page="register"
+          >
+            Create an account
+          </a>
+        </p>
+
+      </form>
+
+    </section>
+
+
+    <!-- ========================================
+         REGISTRATION PAGE
+         ======================================== -->
+
+    <section id="registerPage" hidden>
+
+      <form
+        id="registerForm"
+        class="auth card"
+      >
+
+        <h2>Join Honeybail ♡</h2>
+
+        <label>
+          Full name
+
+          <input
+            name="name"
+            autocomplete="name"
+            maxlength="120"
+            required
+          >
+        </label>
+
+        <label>
+          Email
+
+          <input
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+          >
+        </label>
+
+        <label>
+          Password
+
+          <input
+            name="password"
+            type="password"
+            autocomplete="new-password"
+            minlength="8"
+            required
+          >
+        </label>
+
+        <label>
+          Confirm password
+
+          <input
+            name="confirm"
+            type="password"
+            autocomplete="new-password"
+            minlength="8"
+            required
+          >
+        </label>
+
+        <button
+          type="submit"
+          class="primary"
+        >
+          Create Account
+        </button>
+
+        <p>
+          Already have an account?
+
+          <a
+            href="#login"
+            data-page="login"
+          >
+            Log in
+          </a>
+        </p>
+
+      </form>
+
+    </section>
+
+
+    <!-- ========================================
+         SHOPPING CART PAGE
+         ======================================== -->
+
+    <section id="cartPage" hidden>
+
+      <!-- CART HEADING -->
+
+      <div class="sectionhead cart-page-heading">
+
+        <div>
+
+          <p class="eyebrow">
+            YOUR SWEET PICKS
+          </p>
+
+          <h2>Shopping Cart</h2>
+
+          <p class="muted">
+            Select your favorites, edit quantities,
+            and review your total before checkout.
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="outline"
+          data-page="shop"
+        >
+          ← Continue Shopping
+        </button>
+
+      </div>
+
+
+      <!-- MAIN CART CONTAINER -->
+
+      <div class="card shopping-cart-card">
+
+        <!--
+          JavaScript renders:
+          - Select All Available checkbox
+          - Product selection checkboxes
+          - Product images and information
+          - Quantity editor with minus and plus
+          - Product subtotal
+          - Remove action
+
+          The IDs below are preserved for store.js.
+        -->
+
+        <div
+          id="cartItems"
+          class="shopping-cart-items"
+          aria-live="polite"
+        >
+          <p class="muted">
+            Loading your shopping cart...
+          </p>
+        </div>
+
+
+        <!-- CART SUMMARY -->
+
+        <div class="cart-summary">
+
+          <div class="cart-summary-content">
+
+            <h3 class="cart-summary-heading">
+              Order Summary
+            </h3>
+
+            <!--
+              JavaScript displays:
+              Selected Subtotal
+              Discounted Shipping
+              Grand Total
+            -->
+
+            <div
+              id="cartTotal"
+              class="cart-totals"
+              aria-live="polite"
+            >
+              <div class="cart-total-line">
+
+                <span>Selected Subtotal</span>
+
+                <strong>₱0.00</strong>
+
+              </div>
+
+              <div class="cart-total-line">
+
+                <span>Discounted Shipping</span>
+
+                <strong>₱0.00</strong>
+
+              </div>
+
+              <div class="cart-total-line cart-grand-total">
+
+                <strong>Grand Total</strong>
+
+                <strong>₱0.00</strong>
+
+              </div>
+            </div>
+
+
+            <p class="cart-shipping-note muted">
+              Shipping starts at ₱50 for the first
+              unit, plus ₱20 for every additional
+              unit in your selected order.
+            </p>
+
+            <p class="cart-checkout-note muted">
+              Only checked products will be included
+              in your checkout. Unchecked products
+              will remain in your cart.
+            </p>
+
+
+            <!-- CHECKOUT SELECTED BUTTON -->
+
+            <button
+              type="button"
+              id="checkoutStart"
+              class="primary cart-checkout-button"
+              disabled
+            >
+              Select Items to Checkout →
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================
+         END OF PART 1
+         ======================================== -->
+
+    <!-- PASTE PART 2 DIRECTLY BELOW THIS LINE -->
+
+    <!-- ========================================
+         FAVORITES PAGE
+         ======================================== -->
+
+    <section id="favoritesPage" hidden>
+
+      <div class="sectionhead">
+
+        <div>
+          <p class="eyebrow">
+            YOUR WISHLIST
+          </p>
+
+          <h2>Saved Favorites ♡</h2>
+
+          <p class="muted">
+            All the sweet treats you love,
+            saved in one place.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="outline"
+          data-page="shop"
+        >
+          ← Continue Shopping
+        </button>
+
+      </div>
+
+      <!--
+        JavaScript renders favorite products here.
+
+        Favorite products retain:
+        - Product image
+        - Product name and price
+        - Add to Cart
+        - Buy Now
+        - Remove from Favorites
+        - Customer reviews
+      -->
+
+      <div
+        id="favorites"
+        class="productgrid"
+      ></div>
+
+    </section>
+
+
+    <!-- ========================================
+         MY ACCOUNT PAGE
+         ======================================== -->
+
+    <section id="accountPage" hidden>
+
+      <div class="sectionhead">
+
+        <div>
+          <p class="eyebrow">
+            MY HONEYBAIL
+          </p>
+
+          <h2>My Account</h2>
+
+          <p class="muted">
+            Manage your personal information,
+            saved delivery addresses, and orders.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="outline"
+          data-page="shop"
+        >
+          ← Back to Shop
+        </button>
+
+      </div>
+
+
+      <!-- ACCOUNT LAYOUT -->
+
+      <div class="account-layout">
+
+        <!-- PROFILE INFORMATION -->
+
+        <div class="card account-profile-card">
+
+          <div class="account-card-heading">
+
+            <div
+              class="account-avatar"
+              aria-hidden="true"
+            >
+              ♡
+            </div>
+
+            <div>
+              <p class="eyebrow">
+                CUSTOMER PROFILE
+              </p>
+
+              <h3>Profile Information</h3>
+            </div>
+
+          </div>
+
+
+          <div class="account-profile-details">
+
+            <p>
+              <strong>Name:</strong>
+
+              <span id="profileName">
+                —
+              </span>
+            </p>
+
+            <p>
+              <strong>Email:</strong>
+
+              <span id="profileEmail">
+                —
+              </span>
+            </p>
+
+          </div>
+
+
+          <div class="actions">
+
+            <button
+              type="button"
+              class="outline"
+              data-page="orders"
+            >
+              View My Orders →
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- SAVED ADDRESSES -->
+
+        <div class="card account-address-card">
+
+          <div class="sectionhead">
+
+            <div>
+              <p class="eyebrow">
+                DELIVERY DETAILS
+              </p>
+
+              <h3>Saved Addresses</h3>
+
+              <p class="muted">
+                Keep your delivery addresses
+                ready for a faster checkout.
+              </p>
+            </div>
+
+
+            <button
+              type="button"
+              id="addAddressBtn"
+              class="outline"
+            >
+              + Add Address
+            </button>
+
+          </div>
+
+
+          <!--
+            JavaScript renders saved address cards.
+
+            Each saved address may include:
+            - Address label
+            - Recipient name
+            - Contact number
+            - Complete address
+            - Edit
+            - Set Default
+            - Delete
+          -->
+
+          <div
+            id="savedAddresses"
+            class="stack"
+          >
+            <p class="muted">
+              No saved addresses yet.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================
+         ADDRESS FORM PAGE
+         ======================================== -->
+
+    <section id="addressPage" hidden>
+
+      <div class="sectionhead">
+
+        <div>
+          <p class="eyebrow">
+            DELIVERY INFORMATION
+          </p>
+
+          <h2 id="addressFormTitle">
+            Add Delivery Address
+          </h2>
+
+          <p class="muted">
+            Enter your complete delivery details
+            to help ensure a smooth delivery.
+          </p>
+        </div>
+
+
+        <button
+          type="button"
+          id="cancelAddressBtn"
+          class="outline"
+        >
+          ← Back
+        </button>
+
+      </div>
+
+
+      <!-- ADDRESS FORM -->
+
+      <form
+        id="addressForm"
+        class="card checkout address-form-card"
+      >
+
+        <!--
+          Used by JavaScript to distinguish
+          adding an address from editing one.
+        -->
+
+        <input
+          type="hidden"
+          name="address_id"
+          id="addressId"
+        >
+
+
+        <!-- ADDRESS LABEL -->
+
+        <label>
+          Address Label
+
+          <select
+            name="label"
+            required
+          >
+            <option value="Home">
+              Home
+            </option>
+
+            <option value="Work">
+              Work
+            </option>
+
+            <option value="School">
+              School
+            </option>
+
+            <option value="Other">
+              Other
+            </option>
+          </select>
+        </label>
+
+
+        <!-- RECIPIENT NAME -->
+
+        <label>
+          Recipient Full Name
+
+          <input
+            name="recipient"
+            type="text"
+            maxlength="120"
+            autocomplete="name"
+            placeholder="Enter recipient's full name"
+            required
+          >
+        </label>
+
+
+        <!-- CONTACT NUMBER -->
+
+        <label>
+          Contact Number
+
+          <input
+            name="phone"
+            type="tel"
+            maxlength="30"
+            autocomplete="tel"
+            placeholder="e.g. 09XXXXXXXXX"
+            required
+          >
+        </label>
+
+
+        <!-- STREET ADDRESS -->
+
+        <label>
+          House Number / Street / Building
+
+          <input
+            name="street"
+            type="text"
+            maxlength="255"
+            autocomplete="address-line1"
+            placeholder="House no., street, or building"
+            required
+          >
+        </label>
+
+
+        <!-- BARANGAY -->
+
+        <label>
+          Barangay
+
+          <input
+            name="barangay"
+            type="text"
+            maxlength="120"
+            placeholder="Enter your barangay"
+            required
+          >
+        </label>
+
+
+        <!-- CITY OR MUNICIPALITY -->
+
+        <label>
+          City / Municipality
+
+          <input
+            name="city"
+            type="text"
+            maxlength="120"
+            autocomplete="address-level2"
+            placeholder="Enter your city or municipality"
+            required
+          >
+        </label>
+
+
+        <!-- PROVINCE -->
+
+        <label>
+          Province
+
+          <input
+            name="province"
+            type="text"
+            maxlength="120"
+            autocomplete="address-level1"
+            placeholder="Enter your province"
+            required
+          >
+        </label>
+
+
+        <!-- POSTAL CODE -->
+
+        <label>
+          ZIP Code
+
+          <input
+            name="postal_code"
+            type="text"
+            maxlength="12"
+            autocomplete="postal-code"
+            placeholder="Enter your ZIP code"
+            required
+          >
+        </label>
+
+
+        <!-- DEFAULT ADDRESS -->
+
+        <label class="agree">
+
+          <input
+            type="checkbox"
+            name="is_default"
+          >
+
+          Set as my default delivery address
+
+        </label>
+
+
+        <!-- FORM ACTIONS -->
+
+        <div class="actions address-form-actions">
+
+          <button
+            type="submit"
+            class="primary"
+          >
+            Save Address
+          </button>
+
+          <button
+            type="button"
+            class="outline"
+            data-page="account"
+          >
+            Cancel
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+
+    <!-- ========================================
+         END OF PART 2
+         ======================================== -->
+
+    <!-- PASTE PART 3 DIRECTLY BELOW THIS LINE -->
+
+    <!-- ========================================
+         MY ORDERS PAGE
+         ======================================== -->
+
+    <section id="ordersPage" hidden>
+
+      <div class="sectionhead">
+
+        <div>
+          <p class="eyebrow">
+            PURCHASE HISTORY
+          </p>
+
+          <h2>My Orders</h2>
+
+          <p class="muted">
+            Keep track of your orders,
+            delivery progress, and past purchases.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="outline"
+          data-page="shop"
+        >
+          ← Continue Shopping
+        </button>
+
+      </div>
+
+      <!--
+        store.js renders:
+        - Order number
+        - Order date
+        - Ordered products
+        - Total amount
+        - Order status
+        - Delivery tracking steps
+        - Review buttons for delivered products
+      -->
+
+      <div
+        id="orders"
+        class="stack orders-list"
+      ></div>
+
+    </section>
+
+
+    <!-- ========================================
+         CHECKOUT PAGE
+         ======================================== -->
+
+    <section id="checkoutPage" hidden>
+
+      <div class="sectionhead">
+
+        <div>
+          <p class="eyebrow">
+            ALMOST THERE
+          </p>
+
+          <h2>Secure Checkout 🛍️</h2>
+
+          <p class="muted">
+            Review your selected products,
+            delivery address, and payment method
+            before placing your order.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          id="checkoutBack"
+          class="outline"
+        >
+          ← Back
+        </button>
+
+      </div>
+
+
+      <!-- MAIN CHECKOUT FORM -->
+
+      <form
+        id="checkoutForm"
+        class="checkout-layout"
+      >
+
+
+        <!-- ====================================
+             DELIVERY ADDRESS
+             ==================================== -->
+
+        <div class="card checkout-address-card">
+
+          <div class="checkout-card-heading">
+
+            <span aria-hidden="true">📍</span>
+
+            <h3>Delivery Address</h3>
+
+          </div>
+
+          <p class="muted">
+            Select where you would like
+            your Honeybail treats delivered.
+          </p>
+
+
+          <!-- SAVED DELIVERY ADDRESSES -->
+
+          <div
+            id="checkoutAddresses"
+            class="stack"
+          ></div>
+
+
+          <!-- ADD NEW ADDRESS -->
+
+          <button
+            type="button"
+            id="checkoutAddAddress"
+            class="outline"
+          >
+            + Add New Address
+          </button>
+
+
+          <!--
+            Legacy checkout fields retained
+            for compatibility with older code.
+          -->
+
+          <div id="checkoutLegacyFields" hidden>
+
+            <label>
+              Recipient Name
+
+              <input
+                name="recipient"
+                maxlength="120"
+              >
+            </label>
+
+            <label>
+              Contact Number
+
+              <input
+                name="phone"
+                maxlength="30"
+              >
+            </label>
+
+            <label>
+              Delivery Address
+
+              <textarea
+                name="address"
+                maxlength="2000"
+              ></textarea>
+            </label>
+
+          </div>
+
+
+          <!-- CONFIRM DELIVERY DETAILS -->
+
+          <label class="agree">
+
+            <input
+              type="checkbox"
+              id="confirmAddress"
+              required
+            >
+
+            I confirm that my selected delivery
+            address and contact information
+            are correct.
+
+          </label>
+
+        </div>
+
+
+        <!-- ====================================
+             PAYMENT METHOD
+             ==================================== -->
+
+        <div class="card checkout-payment-card">
+
+          <div class="checkout-card-heading">
+
+            <span aria-hidden="true">💳</span>
+
+            <h3>Payment Method</h3>
+
+          </div>
+
+          <p class="muted">
+            Choose how you would like
+            to pay for your order.
+          </p>
+
+
+          <div class="payment-options">
+
+            <!-- CASH ON DELIVERY -->
+
+            <label class="payment-option">
+
+              <input
+                type="radio"
+                name="payment_method"
+                value="COD"
+                checked
+                required
+              >
+
+              <span>
+                <strong>Cash on Delivery</strong>
+
+                <small>
+                  Pay in cash when your order arrives.
+                </small>
+              </span>
+
+            </label>
+
+
+            <!-- GCASH -->
+
+            <label class="payment-option">
+
+              <input
+                type="radio"
+                name="payment_method"
+                value="GCASH"
+                disabled
+              >
+
+              <span>
+                <strong>GCash</strong>
+
+                <small>
+                  Coming soon — payment verification
+                  is not yet available.
+                </small>
+              </span>
+
+            </label>
+
+
+            <!-- MAYA -->
+
+            <label class="payment-option">
+
+              <input
+                type="radio"
+                name="payment_method"
+                value="MAYA"
+                disabled
+              >
+
+              <span>
+                <strong>Maya</strong>
+
+                <small>
+                  Coming soon — payment verification
+                  is not yet available.
+                </small>
+              </span>
+
+            </label>
+
+          </div>
+
+
+          <p
+            class="muted"
+            id="paymentNotice"
+          >
+            Cash on Delivery is currently available.
+            No online payment will be collected.
+          </p>
+
+        </div>
+
+
+        <!-- ====================================
+             ORDER NOTES
+             ==================================== -->
+
+        <div class="card checkout-notes-card">
+
+          <div class="checkout-card-heading">
+
+            <span aria-hidden="true">📝</span>
+
+            <h3>Order Notes</h3>
+
+          </div>
+
+          <label>
+            Special Instructions (Optional)
+
+            <textarea
+              name="notes"
+              maxlength="1000"
+              placeholder="Any delivery instructions or special requests?"
+            ></textarea>
+
+          </label>
+
+        </div>
+
+
+        <!-- ====================================
+             ORDER SUMMARY
+             ==================================== -->
+
+        <div class="card checkout-summary-card">
+
+          <div class="checkout-card-heading">
+
+            <span aria-hidden="true">🛒</span>
+
+            <h3>Order Summary</h3>
+
+          </div>
+
+          <p class="muted">
+            Review the products included
+            in your checkout.
+          </p>
+
+
+          <!--
+            JavaScript renders selected cart items.
+
+            Buy Now renders only the chosen product.
+          -->
+
+          <div
+            id="checkoutItems"
+            class="stack"
+          ></div>
+
+
+          <!-- ORDER TOTALS -->
+
+          <div class="checkout-totals">
+
+            <p>
+              <span>Subtotal</span>
+
+              <strong id="checkoutSubtotal">
+                ₱0.00
+              </strong>
+            </p>
+
+            <p>
+              <span>Delivery Fee</span>
+
+              <strong id="checkoutDeliveryFee">
+                ₱0.00
+              </strong>
+            </p>
+
+            <h3>
+              <span>Grand Total</span>
+
+              <strong id="checkoutTotal">
+                ₱0.00
+              </strong>
+            </h3>
+
+          </div>
+
+
+          <p class="muted checkout-delivery-note">
+            Delivery starts at ₱50 for the first
+            unit, plus ₱20 for each additional unit.
+            The total is calculated using the
+            selected quantities.
+          </p>
+
+        </div>
+
+
+        <!-- ====================================
+             ORDER POLICY
+             ==================================== -->
+
+        <div class="policy">
+
+          <h3>
+            💗 A Little Reminder Before You Order
+          </h3>
+
+          <p>
+            Please double-check your selected
+            products, quantities, delivery address,
+            and payment method before confirming
+            your order.
+          </p>
+
+          <p>
+            Once your order is being prepared,
+            changes or cancellations may
+            no longer be possible.
+          </p>
+
+          <p>
+            Because our treats are perishable,
+            change-of-mind returns may be limited.
+            If your order is incorrect, damaged,
+            or has a quality concern, please
+            contact us so we can assist you.
+            Your rights under applicable consumer
+            laws remain protected.
+          </p>
+
+
+          <label class="agree">
+
+            <input
+              type="checkbox"
+              name="policy"
+              required
+            >
+
+            I have reviewed my order details
+            and agree to the order policy.
+
+          </label>
+
+        </div>
+
+
+        <!-- ====================================
+             PLACE ORDER
+             ==================================== -->
+
+        <button
+          type="submit"
+          id="placeOrderBtn"
+          class="primary"
+        >
+          Confirm & Place Order →
+        </button>
+
+
+        <p class="muted">
+          Your order will only be submitted
+          after you confirm.
+          Cash on Delivery is currently
+          the available payment method.
+        </p>
+
+      </form>
+
+    </section>
+
+
+    <!-- ========================================
+         CUSTOMER REVIEWS PAGE
+         ======================================== -->
+
+    <section id="reviewPage" hidden>
+
+      <div class="sectionhead">
+
+        <div>
+          <p class="eyebrow">
+            REAL CUSTOMER EXPERIENCES
+          </p>
+
+          <h2 id="reviewTitle">
+            Customer Reviews
+          </h2>
+
+          <p class="muted">
+            Read experiences shared by customers
+            who purchased and received
+            their Honeybail treats.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="outline"
+          data-page="shop"
+        >
+          ← Back to Shop
+        </button>
+
+      </div>
+
+
+      <!-- REVIEW SUMMARY -->
+
+      <div
+        id="reviewSummary"
+        class="card review-summary-card"
+      ></div>
+
+
+      <!-- CUSTOMER REVIEW CARDS -->
+
+      <div
+        id="reviews"
+        class="stack"
+      ></div>
+
+    </section>
+
+
+    <!-- ========================================
+         WRITE CUSTOMER REVIEW
+         ======================================== -->
+
+    <section id="writeReviewPage" hidden>
+
+      <div class="sectionhead">
+
+        <div>
+          <p class="eyebrow">
+            SHARE YOUR EXPERIENCE
+          </p>
+
+          <h2>Review Your Purchase ♡</h2>
+
+          <p class="muted">
+            Tell us what you think about
+            your Honeybail treats.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="outline"
+          data-page="orders"
+        >
+          ← My Orders
+        </button>
+
+      </div>
+
+
+      <form
+        id="reviewForm"
+        class="card checkout review-form-card"
+      >
+
+        <h3 id="writeReviewProductName">
+          Product Review
+        </h3>
+
+        <p class="muted">
+          Reviews are available only
+          for products included in your
+          delivered orders.
+        </p>
+
+
+        <!-- RATING -->
+
+        <label>
+          Rating
+
+          <select
+            name="rating"
+            required
+          >
+            <option value="5">
+              ★★★★★ — 5 Stars
+            </option>
+
+            <option value="4">
+              ★★★★☆ — 4 Stars
+            </option>
+
+            <option value="3">
+              ★★★☆☆ — 3 Stars
+            </option>
+
+            <option value="2">
+              ★★☆☆☆ — 2 Stars
+            </option>
+
+            <option value="1">
+              ★☆☆☆☆ — 1 Star
+            </option>
+          </select>
+
+        </label>
+
+
+        <!-- REVIEW COMMENT -->
+
+        <label>
+          Your Review
+
+          <textarea
+            name="comment"
+            maxlength="1500"
+            required
+            placeholder="How was your Honeybail treat?"
+          ></textarea>
+
+        </label>
+
+
+        <!-- REVIEW ACTIONS -->
+
+        <div class="actions review-form-actions">
+
+          <button
+            type="submit"
+            class="primary"
+          >
+            Submit Review
+          </button>
+
+          <button
+            type="button"
+            id="deleteReview"
+            class="outline"
+          >
+            Delete My Review
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+
+  <!-- ==========================================
+       END OF MAIN CONTENT
+       ========================================== -->
+
+  </main>
+
+
+  <!-- ==========================================
+       LOGOUT CONFIRMATION
+       ========================================== -->
+
+  <dialog
+    id="logoutDialog"
+    aria-labelledby="logoutDialogTitle"
+  >
+
+    <div class="dialog-content">
+
+      <h3 id="logoutDialogTitle">
+        Leaving so soon? ♡
+      </h3>
+
+      <p>
+        Are you sure you want to
+        log out of Honeybail?
+      </p>
+
+
+      <div class="actions">
+
+        <button
+          type="button"
+          id="cancelLogout"
+          class="outline"
+        >
+          Stay Logged In
+        </button>
+
+        <button
+          type="button"
+          id="confirmLogout"
+          class="primary"
+        >
+          Yes, Log Out
+        </button>
+
+      </div>
+
+    </div>
+
+  </dialog>
+
+
+  <!-- ==========================================
+       FOOTER
+       ========================================== -->
+
+  <footer>
+    Made with ♡ · HONEYBAIL ·
+    Small Treats, Big Happiness
+  </footer>
+
+
+  <!-- ==========================================
+       JAVASCRIPT
+       ========================================== -->
+
+  <script src="store.js"></script>
+
+</body>
+</html>

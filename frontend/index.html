@@ -1,132 +1,4055 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Honeybail | Admin Panel</title>
+<link rel="icon" href="data:,">
+
 <style>
-:root{--red:#a90f1a;--red2:#c51c28;--cream:#fffaf6;--ink:#29252a;--muted:#7c7778;--line:#eee5e1;--green:#dff5e6;--orange:#fff0d8;--blue:#e3efff;--shadow:0 8px 28px #4b10100b}
-*{box-sizing:border-box}body{margin:0;background:#faf8f6;color:var(--ink);font:14px/1.45 Inter,Segoe UI,Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}.app{min-height:100vh}.topbar{height:64px;background:linear-gradient(90deg,#970b16,#b81723);color:white;display:flex;align-items:center;gap:18px;padding:0 22px;position:sticky;top:0;z-index:5;box-shadow:0 3px 12px #6b000020}.brand{font-weight:900;letter-spacing:1.5px;font-size:20px;line-height:1}.brand small{display:block;font-size:8px;letter-spacing:.6px;margin-top:4px}.hamb{background:transparent;color:white;border:0;font-size:23px}.top-title{font-size:13px;opacity:.95}.top-right{margin-left:auto;display:flex;align-items:center;gap:16px}.top-right button{background:transparent;border:0;color:white}.layout{display:flex;min-height:calc(100vh - 64px)}.sidebar{width:220px;flex-shrink:0;background:#970d17;color:#fff;padding:16px 10px;display:flex;flex-direction:column;gap:5px}.navbtn{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;border-radius:8px;background:transparent;color:#f9e9e9;padding:12px 13px;font-size:13px;transition:.18s}.navbtn:hover,.navbtn.active{background:#c32732;color:white}.navbtn .ico{width:20px;font-size:17px;text-align:center}.nav-spacer{flex:1;min-height:24px}.backstore{border-top:1px solid #ffffff26;padding-top:14px;margin-top:8px}.main{padding:25px;flex:1;min-width:0;max-width:1800px;margin:0 auto;width:100%}.pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:20px}.pagehead h1{font-size:24px;margin:0 0 4px}.sub{color:var(--muted);font-size:13px}.datepill{background:white;border:1px solid var(--line);padding:9px 12px;border-radius:9px;color:#8e151e}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.stat,.panel,.tablewrap{background:white;border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow)}.stat{padding:18px;display:flex;gap:13px;align-items:center}.stat-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:#f9e5e5;color:var(--red);font-size:20px}.stat-label{font-size:12px;color:var(--muted)}.stat strong{display:block;font-size:22px;margin:3px 0}.positive{font-size:11px;color:#19864a}.grid2{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;margin-bottom:16px}.grid3{display:grid;grid-template-columns:1.2fr 1fr .8fr;gap:16px;margin-bottom:16px}.panel{padding:18px;min-width:0}.panelhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}.panelhead h3{margin:0;font-size:15px}.linkbtn{border:0;background:transparent;color:var(--red);font-weight:700;font-size:12px}.chart{height:205px;width:100%;display:block}.recent-list{display:flex;flex-direction:column;gap:0}.recent-row{display:grid;grid-template-columns:1.1fr 1fr .6fr .7fr;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid #f3eeeb;font-size:11px}.recent-row:last-child{border:0}.badge{display:inline-block;border-radius:5px;padding:4px 8px;font-size:11px;font-weight:700;white-space:nowrap}.Pending{background:var(--orange);color:#b86a08}.Paid,.In-Stock{background:var(--green);color:#168046}.Shipped{background:var(--blue);color:#1761b0}.Cancelled,.Low-Stock{background:#ffe6e3;color:#bf392b}.tablewrap{overflow:auto}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.toolbar input,.toolbar select,.field input,.field select,.field textarea{border:1px solid #e6dedb;background:#fff;border-radius:8px;padding:10px 12px;outline:none;min-width:140px}.toolbar input:focus,.field input:focus,.field select:focus,.field textarea:focus{border-color:#c52a35;box-shadow:0 0 0 3px #c52a3510}.primary,.secondary,.danger{border:0;border-radius:8px;padding:10px 14px;font-weight:700}.primary{background:var(--red);color:white}.primary:hover{background:#830a13}.secondary{background:#f6ecea;color:#8f111a}.danger{background:#ffeded;color:#b51a25}.table{border-collapse:collapse;width:100%;white-space:nowrap}.table th{background:#fffaf8;color:#777;font-size:11px;text-align:left;padding:13px 15px}.table td{padding:13px 15px;border-top:1px solid #f0eae7;font-size:12px}.table tr:hover td{background:#fffdfc}.actions{display:flex;gap:6px}.smallbtn{border:1px solid #eee0dc;background:white;border-radius:6px;padding:5px 8px;color:#7f111a}.smallbtn:hover{background:#fff0ef}.product-cell{display:flex;align-items:center;gap:10px}.product-emoji{width:34px;height:34px;display:grid;place-items:center;border-radius:9px;background:#fff0e8;font-size:20px}.empty{text-align:center;color:var(--muted);padding:35px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:12px;font-weight:700}.field.full{grid-column:1/-1}.field textarea{min-height:85px}.settings-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tab{border:1px solid var(--line);border-radius:8px;padding:9px 14px;background:white}.tab.active{background:var(--red);color:white;border-color:var(--red)}.setting-layout{display:grid;grid-template-columns:200px 1fr;gap:25px}.store-logo{width:110px;height:110px;background:#f7e4e2;color:var(--red);border-radius:50%;display:grid;place-items:center;font-size:42px;margin-bottom:12px}.mutedbox{background:#fff9f6;border:1px solid var(--line);padding:14px;border-radius:9px;color:var(--muted)}.bar-chart{height:220px;display:flex;align-items:end;gap:13px;padding:12px 8px 0;border-bottom:1px solid var(--line)}.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;height:100%;gap:7px;font-size:10px;color:var(--muted)}.bar{width:70%;max-width:40px;background:linear-gradient(#d93642,#a70d19);border-radius:5px 5px 0 0;min-height:6px}.bar-label{padding-bottom:8px}.quick-actions{display:grid;gap:9px}.quick-actions button{text-align:left;background:#fff8f6;border:1px solid #f4e2df;border-radius:8px;padding:12px;color:#8e121c}.footer{padding:18px 0 0;color:#a49b98;font-size:11px;display:flex;justify-content:space-between}.notice{padding:12px 14px;border-radius:8px;background:#e5f7e9;color:#166b37;margin-bottom:14px}.modal-backdrop{position:fixed;inset:0;background:#1e1010a8;z-index:20;display:grid;place-items:center;padding:20px}.modal{background:white;width:min(560px,100%);max-height:90vh;overflow:auto;border-radius:14px;padding:22px;box-shadow:0 20px 70px #0003}.modalhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.modalhead h2{margin:0;font-size:19px}.close{border:0;background:#f6eeee;border-radius:7px;padding:6px 10px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.hidden{display:none!important}.mobile-overlay{display:none}
-@media(max-width:1050px){.sidebar{width:190px}.main{padding:18px}.stats{grid-template-columns:repeat(2,1fr)}.grid3{grid-template-columns:1fr 1fr}.grid3 .panel:last-child{grid-column:1/-1}}
-@media(max-width:720px){.topbar{padding:0 13px}.brand{font-size:16px}.top-title{display:none}.sidebar{position:fixed;z-index:10;top:64px;bottom:0;left:0;transform:translateX(-100%);transition:.2s;width:245px}.sidebar.open{transform:translateX(0)}.mobile-overlay.show{display:block;position:fixed;inset:64px 0 0;background:#0006;z-index:9}.main{padding:15px}.stats{grid-template-columns:1fr 1fr;gap:9px}.stat{padding:12px;gap:8px}.stat-icon{width:34px;height:34px}.stat strong{font-size:18px}.grid2,.grid3{grid-template-columns:1fr}.grid3 .panel:last-child{grid-column:auto}.pagehead h1{font-size:21px}.setting-layout{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.datepill{display:none}}
-</style></head>
-<body><div class="app">
-<header class="topbar"><button class="hamb" id="menuToggle" aria-label="Toggle menu">☰</button><div class="brand">HONEYBAIL<small>✦ SMALL TREATS, BIG HAPPINESS ✦</small></div><div class="top-title">Admin Panel</div><div class="top-right"><button id="notificationBtn" title="Notifications">♧</button><button id="adminMenu">◉ Admin⌄</button></div></header>
-<div class="mobile-overlay" id="overlay"></div>
-<div class="layout"><aside class="sidebar" id="sidebar">
-<button class="navbtn active" data-page="dashboard"><span class="ico">⌂</span>Dashboard</button>
-<button class="navbtn" data-page="orders"><span class="ico">▣</span>Orders</button>
-<button class="navbtn" data-page="products"><span class="ico">◉</span>Products</button>
-<button class="navbtn" data-page="customers"><span class="ico">♟</span>Customers</button>
-<button class="navbtn" data-page="reports"><span class="ico">▥</span>Reports</button>
-<button class="navbtn" data-page="cart"><span class="ico">🛒</span>Cart Activity</button>
-<button class="navbtn" data-page="favorites"><span class="ico">♡</span>Favorites</button>
-<button class="navbtn" data-page="settings"><span class="ico">⚙</span>Settings</button>
-<div class="nav-spacer"></div><button class="navbtn backstore" id="backStore"><span class="ico">↗</span>Back to Store</button>
-</aside><main class="main" id="main"></main></div></div>
+:root {
+  --red:#a90f1a;
+  --red2:#c51c28;
+  --cream:#fffaf6;
+  --ink:#29252a;
+  --muted:#7c7778;
+  --line:#eee5e1;
+  --green:#dff5e6;
+  --orange:#fff0d8;
+  --blue:#e3efff;
+  --shadow:0 8px 28px #4b10100b;
+}
+
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  background:#faf8f6;
+  color:var(--ink);
+  font:14px/1.45 Inter,Segoe UI,Arial,sans-serif;
+}
+
+button,input,select,textarea { font:inherit; }
+button { cursor:pointer; }
+
+.app { min-height:100vh; }
+
+.topbar {
+  height:64px;
+  background:linear-gradient(90deg,#970b16,#b81723);
+  color:white;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  padding:0 22px;
+  position:sticky;
+  top:0;
+  z-index:5;
+  box-shadow:0 3px 12px #6b000020;
+}
+
+.brand {
+  font-weight:900;
+  letter-spacing:1.5px;
+  font-size:20px;
+  line-height:1;
+}
+
+.brand small {
+  display:block;
+  font-size:8px;
+  letter-spacing:.6px;
+  margin-top:4px;
+}
+
+.hamb {
+  background:transparent;
+  color:white;
+  border:0;
+  font-size:23px;
+}
+
+.top-title { font-size:13px; opacity:.95; }
+
+.top-right {
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+
+.top-right button {
+  background:transparent;
+  border:0;
+  color:white;
+}
+
+.layout {
+  display:flex;
+  min-height:calc(100vh - 64px);
+}
+
+.sidebar {
+  width:220px;
+  flex-shrink:0;
+  background:#970d17;
+  color:#fff;
+  padding:16px 10px;
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.navbtn {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  text-align:left;
+  border:0;
+  border-radius:8px;
+  background:transparent;
+  color:#f9e9e9;
+  padding:12px 13px;
+  font-size:13px;
+  transition:.18s;
+}
+
+.navbtn:hover,.navbtn.active {
+  background:#c32732;
+  color:white;
+}
+
+.navbtn .ico {
+  width:20px;
+  font-size:17px;
+  text-align:center;
+}
+
+.nav-spacer { flex:1; min-height:24px; }
+
+.backstore {
+  border-top:1px solid #ffffff26;
+  padding-top:14px;
+  margin-top:8px;
+}
+
+.main {
+  padding:25px;
+  flex:1;
+  min-width:0;
+  max-width:1800px;
+  margin:0 auto;
+  width:100%;
+}
+
+.pagehead {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:14px;
+  margin-bottom:20px;
+}
+
+.pagehead h1 {
+  font-size:24px;
+  margin:0 0 4px;
+}
+
+.sub { color:var(--muted); font-size:13px; }
+
+.datepill {
+  background:white;
+  border:1px solid var(--line);
+  padding:9px 12px;
+  border-radius:9px;
+  color:#8e151e;
+}
+
+.stats {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  margin-bottom:18px;
+}
+
+.stat,.panel,.tablewrap {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:13px;
+  box-shadow:var(--shadow);
+}
+
+.stat {
+  padding:18px;
+  display:flex;
+  gap:13px;
+  align-items:center;
+}
+
+.stat-icon {
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#f9e5e5;
+  color:var(--red);
+  font-size:20px;
+}
+
+.stat-label { font-size:12px; color:var(--muted); }
+.stat strong { display:block; font-size:22px; margin:3px 0; }
+.positive { font-size:11px; color:#19864a; }
+
+.grid2 {
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:16px;
+  margin-bottom:16px;
+}
+
+.grid3 {
+  display:grid;
+  grid-template-columns:1.2fr 1fr .8fr;
+  gap:16px;
+  margin-bottom:16px;
+}
+
+.panel { padding:18px; min-width:0; }
+
+.panelhead {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.panelhead h3 { margin:0; font-size:15px; }
+
+.linkbtn {
+  border:0;
+  background:transparent;
+  color:var(--red);
+  font-weight:700;
+  font-size:12px;
+}
+
+.chart { height:205px; width:100%; display:block; }
+.recent-list { display:flex; flex-direction:column; }
+
+.recent-row {
+  display:grid;
+  grid-template-columns:1.1fr 1fr .6fr .7fr;
+  gap:8px;
+  align-items:center;
+  padding:10px 0;
+  border-bottom:1px solid #f3eeeb;
+  font-size:11px;
+}
+
+.recent-row:last-child { border:0; }
+
+.badge {
+  display:inline-block;
+  border-radius:5px;
+  padding:4px 8px;
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.Pending { background:var(--orange); color:#b86a08; }
+.Paid,.In-Stock,.Delivered { background:var(--green); color:#168046; }
+.Shipped,.Processing { background:var(--blue); color:#1761b0; }
+.Cancelled,.Low-Stock,.Failed { background:#ffe6e3; color:#bf392b; }
+
+.tablewrap { overflow:auto; }
+
+.toolbar {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+
+.toolbar input,.toolbar select,
+.field input,.field select,.field textarea {
+  border:1px solid #e6dedb;
+  background:#fff;
+  border-radius:8px;
+  padding:10px 12px;
+  outline:none;
+  min-width:140px;
+}
+
+.toolbar input:focus,.field input:focus,
+.field select:focus,.field textarea:focus {
+  border-color:#c52a35;
+  box-shadow:0 0 0 3px #c52a3510;
+}
+
+.primary,.secondary,.danger {
+  border:0;
+  border-radius:8px;
+  padding:10px 14px;
+  font-weight:700;
+}
+
+.primary { background:var(--red); color:white; }
+.primary:hover { background:#830a13; }
+.secondary { background:#f6ecea; color:#8f111a; }
+.danger { background:#ffeded; color:#b51a25; }
+
+.table {
+  border-collapse:collapse;
+  width:100%;
+  white-space:nowrap;
+}
+
+.table th {
+  background:#fffaf8;
+  color:#777;
+  font-size:11px;
+  text-align:left;
+  padding:13px 15px;
+}
+
+.table td {
+  padding:13px 15px;
+  border-top:1px solid #f0eae7;
+  font-size:12px;
+}
+
+.table tr:hover td { background:#fffdfc; }
+
+.actions { display:flex; gap:6px; }
+
+.smallbtn {
+  border:1px solid #eee0dc;
+  background:white;
+  border-radius:6px;
+  padding:5px 8px;
+  color:#7f111a;
+}
+
+.smallbtn:hover { background:#fff0ef; }
+
+.product-cell {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.product-emoji {
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:9px;
+  background:#fff0e8;
+  font-size:20px;
+  overflow:hidden;
+  flex-shrink:0;
+}
+
+.product-emoji img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.empty {
+  text-align:center;
+  color:var(--muted);
+  padding:35px;
+}
+
+.formgrid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.field {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.field label { font-size:12px; font-weight:700; }
+.field.full { grid-column:1/-1; }
+.field textarea { min-height:85px; }
+
+.settings-tabs {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+
+.tab {
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:9px 14px;
+  background:white;
+}
+
+.tab.active {
+  background:var(--red);
+  color:white;
+  border-color:var(--red);
+}
+
+.setting-layout {
+  display:grid;
+  grid-template-columns:200px 1fr;
+  gap:25px;
+}
+
+.store-logo {
+  width:110px;
+  height:110px;
+  background:#f7e4e2;
+  color:var(--red);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:42px;
+  margin-bottom:12px;
+}
+
+.mutedbox {
+  background:#fff9f6;
+  border:1px solid var(--line);
+  padding:14px;
+  border-radius:9px;
+  color:var(--muted);
+}
+
+.bar-chart {
+  height:220px;
+  display:flex;
+  align-items:end;
+  gap:13px;
+  padding:12px 8px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.bar-col {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:end;
+  height:100%;
+  gap:7px;
+  font-size:10px;
+  color:var(--muted);
+}
+
+.bar {
+  width:70%;
+  max-width:40px;
+  background:linear-gradient(#d93642,#a70d19);
+  border-radius:5px 5px 0 0;
+  min-height:6px;
+}
+
+.bar-label { padding-bottom:8px; }
+
+.quick-actions { display:grid; gap:9px; }
+
+.quick-actions button {
+  text-align:left;
+  background:#fff8f6;
+  border:1px solid #f4e2df;
+  border-radius:8px;
+  padding:12px;
+  color:#8e121c;
+}
+
+.footer {
+  padding:18px 0 0;
+  color:#a49b98;
+  font-size:11px;
+  display:flex;
+  justify-content:space-between;
+}
+
+.notice {
+  padding:12px 14px;
+  border-radius:8px;
+  background:#e5f7e9;
+  color:#166b37;
+  margin-bottom:14px;
+}
+
+.error-notice {
+  background:#ffeded;
+  color:#a90f1a;
+}
+
+.modal-backdrop {
+  position:fixed;
+  inset:0;
+  background:#1e1010a8;
+  z-index:20;
+  display:grid;
+  place-items:center;
+  padding:20px;
+}
+
+.modal {
+  background:white;
+  width:min(560px,100%);
+  max-height:90vh;
+  overflow:auto;
+  border-radius:14px;
+  padding:22px;
+  box-shadow:0 20px 70px #0003;
+}
+
+.modalhead {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+}
+
+.modalhead h2 { margin:0; font-size:19px; }
+
+.close {
+  border:0;
+  background:#f6eeee;
+  border-radius:7px;
+  padding:6px 10px;
+}
+
+.modal-actions {
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:18px;
+}
+
+.hidden { display:none!important; }
+.mobile-overlay { display:none; }
+
+@media(max-width:1050px) {
+  .sidebar { width:190px; }
+  .main { padding:18px; }
+  .stats { grid-template-columns:repeat(2,1fr); }
+  .grid3 { grid-template-columns:1fr 1fr; }
+  .grid3 .panel:last-child { grid-column:1/-1; }
+}
+
+@media(max-width:720px) {
+  .topbar { padding:0 13px; }
+  .brand { font-size:16px; }
+  .top-title { display:none; }
+  .sidebar {
+    position:fixed;
+    z-index:10;
+    top:64px;
+    bottom:0;
+    left:0;
+    transform:translateX(-100%);
+    transition:.2s;
+    width:245px;
+  }
+  .sidebar.open { transform:translateX(0); }
+  .mobile-overlay.show {
+    display:block;
+    position:fixed;
+    inset:64px 0 0;
+    background:#0006;
+    z-index:9;
+  }
+  .main { padding:15px; }
+  .stats { grid-template-columns:1fr 1fr; gap:9px; }
+  .stat { padding:12px; gap:8px; }
+  .stat-icon { width:34px; height:34px; }
+  .stat strong { font-size:18px; }
+  .grid2,.grid3 { grid-template-columns:1fr; }
+  .grid3 .panel:last-child { grid-column:auto; }
+  .pagehead h1 { font-size:21px; }
+  .setting-layout { grid-template-columns:1fr; }
+  .formgrid { grid-template-columns:1fr; }
+  .field.full { grid-column:auto; }
+  .datepill { display:none; }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <header class="topbar">
+    <button class="hamb" id="menuToggle" aria-label="Toggle menu">☰</button>
+
+    <div class="brand">
+      HONEYBAIL
+      <small>✦ SMALL TREATS, BIG HAPPINESS ✦</small>
+    </div>
+
+    <div class="top-title">Admin Panel</div>
+
+    <div class="top-right">
+      <button id="notificationBtn" title="Notifications">♧</button>
+      <button id="adminMenu">◉ Admin⌄</button>
+    </div>
+  </header>
+
+  <div class="mobile-overlay" id="overlay"></div>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <button class="navbtn active" data-page="dashboard">
+        <span class="ico">⌂</span>Dashboard
+      </button>
+
+      <button class="navbtn" data-page="orders">
+        <span class="ico">▣</span>Orders
+      </button>
+
+      <button class="navbtn" data-page="products">
+        <span class="ico">◉</span>Products
+      </button>
+
+      <button class="navbtn" data-page="customers">
+        <span class="ico">♟</span>Customers
+      </button>
+
+      <button class="navbtn" data-page="reports">
+        <span class="ico">▥</span>Reports
+      </button>
+
+      <button class="navbtn" data-page="cart">
+        <span class="ico">🛒</span>Cart Activity
+      </button>
+
+      <button class="navbtn" data-page="favorites">
+        <span class="ico">♡</span>Favorites
+      </button>
+
+      <button class="navbtn" data-page="settings">
+        <span class="ico">⚙</span>Settings
+      </button>
+
+      <div class="nav-spacer"></div>
+
+      <button class="navbtn backstore" id="backStore">
+        <span class="ico">↗</span>Back to Store
+      </button>
+    </aside>
+
+    <main class="main" id="main"></main>
+  </div>
+</div>
+
 <div id="modalRoot"></div>
+
 <script>
 
-const defaultProducts=[
-{id:1,name:'Chocolate Sprinkle',category:'Chocolate',price:20,stock:12,emoji:'🍩'},
-{id:2,name:'Strawberry Glazed',category:'Fruity',price:20,stock:10,emoji:'🍩'},
-{id:3,name:'Cookies & Cream',category:'Cream-filled',price:25,stock:8,emoji:'🍩'},
-{id:4,name:'Choco Peanut',category:'Nutty',price:25,stock:6,emoji:'🍩'},
-{id:5,name:'Classic Glazed',category:'Glazed',price:20,stock:15,emoji:'🍩'},
-{id:6,name:'Old Fashioned',category:'Specialty',price:20,stock:5,emoji:'🍩'},
-{id:7,name:'Ube Glazed',category:'Fruity',price:25,stock:8,emoji:'🍩'},
-{id:8,name:'Matcha Crunch',category:'Specialty',price:25,stock:4,emoji:'🍩'}];
-const defaultCustomers=[
-{id:'CUST-001',name:'Juan Dela Cruz',email:'juan@email.com',phone:'09171234567',orders:5,joined:'Sep 10, 2026'},
-{id:'CUST-002',name:'Maria Santos',email:'maria@email.com',phone:'09177894562',orders:3,joined:'Sep 11, 2026'},
-{id:'CUST-003',name:'Carlo Reyes',email:'carlo@email.com',phone:'09176543210',orders:2,joined:'Sep 12, 2026'},
-{id:'CUST-004',name:'Ana Lim',email:'ana@email.com',phone:'09171239876',orders:4,joined:'Sep 13, 2026'},
-{id:'CUST-005',name:'Bea Garcia',email:'bea@email.com',phone:'09171239811',orders:1,joined:'Sep 14, 2026'},
-{id:'CUST-006',name:'Joel Santos',email:'joel@email.com',phone:'09176549832',orders:2,joined:'Sep 15, 2026'}];
-const defaultOrders=[
-{id:'ORD-0024',customer:'Juan Dela Cruz',items:2,total:60,status:'Pending',date:'Sep 20, 10:24 AM'},
-{id:'ORD-0023',customer:'Maria Santos',items:1,total:100,status:'Paid',date:'Sep 20, 09:56 AM'},
-{id:'ORD-0022',customer:'Carlo Reyes',items:2,total:80,status:'Paid',date:'Sep 20, 09:12 AM'},
-{id:'ORD-0021',customer:'Ana Lim',items:1,total:60,status:'Shipped',date:'Sep 19, 07:45 AM'},
-{id:'ORD-0020',customer:'Bea Garcia',items:1,total:40,status:'Paid',date:'Sep 19, 07:25 AM'},
-{id:'ORD-0019',customer:'Joel Santos',items:3,total:120,status:'Pending',date:'Sep 18, 05:20 PM'},
-{id:'ORD-0018',customer:'Liza Cruz',items:2,total:80,status:'Shipped',date:'Sep 18, 02:14 PM'},
-{id:'ORD-0017',customer:'Mark Reyes',items:1,total:40,status:'Paid',date:'Sep 17, 11:32 AM'}];
-function getData(k,def){try{return JSON.parse(localStorage.getItem('hb_'+k))||def}catch{return def}}
-let products=getData('products',defaultProducts),customers=getData('customers',defaultCustomers),orders=getData('orders',defaultOrders);
-let cartActivity=getData('cart',[['Sep 20, 10:20 AM','Juan Dela Cruz','Chocolate Sprinkle','Added to Cart',1],['Sep 20, 09:50 AM','Maria Santos','Strawberry Glazed','Added to Cart',2],['Sep 20, 09:30 AM','Carlo Reyes','Cookies & Cream','Removed from Cart',1],['Sep 20, 08:45 AM','Ana Lim','Choco Peanut','Added to Cart',1],['Sep 20, 08:20 AM','Bea Garcia','Classic Glazed','Added to Cart',3]]);
-let favorites=getData('favorites',[['Juan Dela Cruz','Chocolate Sprinkle','Sep 16, 2026'],['Maria Santos','Strawberry Glazed','Sep 17, 2026'],['Carlo Reyes','Cookies & Cream','Sep 16, 2026'],['Ana Lim','Choco Peanut','Sep 15, 2026'],['Bea Garcia','Classic Glazed','Sep 13, 2026']]);
-let settings=getData('settings',{name:'HONEYBAIL',tagline:'Small Treats, Big Happiness',email:'honeybail@gmail.com',phone:'0917 123 4567',address:'Brgy. San Isidro, City of Malolos, Bulacan'});
-let currentPage='dashboard',orderFilter='All',productSearch='',customerSearch='',orderSearch='',settingsTab='Store Info';
-const money=n=>'₱'+Number(n).toLocaleString('en-PH');
-const thumb=p=>p.image?`<img src="${p.image}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:9px">`:(p.emoji||'🍩');
-function readImage(file,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const s=Math.min(1,300/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=im.width*s;c.height=im.height*s;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.8))};im.src=r.result};r.readAsDataURL(file)}
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function save(){localStorage.setItem('hb_products',JSON.stringify(products));localStorage.setItem('hb_customers',JSON.stringify(customers));localStorage.setItem('hb_orders',JSON.stringify(orders));localStorage.setItem('hb_cart',JSON.stringify(cartActivity));localStorage.setItem('hb_favorites',JSON.stringify(favorites));localStorage.setItem('hb_settings',JSON.stringify(settings))}
-function badge(s){return `<span class="badge ${s.replaceAll(' ','-')}">${esc(s)}</span>`}
-function head(title,sub,extra=''){return `<div class="pagehead"><div><h1>${title}</h1><div class="sub">${sub}</div></div>${extra||'<div class="datepill">▣ &nbsp; Sep 20, 2026</div>'}</div>`}
-function table(headers,rows){return `<div class="tablewrap"><table class="table"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows||`<tr><td colspan="${headers.length}" class="empty">No records found.</td></tr>`}</tbody></table></div>`}
-function productRows(list){return list.map(p=>`<tr><td><div class="product-cell"><span class="product-emoji">${thumb(p)}</span><b>${esc(p.name)}</b></div></td><td>${esc(p.category||'Donut')}</td><td>${money(p.price)}</td><td>${p.stock}</td><td>${badge(p.stock<=5?'Low Stock':'In Stock')}</td><td><div class="actions"><button class="smallbtn" data-action="edit-product" data-id="${p.id}">✎</button><button class="smallbtn" data-action="delete-product" data-id="${p.id}">🗑</button></div></td></tr>`).join('')}
-function orderRows(list){return list.map(o=>`<tr><td><b>#${esc(o.id)}</b></td><td>${esc(o.customer)}</td><td>${o.items}</td><td>${money(o.total)}</td><td>${badge(o.status)}</td><td>${esc(o.date)}</td><td><div class="actions"><button class="smallbtn" data-action="view-order" data-id="${o.id}" title="View">◉</button><button class="smallbtn" data-action="edit-order" data-id="${o.id}" title="Update status">✎</button></div></td></tr>`).join('')}
-function customerRows(list){return list.map(c=>`<tr><td>${esc(c.id)}</td><td><b>${esc(c.name)}</b></td><td>${esc(c.email)}</td><td>${esc(c.phone)}</td><td>${c.orders}</td><td>${esc(c.joined)}</td><td><button class="smallbtn" data-action="view-customer" data-id="${c.id}">◉ View</button></td></tr>`).join('')}
-function chart(){return `<svg class="chart" viewBox="0 0 600 220" preserveAspectRatio="none" aria-label="Sales line chart"><defs><linearGradient id="fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c52a35" stop-opacity=".24"/><stop offset="100%" stop-color="#c52a35" stop-opacity="0"/></linearGradient></defs>${[35,75,115,155,195].map(y=>`<line x1="35" y1="${y}" x2="590" y2="${y}" stroke="#eee8e5" stroke-dasharray="3 4"/>`).join('')}<path d="M35 165 L115 145 L195 160 L275 175 L355 128 L435 138 L515 105 L585 72 L585 195 L35 195 Z" fill="url(#fill)"/><polyline points="35,165 115,145 195,160 275,175 355,128 435,138 515,105 585,72" fill="none" stroke="#c51c28" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${[[35,165],[115,145],[195,160],[275,175],[355,128],[435,138],[515,105],[585,72]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="4" fill="#c51c28"/>`).join('')}<text x="35" y="214" font-size="11" fill="#8a8380">Sep 14</text><text x="180" y="214" font-size="11" fill="#8a8380">Sep 16</text><text x="330" y="214" font-size="11" fill="#8a8380">Sep 18</text><text x="525" y="214" font-size="11" fill="#8a8380">Sep 20</text></svg>`}
-function stat(icon,label,value,foot='↑ 12% vs. last 7 days'){return `<div class="stat"><div class="stat-icon">${icon}</div><div><div class="stat-label">${label}</div><strong>${value}</strong><div class="positive">${foot}</div></div></div>`}
-function renderDashboard(){let total=orders.reduce((s,o)=>s+o.total,0);return `${head('Welcome back, Admin!','Here’s what’s happening with your store today.')}<section class="stats">${stat('▣','Total Orders',orders.length)}${stat('₱','Total Sales',money(total),'↑ 18% vs. last 7 days')}${stat('◉','Products',products.length,'● In stock')}${stat('♟','Customers',customers.length,'↑ 20% vs. last 7 days')}</section><section class="grid2"><div class="panel"><div class="panelhead"><h3>Sales Overview</h3><button class="linkbtn" data-action="go-reports">View Report →</button></div>${chart()}</div><div class="panel"><div class="panelhead"><h3>Recent Orders</h3><button class="linkbtn" data-page="orders">View All →</button></div><div class="recent-list">${orders.slice(0,5).map(o=>`<div class="recent-row"><b>#${o.id}</b><span>${esc(o.customer)}</span><span>${money(o.total)}</span>${badge(o.status)}</div>`).join('')}</div></div></section><section class="grid3"><div class="panel"><div class="panelhead"><h3>Latest Orders</h3><button class="linkbtn" data-page="orders">View All</button></div>${table(['Customer','Items','Total','Status'],orders.slice(0,4).map(o=>`<tr><td>${esc(o.customer)}</td><td>${o.items}</td><td>${money(o.total)}</td><td>${badge(o.status)}</td></tr>`).join(''))}</div><div class="panel"><div class="panelhead"><h3>Top Products</h3><button class="linkbtn" data-page="products">View All</button></div>${products.slice(0,5).map((p,i)=>`<div class="recent-row" style="grid-template-columns:32px 1fr 30px"><span class="product-emoji">${p.emoji}</span><span>${esc(p.name)}</span><b>${[12,10,8,6,5][i]||3}</b></div>`).join('')}</div><div class="panel"><div class="panelhead"><h3>Quick Actions</h3></div><div class="quick-actions"><button data-action="add-product">⊕ &nbsp; Add Product</button><button data-page="orders">▣ &nbsp; Manage Orders</button><button data-page="customers">♟ &nbsp; View Customers</button><button data-page="go-reports">▥ &nbsp; Generate Report</button></div></div></section>`}
-function renderOrders(){let list=orders.filter(o=>(orderFilter==='All'||o.status===orderFilter)&&(`${o.id} ${o.customer}`).toLowerCase().includes(orderSearch.toLowerCase()));return `${head('Orders','Monitor and manage customer orders.','<button class="primary" data-action="export-orders">↓ Export CSV</button>')}<div class="toolbar"><input id="orderSearch" placeholder="⌕ Search by order ID, customer..." value="${esc(orderSearch)}"><select id="orderFilter">${['All','Pending','Paid','Shipped','Cancelled'].map(s=>`<option ${orderFilter===s?'selected':''}>${s}</option>`).join('')}</select></div><div class="settings-tabs">${['All','Pending','Paid','Shipped','Cancelled'].map(s=>`<button class="tab ${orderFilter===s?'active':''}" data-action="filter-orders" data-value="${s}">${s} (${s==='All'?orders.length:orders.filter(o=>o.status===s).length})</button>`).join('')}</div>${table(['Order ID','Customer','Items','Total','Status','Date','Action'],orderRows(list))}`}
-function renderProducts(){let list=products.filter(p=>p.name.toLowerCase().includes(productSearch.toLowerCase()));return `${head('Products','Manage your donut products and stock.','<div class="actions"><button class="secondary" data-action="export-products">Export</button><button class="primary" data-action="add-product">＋ Add Product</button></div>')}<div class="toolbar"><input id="productSearch" placeholder="⌕ Search products..." value="${esc(productSearch)}"></div>${table(['Product Name','Price','Stock','Status','Action'],productRows(list))}`}
-function renderCustomers(){let list=customers.filter(c=>(c.name+' '+c.email+' '+c.id).toLowerCase().includes(customerSearch.toLowerCase()));return `${head('Customers','View and manage your registered customers.','<button class="primary" data-action="add-customer">＋ Add Customer</button>')}<div class="toolbar"><input id="customerSearch" placeholder="⌕ Search by name, email or ID..." value="${esc(customerSearch)}"></div>${table(['Customer ID','Name','Email','Phone','Total Orders','Joined','Action'],customerRows(list))}`}
-function renderReports(){let total=orders.reduce((s,o)=>s+o.total,0);let values=[35,48,39,69,86,75,95];return `${head('Reports','View sales and order reports.')}<section class="stats">${stat('₱','Total Sales',money(total))}${stat('▣','Total Orders',orders.length)}${stat('♡','Average Order Value',money(orders.length?Math.round(total/orders.length):0),'Across all orders')}${stat('♟','Customers',customers.length)}</section><section class="grid2"><div class="panel"><div class="panelhead"><h3>Sales Report</h3><button class="secondary" data-action="export-orders">Export CSV</button></div><div class="bar-chart">${values.map((v,i)=>`<div class="bar-col"><div class="bar" style="height:${v}%"></div><span class="bar-label">Sep ${14+i}</span></div>`).join('')}</div></div><div class="panel"><div class="panelhead"><h3>Top Products</h3></div>${products.slice(0,6).map((p,i)=>`<div class="recent-row" style="grid-template-columns:36px 1fr 30px"><span class="product-emoji">${p.emoji}</span><span>${esc(p.name)}</span><b>${[12,10,8,6,5,4][i]}</b></div>`).join('')}</div></section><div class="panel"><div class="panelhead"><h3>Order Summary</h3></div>${table(['Status','Number of Orders','Sales Value'],['Pending','Paid','Shipped','Cancelled'].map(s=>`<tr><td>${badge(s)}</td><td>${orders.filter(o=>o.status===s).length}</td><td>${money(orders.filter(o=>o.status===s).reduce((a,o)=>a+o.total,0))}</td></tr>`).join(''))}</div>`}
-function renderCart(){return `${head('Cart Activity','View recent cart activities from customers.','<button class="secondary" data-action="clear-cart">Clear Activity</button>')}${table(['Time','Customer','Product','Action','Quantity'],cartActivity.map(a=>`<tr><td>${esc(a[0])}</td><td>${esc(a[1])}</td><td>${esc(a[2])}</td><td>${badge(a[3]==='Added to Cart'?'Paid':'Cancelled')}</td><td>${a[4]}</td></tr>`).join(''))}`}
-function renderFavorites(){return `${head('Favorites','Products saved by your customers.')}${table(['Customer','Product','Date Added','Action'],favorites.map((f,i)=>`<tr><td>${esc(f[0])}</td><td><div class="product-cell"><span class="product-emoji">${products.find(p=>p.name===f[1])?.emoji||'🧋'}</span>${esc(f[1])}</div></td><td>${esc(f[2])}</td><td><button class="smallbtn" data-action="remove-favorite" data-id="${i}">Remove</button></td></tr>`).join(''))}`}
-function renderSettings(){return `${head('Store Settings','Manage your store information and preferences.')}<div class="settings-tabs">${['Store Info','Notifications','Payment','Shipping'].map(t=>`<button class="tab ${settingsTab===t?'active':''}" data-action="settings-tab" data-value="${t}">${t}</button>`).join('')}</div><div class="panel">${settingsTab==='Store Info'?`<div class="setting-layout"><div><div class="store-logo">🥤</div><b>${esc(settings.name)}</b><p class="sub">Store logo preview</p><button class="secondary" data-action="change-logo">Change Logo</button></div><form id="settingsForm"><div class="formgrid"><div class="field"><label>Store Name</label><input name="name" required value="${esc(settings.name)}"></div><div class="field"><label>Tagline</label><input name="tagline" value="${esc(settings.tagline)}"></div><div class="field"><label>Email</label><input type="email" name="email" value="${esc(settings.email)}"></div><div class="field"><label>Phone</label><input name="phone" value="${esc(settings.phone)}"></div><div class="field full"><label>Address</label><textarea name="address">${esc(settings.address)}</textarea></div></div><div class="modal-actions"><button class="primary">Save Changes</button></div></form></div>`:settingsTab==='Notifications'?`<h3>Notification preferences</h3>${['New order notifications','Low stock alerts','Customer messages','Weekly sales summary'].map(s=>`<p><label><input type="checkbox" checked> ${s}</label></p>`).join('')}<button class="primary" data-action="save-preferences">Save Preferences</button>`:settingsTab==='Payment'?`<h3>Payment options</h3>${['Cash on Delivery','GCash','Maya'].map(s=>`<p><label><input type="checkbox" checked> ${s}</label></p>`).join('')}<button class="primary" data-action="save-preferences">Save Preferences</button>`:`<h3>Shipping preferences</h3><div class="field"><label>Standard delivery fee (₱)</label><input id="shippingFee" type="number" min="0" value="40"></div><p><label><input type="checkbox" checked> Enable local delivery</label></p><button class="primary" data-action="save-preferences">Save Preferences</button>`}</div>`}
-function render(){document.querySelectorAll('.navbtn[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===currentPage));const pages={dashboard:renderDashboard,orders:renderOrders,products:renderProducts,customers:renderCustomers,reports:renderReports,cart:renderCart,favorites:renderFavorites,settings:renderSettings};document.getElementById('main').innerHTML=(pages[currentPage]||renderDashboard)()+`<div class="footer"><span>HONEYBAIL Admin Panel · Demo frontend</span><span>Small Treats, Big Happiness ♥</span></div>`}
-function go(page){currentPage=page;render();document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');window.scrollTo(0,0)}
-function modal(title,body,submitLabel='Save',onSubmit=null){document.getElementById('modalRoot').innerHTML=`<div class="modal-backdrop" id="modalBackdrop"><div class="modal"><div class="modalhead"><h2>${title}</h2><button class="close" data-action="close-modal">✕</button></div><form id="modalForm">${body}<div class="modal-actions"><button type="button" class="secondary" data-action="close-modal">Cancel</button><button class="primary" type="submit">${submitLabel}</button></div></form></div></div>`;document.getElementById('modalBackdrop').addEventListener('click',e=>{if(e.target.id==='modalBackdrop')closeModal()});document.getElementById('modalForm').addEventListener('submit',e=>{e.preventDefault();if(onSubmit)onSubmit(new FormData(e.target));closeModal()})}
-function closeModal(){document.getElementById('modalRoot').innerHTML=''}
-function productForm(p={name:'',category:'Glazed',price:'',stock:0,image:''},isEdit=false){
-const cats=['Chocolate','Fruity','Glazed','Cream-filled','Nutty','Specialty'];
-let img=p.image||'';
-modal(isEdit?'Edit product':'Add a product',`<div class="formgrid">
-<div class="field"><label>Product name *</label><input name="name" required placeholder="e.g. Strawberry Glazed" value="${esc(p.name)}"></div>
-<div class="field"><label>Category *</label><select name="category" required>${cats.map(c=>`<option ${(p.category||'Glazed')===c?'selected':''}>${c}</option>`).join('')}</select></div>
-<div class="field"><label>Price (₱) *</label><input name="price" type="number" min="0" step=".01" required placeholder="25.00" value="${p.price}"></div>
-<div class="field"><label>Stock quantity *</label><input name="stock" type="number" min="0" required value="${p.stock}"></div>
-<div class="field full"><label>Product image (JPG, PNG, WEBP)</label><input type="file" id="pImage" accept=".jpg,.jpeg,.png,.webp"><img id="pPreview" class="thumb-preview ${img?'':'hidden'}" src="${img}" alt=""></div>
-</div>`,'+ Save product',fd=>{
-const data={name:fd.get('name').trim(),category:fd.get('category'),price:Number(fd.get('price')),stock:Number(fd.get('stock')),image:img};
-if(isEdit){Object.assign(products.find(x=>x.id===p.id),data)}else{products.unshift({id:Date.now(),emoji:'🍩',...data})}
-save();render();toast('Product saved successfully.')});
-document.getElementById('pImage').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;readImage(f,d=>{img=d;const pv=document.getElementById('pPreview');pv.src=d;pv.classList.remove('hidden')})});
+// =====================================================
+// DJANGO API CONFIGURATION
+// =====================================================
+
+const API_ORIGIN = window.DJANGO_API_URL ||
+  `${window.location.protocol}//${window.location.hostname}:8000`;
+
+const API = {
+  products: `${API_ORIGIN}/api/products/`,
+  dashboard: `${API_ORIGIN}/api/dashboard/`,
+  orders: `${API_ORIGIN}/api/orders/`,
+  customers: `${API_ORIGIN}/api/customers/`,
+  reports: `${API_ORIGIN}/api/reports/`
+};
+
+const AUTH = {
+  me: `${API_ORIGIN}/api/auth/me/`,
+  login: `${API_ORIGIN}/api/auth/login/`,
+  logout: `${API_ORIGIN}/api/auth/logout/`,
+  register: `${API_ORIGIN}/api/auth/register/`
+};
+
+const ADMIN_API = {
+  cartActivity: `${API_ORIGIN}/api/cart-activity/`,
+  settings: `${API_ORIGIN}/api/settings/`
+};
+
+
+// =====================================================
+// CSRF COOKIE HELPERS
+// =====================================================
+
+function getCookie(name) {
+  const part = document.cookie
+    .split('; ')
+    .find(x => x.startsWith(name + '='));
+
+  return part
+    ? decodeURIComponent(part.slice(name.length + 1))
+    : null;
 }
-function toast(msg){const n=document.createElement('div');n.className='notice';n.textContent=msg;document.getElementById('main').prepend(n);setTimeout(()=>n.remove(),2600)}
-function downloadCSV(filename,rows){const csv=rows.map(row=>row.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));a.download=filename;a.click();URL.revokeObjectURL(a.href)}
-document.addEventListener('click',e=>{const nav=e.target.closest('[data-page]');if(nav){go(nav.dataset.page);return}const b=e.target.closest('[data-action]');if(!b)return;const a=b.dataset.action,id=b.dataset.id;
-switch(a){
-case 'add-product':productForm();break;
-case 'edit-product':{const p=products.find(x=>String(x.id)===id);if(p)productForm(p,true);break}
-case 'delete-product':if(confirm('Delete this product?')){products=products.filter(p=>String(p.id)!==id);save();render();toast('Product deleted.')}break;
-case 'add-customer':modal('Add Customer',`<div class="formgrid"><div class="field full"><label>Full Name</label><input name="name" required></div><div class="field full"><label>Email</label><input name="email" type="email" required></div><div class="field full"><label>Phone</label><input name="phone" required></div></div>`,'Add Customer',fd=>{customers.unshift({id:'CUST-'+String(Date.now()).slice(-4),name:fd.get('name'),email:fd.get('email'),phone:fd.get('phone'),orders:0,joined:new Date().toLocaleDateString()});save();render();toast('Customer added.')});break;
-case 'view-customer':{const c=customers.find(x=>x.id===id);if(c)modal('Customer Details',`<p><b>ID:</b> ${esc(c.id)}</p><p><b>Name:</b> ${esc(c.name)}</p><p><b>Email:</b> ${esc(c.email)}</p><p><b>Phone:</b> ${esc(c.phone)}</p><p><b>Total orders:</b> ${c.orders}</p>`,'Done');break}
-case 'view-order':{const o=orders.find(x=>x.id===id);if(o)modal('Order '+o.id,`<p><b>Customer:</b> ${esc(o.customer)}</p><p><b>Items:</b> ${o.items}</p><p><b>Total:</b> ${money(o.total)}</p><p><b>Status:</b> ${badge(o.status)}</p><p><b>Date:</b> ${esc(o.date)}</p>`,'Close');break}
-case 'edit-order':{const o=orders.find(x=>x.id===id);if(o)modal('Update Order Status',`<p>Order <b>#${o.id}</b> — ${esc(o.customer)}</p><div class="field"><label>Status</label><select name="status">${['Pending','Paid','Shipped','Cancelled'].map(s=>`<option ${o.status===s?'selected':''}>${s}</option>`).join('')}</select></div>`,'Update Status',fd=>{o.status=fd.get('status');save();render();toast('Order status updated.')});break}
-case 'filter-orders':orderFilter=b.dataset.value;render();break;
-case 'export-orders':downloadCSV('honeybail-orders.csv',[['Order ID','Customer','Items','Total','Status','Date'],...orders.map(o=>[o.id,o.customer,o.items,o.total,o.status,o.date])]);break;
-case 'export-products':downloadCSV('honeybail-products.csv',[['Product','Price','Stock'],...products.map(p=>[p.name,p.price,p.stock])]);break;
-case 'go-reports':go('reports');break;
-case 'clear-cart':if(confirm('Clear all cart activity?')){cartActivity=[];save();render();toast('Cart activity cleared.')}break;
-case 'remove-favorite':favorites.splice(Number(id),1);save();render();toast('Favorite removed.');break;
-case 'settings-tab':settingsTab=b.dataset.value;render();break;
-case 'save-preferences':toast('Preferences saved for this demo.');break;
-case 'change-logo':modal('Change Store Logo','<p>This frontend demo uses an emoji logo. Image upload can be connected when you add a backend.</p><div class="field"><label>Choose image</label><input type="file" accept="image/*" name="logo"></div>','Choose Image',fd=>{const f=fd.get('logo');if(f&&f.size)toast('Image selected. Save/upload handling needs a backend.')});break;
-case 'close-modal':closeModal();break;
-}}
-);
-document.addEventListener('input',e=>{if(e.target.id==='productSearch'){productSearch=e.target.value;const pos=e.target.selectionStart;render();const el=document.getElementById('productSearch');el.focus();el.setSelectionRange(pos,pos)}if(e.target.id==='customerSearch'){customerSearch=e.target.value;const pos=e.target.selectionStart;render();const el=document.getElementById('customerSearch');el.focus();el.setSelectionRange(pos,pos)}if(e.target.id==='orderSearch'){orderSearch=e.target.value;const pos=e.target.selectionStart;render();const el=document.getElementById('orderSearch');el.focus();el.setSelectionRange(pos,pos)}});
-document.addEventListener('change',e=>{if(e.target.id==='orderFilter'){orderFilter=e.target.value;render()}});
-document.addEventListener('submit',e=>{if(e.target.id==='settingsForm'){e.preventDefault();const fd=new FormData(e.target);settings={name:fd.get('name'),tagline:fd.get('tagline'),email:fd.get('email'),phone:fd.get('phone'),address:fd.get('address')};save();render();toast('Store settings saved.')}});
-document.getElementById('menuToggle').addEventListener('click',()=>{document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show')});
-document.getElementById('overlay').addEventListener('click',()=>{document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show')});
-document.getElementById('notificationBtn').addEventListener('click',()=>modal('Notifications','<p>🔔 You have new order activity.</p><p>📦 Check products with low stock.</p>','Done'));
-document.getElementById('adminMenu').addEventListener('click',()=>modal('Admin Account','<p><b>Signed in as:</b> Admin</p><p>This is a frontend demo account menu.</p>','Close'));
-document.getElementById('backStore').addEventListener('click',()=>modal('Store Preview','<p>Your customer-facing store can be connected here. This demo currently contains the admin frontend only.</p>','Close'));
-render();
-</script></body></html>
+
+async function ensureCsrfToken() {
+  const response = await fetch(`${API_ORIGIN}/api/csrf/`, {
+    credentials: 'include'
+  });
+
+  if (!response.ok) {
+    throw new Error('Could not initialize CSRF protection.');
+  }
+
+  const token = getCookie('csrftoken');
+
+  if (!token) {
+    throw new Error(
+      'CSRF cookie missing. Use 127.0.0.1 for both Live Server and Django.'
+    );
+  }
+
+  return token;
+}
+
+
+// =====================================================
+// GENERAL API REQUEST HELPER
+// =====================================================
+
+async function apiRequest(url, options = {}) {
+  const method = (options.method || 'GET').toUpperCase();
+  const headers = new Headers(options.headers || {});
+
+  if (!['GET', 'HEAD', 'OPTIONS', 'TRACE'].includes(method)) {
+    headers.set('X-CSRFToken', await ensureCsrfToken());
+  }
+
+  const response = await fetch(url, {
+    ...options,
+    method,
+    headers,
+    credentials: 'include'
+  });
+
+  let body = {};
+
+  try {
+    body = await response.json();
+  } catch {}
+
+  if (!response.ok) {
+    throw new Error(
+      body.error || `Request failed (${response.status})`
+    );
+  }
+
+  return body;
+}
+
+
+// =====================================================
+// ADMIN AUTHENTICATION
+// =====================================================
+
+let signedInUser = null;
+let storeSettingsLoaded = false;
+
+async function refreshAdminIdentity() {
+  try {
+    const data = await apiRequest(AUTH.me);
+    signedInUser = data.user;
+  } catch {
+    signedInUser = null;
+  }
+
+  document.getElementById('adminMenu').textContent =
+    signedInUser
+      ? (signedInUser.is_staff ? '◉ Admin ▾' : '◉ Customer ▾')
+      : '◉ Sign In';
+}
+
+function adminLoginModal() {
+  modal('Admin Sign In', `
+    <p class="sub">
+      Sign in using your Django staff or superuser account.
+    </p>
+
+    <div class="field">
+      <label>Email / username</label>
+      <input
+        name="email"
+        required
+        autocomplete="username"
+      >
+    </div>
+
+    <div class="field">
+      <label>Password</label>
+      <input
+        name="password"
+        type="password"
+        required
+        autocomplete="current-password"
+      >
+    </div>
+  `, 'Sign In', async fd => {
+    await apiRequest(AUTH.login, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: fd.get('email'),
+        password: fd.get('password')
+      })
+    });
+
+    await refreshAdminIdentity();
+
+    if (!signedInUser?.is_staff) {
+      throw new Error(
+        'This admin panel requires a staff account.'
+      );
+    }
+
+    await loadAllData();
+    showToast('Signed in successfully.');
+  });
+}
+
+
+// =====================================================
+// LOAD ADDITIONAL ADMIN INFORMATION
+// =====================================================
+
+async function loadAdminExtras() {
+  if (!signedInUser?.is_staff) return;
+
+  try {
+    const data = await apiRequest(ADMIN_API.cartActivity);
+    cartActivity = data.activities || [];
+    clearError('cart');
+  } catch (error) {
+    showError('cart', error.message);
+  }
+
+  try {
+    const data = await apiRequest(ADMIN_API.settings);
+    const obj = data.settings || {};
+
+    settings = {
+      name: obj.store_name || 'HONEYBAIL',
+      tagline: obj.tagline || '',
+      email: obj.email || '',
+      phone: obj.phone || '',
+      address: obj.address || ''
+    };
+
+    storeSettingsLoaded = true;
+    clearError('settings');
+  } catch (error) {
+    showError('settings', error.message);
+  }
+}
+
+
+// =====================================================
+// GLOBAL DATA
+// =====================================================
+
+let products = [];
+let orders = [];
+let customers = [];
+let dashboardData = null;
+let reportData = null;
+let apiErrors = {};
+let cartActivity = [];
+let favorites = [];
+
+let settings = {
+  name: 'HONEYBAIL',
+  tagline: 'Small Treats, Big Happiness',
+  email: 'honeybail@gmail.com',
+  phone: '',
+  address: ''
+};
+
+
+// =====================================================
+// PAGE STATE
+// =====================================================
+
+let currentPage = 'dashboard';
+let orderFilter = 'All';
+let productSearch = '';
+let customerSearch = '';
+let orderSearch = '';
+let settingsTab = 'Store Info';
+let cartNotice = '';
+
+
+// =====================================================
+// CURRENCY FORMATTER
+// =====================================================
+
+const money = n =>
+  '₱' + Number(n || 0).toLocaleString('en-PH', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+
+
+// =====================================================
+// HTML ESCAPE HELPER
+// =====================================================
+
+const esc = s =>
+  String(s ?? '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[c]));
+
+
+// =====================================================
+// DATE FORMATTERS
+// =====================================================
+
+function formatDate(value) {
+  if (!value) return '—';
+
+  const d = new Date(value);
+
+  if (Number.isNaN(d.getTime())) {
+    return String(value);
+  }
+
+  return d.toLocaleString('en-PH', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+}
+
+function formatShortDate(value) {
+  if (!value) return '—';
+
+  const d = new Date(value);
+
+  if (Number.isNaN(d.getTime())) {
+    return String(value);
+  }
+
+  return d.toLocaleDateString('en-PH', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+}
+
+
+// =====================================================
+// STATUS BADGE
+// =====================================================
+
+function badge(status) {
+  const safe = String(status || 'Unknown');
+  const cls = safe.replace(/[^a-zA-Z0-9_-]/g, '-');
+
+  return `<span class="badge ${cls}">${esc(safe)}</span>`;
+}
+
+
+// =====================================================
+// PAGE HEADER
+// =====================================================
+
+function head(title, sub, extra = '') {
+  return `<div class="pagehead">
+    <div>
+      <h1>${title}</h1>
+      <div class="sub">${sub}</div>
+    </div>
+
+    ${extra || `<div class="datepill">▣ &nbsp; ${
+      esc(new Date().toLocaleDateString('en-PH', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      }))
+    }</div>`}
+  </div>`;
+}
+
+
+// =====================================================
+// TABLE GENERATOR
+// =====================================================
+
+function table(headers, rows) {
+  return `<div class="tablewrap">
+    <table class="table">
+      <thead>
+        <tr>
+          ${headers.map(h => `<th>${h}</th>`).join('')}
+        </tr>
+      </thead>
+
+      <tbody>
+        ${rows || `<tr>
+          <td colspan="${headers.length}" class="empty">
+            No records found.
+          </td>
+        </tr>`}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+
+// =====================================================
+// API ERROR HANDLING
+// =====================================================
+
+function showError(key, message) {
+  apiErrors[key] = message;
+  console.error(`Django API error (${key}):`, message);
+}
+
+function clearError(key) {
+  delete apiErrors[key];
+}
+
+function errorBox(key) {
+  if (!apiErrors[key]) return '';
+
+  return `<div class="notice error-notice" role="alert">
+    Could not load ${esc(key)}: ${esc(apiErrors[key])}
+
+    <button
+      class="secondary"
+      data-action="reload-data"
+      data-key="${esc(key)}"
+    >
+      Retry
+    </button>
+  </div>`;
+}
+
+
+// =====================================================
+// TOAST NOTIFICATIONS
+// =====================================================
+
+function showToast(message, isError = false) {
+  const node = document.createElement('div');
+
+  node.className = 'notice' +
+    (isError ? ' error-notice' : '');
+
+  node.textContent = message;
+
+  document.getElementById('main').prepend(node);
+
+  setTimeout(() => node.remove(), 3500);
+}
+
+
+// =====================================================
+// PRODUCT IMAGE HELPER
+// =====================================================
+
+function productThumb(p) {
+  if (p.image) {
+    return `<img
+      src="${esc(p.image)}"
+      alt="${esc(p.name)}"
+      onerror="this.style.display='none';this.parentElement.textContent='🍩'"
+    >`;
+  }
+
+  return '🍩';
+}
+
+
+// =====================================================
+// NORMALIZE DJANGO ORDERS
+// =====================================================
+
+function normalizeOrder(o) {
+  return {
+    id: o.order_number || `HB-${String(o.id).padStart(4, '0')}`,
+    dbId: o.id,
+    customer: o.customer_name || o.customer || 'Guest',
+    customerId: o.customer_id,
+    items: Number(o.items_count || 0),
+    total: Number(o.total_amount || o.total || 0),
+    subtotal: Number(o.subtotal || 0),
+    deliveryFee: Number(o.delivery_fee || 0),
+    status: o.status || 'Pending',
+    deliveryStatus: o.delivery_status || 'Not Shipped',
+    paymentStatus: o.payment_status || 'Unpaid',
+    paymentMethod: o.payment_method || 'COD',
+    address: o.address || '',
+    phone: o.phone || '',
+    recipient: o.recipient || '',
+    notes: o.notes || '',
+    date: o.date_ordered || o.created_at || '',
+    courierName: o.courier_name || '',
+    trackingNumber: o.tracking_number || '',
+    estimatedStart: o.estimated_delivery_start || '',
+    estimatedEnd: o.estimated_delivery_end || '',
+    deliveredAt: o.delivered_at || null,
+    receivedAt: o.received_at || null,
+    hasDeliveryProof: Boolean(o.has_delivery_proof),
+    trackingEvents: Array.isArray(o.tracking_events)
+      ? o.tracking_events
+      : [],
+    itemDetails: Array.isArray(o.items)
+      ? o.items
+      : []
+  };
+}
+
+
+// =====================================================
+// NORMALIZE CUSTOMER RECORDS
+// =====================================================
+
+function normalizeCustomer(c) {
+  const matchingOrders = orders.filter(
+    o => Number(o.customerId) === Number(c.id)
+  );
+
+  return {
+    id: c.id,
+    displayId: `CUST-${String(c.id).padStart(4, '0')}`,
+    name: c.name || '—',
+    email: c.email || '—',
+    phone: '',
+    orders: matchingOrders.length,
+    joined: c.created_at || ''
+  };
+}
+
+
+// =====================================================
+// LOAD PRODUCTS
+// =====================================================
+
+async function loadProducts() {
+  try {
+    const data = await apiRequest(API.products);
+
+    products = Array.isArray(data.products)
+      ? data.products
+      : [];
+
+    clearError('products');
+
+  } catch (error) {
+    showError('products', error.message);
+    products = [];
+  }
+}
+
+
+// =====================================================
+// LOAD STOREFRONT ORDERS
+// =====================================================
+
+async function loadOrders() {
+  try {
+    const data = await apiRequest(API.orders);
+
+    orders = (
+      Array.isArray(data.orders)
+        ? data.orders
+        : []
+    ).map(normalizeOrder);
+
+    clearError('orders');
+
+    customers = customers.map(c => ({
+      ...c,
+      orders: orders.filter(
+        o => Number(o.customerId) === Number(c.id)
+      ).length
+    }));
+
+  } catch (error) {
+    showError('orders', error.message);
+    orders = [];
+  }
+}
+
+
+// =====================================================
+// LOAD CUSTOMERS
+// =====================================================
+
+async function loadCustomers() {
+  try {
+    const data = await apiRequest(API.customers);
+
+    const raw = Array.isArray(data.customers)
+      ? data.customers
+      : [];
+
+    customers = raw.map(normalizeCustomer);
+    clearError('customers');
+
+  } catch (error) {
+    showError('customers', error.message);
+    customers = [];
+  }
+}
+
+
+// =====================================================
+// LOAD DASHBOARD STATISTICS
+// =====================================================
+
+async function loadDashboard() {
+  try {
+    const data = await apiRequest(API.dashboard);
+
+    dashboardData = data.dashboard || {};
+    clearError('dashboard');
+
+  } catch (error) {
+    showError('dashboard', error.message);
+    dashboardData = null;
+  }
+}
+
+
+// =====================================================
+// LOAD SALES REPORTS
+// =====================================================
+
+async function loadReports() {
+  try {
+    const data = await apiRequest(API.reports);
+
+    reportData = data.report || {};
+    clearError('reports');
+
+  } catch (error) {
+    showError('reports', error.message);
+    reportData = null;
+  }
+}
+
+
+// =====================================================
+// LOAD ALL DATABASE INFORMATION
+// =====================================================
+
+async function loadAllData() {
+  await Promise.all([
+    loadProducts(),
+    loadOrders(),
+    loadDashboard(),
+    loadReports()
+  ]);
+
+  await loadCustomers();
+  await loadAdminExtras();
+
+  customers = customers.map(c => ({
+    ...c,
+    orders: orders.filter(
+      o => Number(o.customerId) === Number(c.id)
+    ).length
+  }));
+
+  render();
+}
+
+
+// =====================================================
+// RELOAD INDIVIDUAL SECTIONS
+// =====================================================
+
+async function reloadOne(key) {
+  if (key === 'products') {
+    await loadProducts();
+  }
+  else if (key === 'orders') {
+    await loadOrders();
+  }
+  else if (key === 'customers') {
+    await loadOrders();
+    await loadCustomers();
+  }
+  else if (key === 'dashboard') {
+    await loadDashboard();
+  }
+  else if (key === 'reports') {
+    await loadReports();
+  }
+  else {
+    await loadAllData();
+  }
+
+  render();
+}
+
+
+// =====================================================
+// ORDER STATUS WORKFLOW
+// =====================================================
+
+const ORDER_STAGES = [
+  'Pending',
+  'Confirmed',
+  'Processing',
+  'Preparing',
+  'Packed',
+  'Shipped',
+  'In Transit',
+  'Out for Delivery',
+  'Delivered'
+];
+
+function nextOrderStatus(status) {
+  const index = ORDER_STAGES.indexOf(status);
+
+  if (index < 0 || index >= ORDER_STAGES.length - 1) {
+    return null;
+  }
+
+  return ORDER_STAGES[index + 1];
+}
+
+
+// =====================================================
+// DASHBOARD STATISTIC CARDS
+// =====================================================
+
+function stat(icon, label, value, foot = 'From Django database') {
+  return `
+    <div class="stat">
+      <div class="stat-icon">${icon}</div>
+
+      <div>
+        <div class="stat-label">${esc(label)}</div>
+        <strong>${esc(value)}</strong>
+        <div class="positive">${esc(foot)}</div>
+      </div>
+    </div>
+  `;
+}
+
+
+// =====================================================
+// PRODUCT TABLE ROWS
+// =====================================================
+
+function productRows(list) {
+  return list.map(p => {
+    const stock = Number(p.stock || 0);
+
+    return `
+      <tr>
+        <td>
+          <div class="product-cell">
+            <span class="product-emoji">
+              ${productThumb(p)}
+            </span>
+            <b>${esc(p.name)}</b>
+          </div>
+        </td>
+
+        <td>${esc(p.category || 'Others')}</td>
+        <td>${money(p.price)}</td>
+        <td>${stock}</td>
+
+        <td>
+          ${badge(stock <= 5 ? 'Low Stock' : 'In Stock')}
+        </td>
+
+        <td>
+          <div class="actions">
+            <button
+              class="smallbtn"
+              data-action="edit-product"
+              data-id="${p.id}"
+              title="Edit product"
+            >✎</button>
+
+            <button
+              class="smallbtn"
+              data-action="delete-product"
+              data-id="${p.id}"
+              title="Archive product"
+            >🗑</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+
+// =====================================================
+// ORDER TABLE ROWS
+// =====================================================
+
+function orderRows(list) {
+  return list.map(o => `
+    <tr>
+      <td><b>#${esc(o.id)}</b></td>
+      <td>${esc(o.customer)}</td>
+      <td>${o.items}</td>
+      <td>${money(o.total)}</td>
+
+      <td>
+        ${badge(o.status)}
+        <div class="sub">
+          ${esc(o.deliveryStatus)}
+        </div>
+      </td>
+
+      <td>${esc(formatDate(o.date))}</td>
+
+      <td>
+        <div class="actions">
+          <button
+            class="smallbtn"
+            data-action="view-order"
+            data-id="${o.dbId}"
+            title="View order details"
+          >◉</button>
+
+          <button
+            class="smallbtn"
+            data-action="edit-order"
+            data-id="${o.dbId}"
+            title="Manage order"
+          >✎</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+
+// =====================================================
+// SALES OVERVIEW CHART
+// =====================================================
+
+function drawSalesChart() {
+  const rows = reportData?.sales_by_month || [];
+
+  if (!rows.length) {
+    return `
+      <div class="empty">
+        No monthly sales data available yet.
+        Paid orders are needed to display this chart.
+      </div>
+    `;
+  }
+
+  const values = rows.slice(-8);
+  const numbers = values.map(
+    row => Number(row.total_sales || 0)
+  );
+
+  const maximum = Math.max(...numbers, 1);
+
+  const points = numbers.map((value, index) => ({
+    x: 35 + index * (550 / Math.max(numbers.length - 1, 1)),
+    y: 180 - (value / maximum) * 135,
+    label: values[index].month
+  }));
+
+  const gridLines = [35, 75, 115, 155, 195]
+    .map(y => `
+      <line
+        x1="25"
+        y1="${y}"
+        x2="590"
+        y2="${y}"
+        stroke="#eee8e5"
+        stroke-dasharray="3 4"
+      />
+    `).join('');
+
+  const coordinates = points.map(
+    p => `${p.x},${p.y}`
+  ).join(' ');
+
+  const dots = points.map(p => `
+    <circle
+      cx="${p.x}"
+      cy="${p.y}"
+      r="4"
+      fill="#c51c28"
+    >
+      <title>${esc(p.label)}</title>
+    </circle>
+  `).join('');
+
+  return `
+    <svg
+      class="chart"
+      viewBox="0 0 600 220"
+      preserveAspectRatio="none"
+      aria-label="Monthly sales chart"
+    >
+      ${gridLines}
+
+      <polyline
+        points="${coordinates}"
+        fill="none"
+        stroke="#c51c28"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+
+      ${dots}
+
+      <text
+        x="25"
+        y="214"
+        font-size="10"
+        fill="#8a8380"
+      >
+        ${esc(points[0]?.label || '')}
+      </text>
+
+      <text
+        x="475"
+        y="214"
+        font-size="10"
+        fill="#8a8380"
+      >
+        ${esc(points[points.length - 1]?.label || '')}
+      </text>
+    </svg>
+  `;
+}
+
+
+// =====================================================
+// TOP PRODUCTS
+// =====================================================
+
+function soldProducts() {
+  const totals = new Map();
+
+  orders.forEach(order => {
+    (order.itemDetails || []).forEach(item => {
+      const name = item.product_name || 'Unknown product';
+      const quantity = Number(item.quantity || 0);
+
+      totals.set(
+        name,
+        (totals.get(name) || 0) + quantity
+      );
+    });
+  });
+
+  return [...totals.entries()]
+    .map(([name, quantity]) => ({
+      name,
+      quantity
+    }))
+    .sort((a, b) => b.quantity - a.quantity)
+    .slice(0, 5);
+}
+
+function topProductsMarkup() {
+  const sold = soldProducts();
+
+  if (!sold.length) {
+    return `
+      <div class="empty">
+        No product orders available yet.
+      </div>
+    `;
+  }
+
+  return sold.map(product => `
+    <div
+      class="recent-row"
+      style="grid-template-columns:32px 1fr 30px"
+    >
+      <span class="product-emoji">🍩</span>
+      <span>${esc(product.name)}</span>
+      <b>${product.quantity}</b>
+    </div>
+  `).join('');
+}
+
+
+// =====================================================
+// DASHBOARD PAGE
+// =====================================================
+
+function renderDashboard() {
+  const d = dashboardData || {};
+
+  const stats = `
+    <section class="stats">
+      ${stat(
+        '▣',
+        'Total Orders',
+        Number(d.total_orders ?? orders.length)
+      )}
+
+      ${stat(
+        '₱',
+        'Total Sales',
+        money(d.total_sales ?? 0),
+        'Paid order sales'
+      )}
+
+      ${stat(
+        '◉',
+        'Products',
+        Number(d.total_products ?? products.length)
+      )}
+
+      ${stat(
+        '♟',
+        'Customers',
+        Number(d.total_customers ?? customers.length)
+      )}
+    </section>
+  `;
+
+  const recentOrders = orders.slice(0, 5)
+    .map(order => `
+      <div class="recent-row">
+        <b>#${esc(order.id)}</b>
+        <span>${esc(order.customer)}</span>
+        <span>${money(order.total)}</span>
+        ${badge(order.status)}
+      </div>
+    `).join('') || `
+      <div class="empty">
+        No orders found in Django.
+      </div>
+    `;
+
+  const latestOrders = orders.slice(0, 4)
+    .map(order => `
+      <tr>
+        <td>${esc(order.customer)}</td>
+        <td>${order.items}</td>
+        <td>${money(order.total)}</td>
+        <td>${badge(order.status)}</td>
+      </tr>
+    `).join('');
+
+  return `
+    ${head(
+      'Welcome back, Admin!',
+      'Here’s what’s happening with your store today.'
+    )}
+
+    ${errorBox('dashboard')}
+    ${errorBox('orders')}
+    ${errorBox('products')}
+    ${errorBox('customers')}
+
+    ${stats}
+
+    <section class="grid2">
+      <div class="panel">
+        <div class="panelhead">
+          <h3>Sales Overview</h3>
+
+          <button class="linkbtn" data-page="reports">
+            View Report →
+          </button>
+        </div>
+
+        ${drawSalesChart()}
+      </div>
+
+      <div class="panel">
+        <div class="panelhead">
+          <h3>Recent Orders</h3>
+
+          <button class="linkbtn" data-page="orders">
+            View All →
+          </button>
+        </div>
+
+        <div class="recent-list">
+          ${recentOrders}
+        </div>
+      </div>
+    </section>
+
+    <section class="grid3">
+      <div class="panel">
+        <div class="panelhead">
+          <h3>Latest Orders</h3>
+
+          <button class="linkbtn" data-page="orders">
+            View All
+          </button>
+        </div>
+
+        ${table(
+          ['Customer', 'Items', 'Total', 'Status'],
+          latestOrders
+        )}
+      </div>
+
+      <div class="panel">
+        <div class="panelhead">
+          <h3>Top Products</h3>
+
+          <button class="linkbtn" data-page="products">
+            View All
+          </button>
+        </div>
+
+        ${topProductsMarkup()}
+      </div>
+
+      <div class="panel">
+        <div class="panelhead">
+          <h3>Quick Actions</h3>
+        </div>
+
+        <div class="quick-actions">
+          <button data-action="add-product">
+            ⊕ &nbsp; Add Product
+          </button>
+
+          <button data-page="orders">
+            ▣ &nbsp; Manage Orders
+          </button>
+
+          <button data-page="customers">
+            ♟ &nbsp; View Customers
+          </button>
+
+          <button data-page="reports">
+            ▥ &nbsp; Generate Report
+          </button>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+
+// =====================================================
+// ORDERS PAGE
+// =====================================================
+
+function renderOrders() {
+  const statuses = [
+    'All',
+    ...ORDER_STAGES,
+    'Completed',
+    'Cancelled'
+  ];
+
+  const filteredOrders = orders.filter(order => {
+    const matchesStatus =
+      orderFilter === 'All' ||
+      order.status === orderFilter;
+
+    const searchText = [
+      order.id,
+      order.customer,
+      order.paymentStatus,
+      order.trackingNumber,
+      order.courierName
+    ].join(' ').toLowerCase();
+
+    return matchesStatus &&
+      searchText.includes(orderSearch.toLowerCase());
+  });
+
+  const statusOptions = statuses.map(status => `
+    <option
+      value="${esc(status)}"
+      ${orderFilter === status ? 'selected' : ''}
+    >
+      ${esc(status)}
+    </option>
+  `).join('');
+
+  const statusTabs = statuses.map(status => {
+    const count = status === 'All'
+      ? orders.length
+      : orders.filter(o => o.status === status).length;
+
+    return `
+      <button
+        class="tab ${orderFilter === status ? 'active' : ''}"
+        data-action="filter-orders"
+        data-value="${esc(status)}"
+      >
+        ${esc(status)} (${count})
+      </button>
+    `;
+  }).join('');
+
+  return `
+    ${head(
+      'Orders',
+      'Monitor and manage customer orders.',
+      `<button
+        class="primary"
+        data-action="export-orders"
+      >
+        ↓ Export CSV
+      </button>`
+    )}
+
+    ${errorBox('orders')}
+
+    <div class="toolbar">
+      <input
+        id="orderSearch"
+        placeholder="⌕ Search by order ID, customer..."
+        value="${esc(orderSearch)}"
+      >
+
+      <select id="orderFilter">
+        ${statusOptions}
+      </select>
+    </div>
+
+    <div class="settings-tabs">
+      ${statusTabs}
+    </div>
+
+    ${table(
+      [
+        'Order ID',
+        'Customer',
+        'Items',
+        'Total',
+        'Status',
+        'Date',
+        'Action'
+      ],
+      orderRows(filteredOrders)
+    )}
+  `;
+}
+
+
+// =====================================================
+// PRODUCTS PAGE
+// =====================================================
+
+function renderProducts() {
+  const filteredProducts = products.filter(product =>
+    String(product.name || '')
+      .toLowerCase()
+      .includes(productSearch.toLowerCase())
+  );
+
+  return `
+    ${head(
+      'Products',
+      'Manage your products and stock.',
+      `<div class="actions">
+        <button
+          class="secondary"
+          data-action="export-products"
+        >
+          Export
+        </button>
+
+        <button
+          class="primary"
+          data-action="add-product"
+        >
+          ＋ Add Product
+        </button>
+      </div>`
+    )}
+
+    ${errorBox('products')}
+
+    <div class="toolbar">
+      <input
+        id="productSearch"
+        placeholder="⌕ Search products..."
+        value="${esc(productSearch)}"
+      >
+    </div>
+
+    ${table(
+      [
+        'Product Name',
+        'Category',
+        'Price',
+        'Stock',
+        'Status',
+        'Action'
+      ],
+      productRows(filteredProducts)
+    )}
+  `;
+}
+
+
+// =====================================================
+// END OF PART 3
+// =====================================================
+
+// PART 4 WILL CONTINUE HERE
+
+// =====================================================
+// CUSTOMERS PAGE
+// =====================================================
+
+function renderCustomers() {
+  const filtered = customers.filter(customer => {
+    const search = customerSearch.toLowerCase();
+
+    return [
+      customer.name,
+      customer.email,
+      customer.displayId
+    ].join(' ').toLowerCase().includes(search);
+  });
+
+  const rows = filtered.map(customer => `
+    <tr>
+      <td><b>${esc(customer.displayId)}</b></td>
+      <td>${esc(customer.name)}</td>
+      <td>${esc(customer.email)}</td>
+      <td>${Number(customer.orders || 0)}</td>
+      <td>${esc(formatShortDate(customer.joined))}</td>
+      <td>
+        <button
+          class="smallbtn"
+          data-action="view-customer"
+          data-id="${customer.id}"
+        >
+          View
+        </button>
+      </td>
+    </tr>
+  `).join('');
+
+  return `
+    ${head(
+      'Customers',
+      'View registered customers and their order history.'
+    )}
+
+    ${errorBox('customers')}
+
+    <div class="toolbar">
+      <input
+        id="customerSearch"
+        placeholder="⌕ Search customers..."
+        value="${esc(customerSearch)}"
+      >
+
+      <button
+        class="secondary"
+        data-action="export-customers"
+      >
+        ↓ Export CSV
+      </button>
+    </div>
+
+    ${table(
+      [
+        'Customer ID',
+        'Customer Name',
+        'Email',
+        'Orders',
+        'Date Joined',
+        'Action'
+      ],
+      rows
+    )}
+  `;
+}
+
+
+// =====================================================
+// REPORTS PAGE
+// =====================================================
+
+function renderReports() {
+  const report = reportData || {};
+
+  const totalOrders = Number(
+    report.total_orders ?? orders.length
+  );
+
+  const totalSales = Number(
+    report.total_sales ?? 0
+  );
+
+  const paidOrders = Number(
+    report.paid_orders ?? 0
+  );
+
+  const pendingOrders = Number(
+    report.pending_orders ?? 0
+  );
+
+  const monthlySales = Array.isArray(report.sales_by_month)
+    ? report.sales_by_month
+    : [];
+
+  const topProducts = Array.isArray(report.top_products)
+    ? report.top_products
+    : [];
+
+  const maxSales = Math.max(
+    1,
+    ...monthlySales.map(row =>
+      Number(row.total_sales || 0)
+    )
+  );
+
+  const monthlyChart = monthlySales.length
+    ? `
+      <div class="bar-chart">
+        ${monthlySales.map(row => {
+          const value = Number(row.total_sales || 0);
+          const height = Math.max(
+            3,
+            (value / maxSales) * 90
+          );
+
+          return `
+            <div class="bar-col">
+              <b>${money(value)}</b>
+
+              <div
+                class="bar"
+                style="height:${height}%"
+                title="${esc(row.month)}: ${money(value)}"
+              ></div>
+
+              <span class="bar-label">
+                ${esc(row.month)}
+              </span>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `
+    : `
+      <div class="empty">
+        No paid sales have been recorded yet.
+      </div>
+    `;
+
+  const topProductRows = topProducts.map(product => `
+    <tr>
+      <td>${esc(product.product_name)}</td>
+      <td>${Number(product.units_sold || 0)}</td>
+    </tr>
+  `).join('');
+
+  const paymentRows = orders.map(order => `
+    <tr>
+      <td><b>#${esc(order.id)}</b></td>
+      <td>${esc(order.customer)}</td>
+      <td>${money(order.total)}</td>
+      <td>${badge(order.paymentStatus)}</td>
+      <td>${esc(order.paymentMethod)}</td>
+      <td>${esc(formatDate(order.date))}</td>
+    </tr>
+  `).join('');
+
+  return `
+    ${head(
+      'Reports & Analytics',
+      'View sales performance and order statistics.',
+      `<button
+        class="primary"
+        data-action="export-reports"
+      >
+        ↓ Export Report
+      </button>`
+    )}
+
+    ${errorBox('reports')}
+
+    <section class="stats">
+      ${stat(
+        '▣',
+        'Total Orders',
+        totalOrders
+      )}
+
+      ${stat(
+        '₱',
+        'Paid Sales',
+        money(totalSales)
+      )}
+
+      ${stat(
+        '✓',
+        'Paid Orders',
+        paidOrders
+      )}
+
+      ${stat(
+        '◷',
+        'Pending Orders',
+        pendingOrders
+      )}
+    </section>
+
+    <section class="grid2">
+      <div class="panel">
+        <div class="panelhead">
+          <h3>Monthly Paid Sales</h3>
+        </div>
+
+        ${monthlyChart}
+      </div>
+
+      <div class="panel">
+        <div class="panelhead">
+          <h3>Top Selling Products</h3>
+        </div>
+
+        ${table(
+          ['Product', 'Units Sold'],
+          topProductRows
+        )}
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panelhead">
+        <h3>Payment Overview</h3>
+      </div>
+
+      ${table(
+        [
+          'Order ID',
+          'Customer',
+          'Total',
+          'Payment Status',
+          'Payment Method',
+          'Date'
+        ],
+        paymentRows
+      )}
+    </section>
+  `;
+}
+
+
+// =====================================================
+// CART ACTIVITY PAGE
+// =====================================================
+
+function renderCartActivity() {
+  const activities = Array.isArray(cartActivity)
+    ? cartActivity
+    : [];
+
+  const addedCount = activities.filter(
+    item => item.action === 'Added'
+  ).length;
+
+  const removedCount = activities.filter(
+    item => item.action === 'Removed'
+  ).length;
+
+  const updatedCount = activities.filter(
+    item => item.action === 'Quantity Updated'
+  ).length;
+
+  const rows = activities.map(activity => `
+    <tr>
+      <td>${esc(activity.customer || 'Unknown')}</td>
+      <td>${esc(activity.product_name || 'Unknown')}</td>
+      <td>${badge(activity.action || 'Unknown')}</td>
+      <td>${Number(activity.quantity || 0)}</td>
+      <td>${esc(formatDate(activity.created_at))}</td>
+    </tr>
+  `).join('');
+
+  return `
+    ${head(
+      'Cart Activity',
+      'Monitor activity from the original customer cart API.'
+    )}
+
+    ${errorBox('cart')}
+
+    <section class="stats">
+      ${stat('🛒', 'Activity Records', activities.length)}
+      ${stat('＋', 'Items Added', addedCount)}
+      ${stat('−', 'Items Removed', removedCount)}
+      ${stat('✎', 'Quantity Updates', updatedCount)}
+    </section>
+
+    <section class="panel">
+      <div class="panelhead">
+        <h3>Recent Cart Activity</h3>
+
+        <button
+          class="secondary"
+          data-action="refresh-cart"
+        >
+          ↻ Refresh
+        </button>
+      </div>
+
+      ${table(
+        [
+          'Customer',
+          'Product',
+          'Action',
+          'Quantity',
+          'Date'
+        ],
+        rows
+      )}
+    </section>
+  `;
+}
+
+
+// =====================================================
+// FAVORITES PAGE
+// =====================================================
+
+// NOTE:
+// The current product API does not expose a staff-only
+// favorites report for storefront.Favorite.
+//
+// We intentionally do not invent customer favorites
+// or display sample records as real database entries.
+
+function renderFavorites() {
+  return `
+    ${head(
+      'Favorites',
+      'Customer wishlist activity and favorite products.'
+    )}
+
+    <section class="panel">
+      <div class="panelhead">
+        <h3>Customer Favorites</h3>
+      </div>
+
+      <div class="empty">
+        <div style="font-size:32px;margin-bottom:12px">
+          ♡
+        </div>
+
+        <h3>Favorites report is not connected yet</h3>
+
+        <p>
+          Your customer storefront can save favorites,
+          but the admin reporting endpoint has not been
+          added yet.
+        </p>
+
+        <p class="sub">
+          We'll connect this page to the real
+          storefront favorites database in a later step.
+        </p>
+      </div>
+    </section>
+  `;
+}
+
+
+// =====================================================
+// SETTINGS TABS
+// =====================================================
+
+const SETTINGS_TABS = [
+  'Store Info',
+  'Shipping',
+  'Payment',
+  'Notifications'
+];
+
+function settingsTabsMarkup() {
+  return `
+    <div class="settings-tabs">
+      ${SETTINGS_TABS.map(tab => `
+        <button
+          class="tab ${settingsTab === tab ? 'active' : ''}"
+          data-action="settings-tab"
+          data-value="${esc(tab)}"
+        >
+          ${esc(tab)}
+        </button>
+      `).join('')}
+    </div>
+  `;
+}
+
+
+// =====================================================
+// STORE INFORMATION SETTINGS
+// =====================================================
+
+function renderStoreInfoSettings() {
+  return `
+    <div class="setting-layout">
+      <div>
+        <div class="store-logo">🍩</div>
+
+        <p class="sub">
+          Your Honeybail store information.
+        </p>
+      </div>
+
+      <div>
+        <form id="storeSettingsForm">
+          <div class="formgrid">
+            <div class="field">
+              <label for="settingStoreName">
+                Store Name
+              </label>
+
+              <input
+                id="settingStoreName"
+                name="store_name"
+                value="${esc(settings.name)}"
+                required
+              >
+            </div>
+
+            <div class="field">
+              <label for="settingTagline">
+                Tagline
+              </label>
+
+              <input
+                id="settingTagline"
+                name="tagline"
+                value="${esc(settings.tagline)}"
+              >
+            </div>
+
+            <div class="field">
+              <label for="settingEmail">
+                Store Email
+              </label>
+
+              <input
+                id="settingEmail"
+                name="email"
+                type="email"
+                value="${esc(settings.email)}"
+              >
+            </div>
+
+            <div class="field">
+              <label for="settingPhone">
+                Phone Number
+              </label>
+
+              <input
+                id="settingPhone"
+                name="phone"
+                value="${esc(settings.phone)}"
+              >
+            </div>
+
+            <div class="field full">
+              <label for="settingAddress">
+                Store Address
+              </label>
+
+              <textarea
+                id="settingAddress"
+                name="address"
+              >${esc(settings.address)}</textarea>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button
+              class="primary"
+              type="submit"
+            >
+              Save Store Information
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
+}
+
+
+// =====================================================
+// SHIPPING SETTINGS
+// =====================================================
+
+function renderShippingSettings() {
+  return `
+    <div class="setting-layout">
+      <div>
+        <div class="store-logo">🚚</div>
+
+        <p class="sub">
+          Current checkout delivery configuration.
+        </p>
+      </div>
+
+      <div>
+        <div class="formgrid">
+          <div class="field">
+            <label>Delivery Fee</label>
+
+            <input
+              value="₱50.00"
+              readonly
+            >
+          </div>
+
+          <div class="field">
+            <label>Delivery Fee Type</label>
+
+            <input
+              value="Fixed Delivery Fee"
+              readonly
+            >
+          </div>
+
+          <div class="field full">
+            <label>Delivery Status</label>
+
+            <div class="mutedbox">
+              Delivery updates are entered manually
+              by authorized Honeybail staff through
+              the Orders page.
+            </div>
+          </div>
+
+          <div class="field full">
+            <label>Courier Integration</label>
+
+            <div class="mutedbox">
+              Automatic courier tracking is not
+              connected yet. Tracking numbers and
+              estimated delivery dates can be saved
+              manually by the admin.
+            </div>
+          </div>
+        </div>
+
+        <p class="sub" style="margin-top:15px">
+          The ₱50.00 fee is configured in the
+          Django storefront checkout backend.
+          Changing this display does not change
+          the checkout amount.
+        </p>
+      </div>
+    </div>
+  `;
+}
+
+
+// =====================================================
+// PAYMENT SETTINGS
+// =====================================================
+
+function renderPaymentSettings() {
+  return `
+    <div class="setting-layout">
+      <div>
+        <div class="store-logo">₱</div>
+
+        <p class="sub">
+          Current customer payment methods.
+        </p>
+      </div>
+
+      <div>
+        <div class="field">
+          <label>Cash on Delivery (COD)</label>
+
+          <div class="mutedbox">
+            Enabled for customer checkout.
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:15px">
+          <label>GCash</label>
+
+          <div class="mutedbox">
+            Not available yet. A verified payment
+            integration is required.
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:15px">
+          <label>Maya</label>
+
+          <div class="mutedbox">
+            Not available yet. A verified payment
+            integration is required.
+          </div>
+        </div>
+
+        <p class="sub" style="margin-top:15px">
+          Payment status is separate from order
+          preparation and delivery status.
+        </p>
+      </div>
+    </div>
+  `;
+}
+
+
+// =====================================================
+// NOTIFICATION SETTINGS
+// =====================================================
+
+function renderNotificationSettings() {
+  return `
+    <div class="setting-layout">
+      <div>
+        <div class="store-logo">🔔</div>
+
+        <p class="sub">
+          Admin notification information.
+        </p>
+      </div>
+
+      <div>
+        <div class="mutedbox">
+          Dashboard notifications currently use
+          information retrieved from the Django
+          database when the page loads or refreshes.
+        </div>
+
+        <div class="mutedbox" style="margin-top:14px">
+          Automatic email, SMS, and push notifications
+          have not been connected yet.
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+
+// =====================================================
+// SETTINGS PAGE
+// =====================================================
+
+function renderSettings() {
+  let content = '';
+
+  switch (settingsTab) {
+    case 'Shipping':
+      content = renderShippingSettings();
+      break;
+
+    case 'Payment':
+      content = renderPaymentSettings();
+      break;
+
+    case 'Notifications':
+      content = renderNotificationSettings();
+      break;
+
+    default:
+      content = renderStoreInfoSettings();
+  }
+
+  return `
+    ${head(
+      'Settings',
+      'Manage your Honeybail store information.'
+    )}
+
+    ${errorBox('settings')}
+
+    <section class="panel">
+      ${settingsTabsMarkup()}
+
+      ${content}
+    </section>
+  `;
+}
+
+
+// =====================================================
+// MAIN PAGE RENDERER
+// =====================================================
+
+function render() {
+  const main = document.getElementById('main');
+
+  if (!main) return;
+
+  const pages = {
+    dashboard: renderDashboard,
+    orders: renderOrders,
+    products: renderProducts,
+    customers: renderCustomers,
+    reports: renderReports,
+    cart: renderCartActivity,
+    favorites: renderFavorites,
+    settings: renderSettings
+  };
+
+  const renderer = pages[currentPage] || renderDashboard;
+
+  main.innerHTML = renderer();
+
+  document.querySelectorAll('.navbtn[data-page]')
+    .forEach(button => {
+      button.classList.toggle(
+        'active',
+        button.dataset.page === currentPage
+      );
+    });
+}
+
+
+// =====================================================
+// END OF PART 4
+// =====================================================
+
+// PART 5 WILL CONTINUE HERE
+
+// =====================================================
+// MODAL SYSTEM
+// =====================================================
+
+function closeModal() {
+  document.getElementById('modalRoot').innerHTML = '';
+}
+
+function modal(title, content, submitText = null, onSubmit = null) {
+  const root = document.getElementById('modalRoot');
+
+  root.innerHTML = `
+    <div class="modal-backdrop">
+      <div class="modal">
+        <div class="modalhead">
+          <h2>${esc(title)}</h2>
+
+          <button
+            type="button"
+            class="close"
+            id="closeModalBtn"
+            aria-label="Close modal"
+          >✕</button>
+        </div>
+
+        <form id="modalForm">
+          ${content}
+
+          <div class="modal-actions">
+            <button
+              type="button"
+              class="secondary"
+              id="cancelModalBtn"
+            >
+              Close
+            </button>
+
+            ${submitText ? `
+              <button
+                type="submit"
+                class="primary"
+                id="modalSubmitBtn"
+              >
+                ${esc(submitText)}
+              </button>
+            ` : ''}
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('closeModalBtn')
+    .addEventListener('click', closeModal);
+
+  document.getElementById('cancelModalBtn')
+    .addEventListener('click', closeModal);
+
+  root.querySelector('.modal-backdrop')
+    .addEventListener('click', event => {
+      if (event.target.classList.contains('modal-backdrop')) {
+        closeModal();
+      }
+    });
+
+  document.getElementById('modalForm')
+    .addEventListener('submit', async event => {
+      event.preventDefault();
+
+      if (!onSubmit) return;
+
+      const form = event.currentTarget;
+      const button = document.getElementById('modalSubmitBtn');
+      const formData = new FormData(form);
+
+      if (button) {
+        button.disabled = true;
+        button.textContent = 'Saving...';
+      }
+
+      try {
+        await onSubmit(formData);
+        closeModal();
+      } catch (error) {
+        showToast(error.message, true);
+
+        if (button) {
+          button.disabled = false;
+          button.textContent = submitText || 'Save';
+        }
+      }
+    });
+}
+
+
+// =====================================================
+// PRODUCT EDITOR
+// =====================================================
+
+function productEditor(product = null) {
+  const editing = Boolean(product);
+
+  const content = `
+    <div class="formgrid">
+      <div class="field full">
+        <label>Product Name</label>
+
+        <input
+          name="name"
+          value="${esc(product?.name || '')}"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Category</label>
+
+        <input
+          name="category"
+          value="${esc(product?.category || 'Others')}"
+        >
+      </div>
+
+      <div class="field">
+        <label>Price (₱)</label>
+
+        <input
+          name="price"
+          type="number"
+          min="0"
+          step="0.01"
+          value="${esc(product?.price ?? '')}"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Stock</label>
+
+        <input
+          name="stock"
+          type="number"
+          min="0"
+          step="1"
+          value="${esc(product?.stock ?? 0)}"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Product Image</label>
+
+        <input
+          name="image"
+          type="file"
+          accept="image/*"
+        >
+      </div>
+
+      <div class="field full">
+        <label>Description</label>
+
+        <textarea name="description">${esc(
+          product?.description || ''
+        )}</textarea>
+      </div>
+    </div>
+  `;
+
+  modal(
+    editing ? 'Edit Product' : 'Add New Product',
+    content,
+    editing ? 'Save Changes' : 'Add Product',
+    async formData => {
+      const url = editing
+        ? `${API.products}${product.id}/`
+        : API.products;
+
+      const response = await apiRequest(url, {
+        method: editing ? 'PATCH' : 'POST',
+        body: formData
+      });
+
+      await loadProducts();
+      await loadDashboard();
+      render();
+
+      showToast(
+        editing
+          ? 'Product updated successfully.'
+          : 'Product added successfully.'
+      );
+
+      return response;
+    }
+  );
+}
+
+
+// =====================================================
+// ARCHIVE PRODUCT
+// =====================================================
+
+async function deleteProduct(productId) {
+  const product = products.find(
+    p => Number(p.id) === Number(productId)
+  );
+
+  if (!product) {
+    showToast('Product not found.', true);
+    return;
+  }
+
+  const confirmed = confirm(
+    `Archive "${product.name}"?\n\n` +
+    'The product will be hidden from the customer store, ' +
+    'but its database record will be preserved.'
+  );
+
+  if (!confirmed) return;
+
+  try {
+    await apiRequest(
+      `${API.products}${productId}/`,
+      { method: 'DELETE' }
+    );
+
+    await loadProducts();
+    await loadDashboard();
+    render();
+
+    showToast('Product archived successfully.');
+  } catch (error) {
+    showToast(error.message, true);
+  }
+}
+
+
+// =====================================================
+// ORDER LOOKUP
+// =====================================================
+
+function findOrder(orderId) {
+  return orders.find(
+    order => Number(order.dbId) === Number(orderId)
+  );
+}
+
+
+// =====================================================
+// ORDER ITEMS TABLE
+// =====================================================
+
+function orderItemsMarkup(order) {
+  const items = Array.isArray(order.itemDetails)
+    ? order.itemDetails
+    : [];
+
+  if (!items.length) {
+    return `
+      <div class="mutedbox">
+        No order item details available.
+      </div>
+    `;
+  }
+
+  const rows = items.map(item => {
+    const quantity = Number(item.quantity || 0);
+    const unitPrice = Number(item.unit_price || 0);
+
+    return `
+      <tr>
+        <td>${esc(item.product_name || item.name)}</td>
+        <td>${quantity}</td>
+        <td>${money(unitPrice)}</td>
+        <td>${money(unitPrice * quantity)}</td>
+      </tr>
+    `;
+  }).join('');
+
+  return table(
+    ['Product', 'Quantity', 'Unit Price', 'Subtotal'],
+    rows
+  );
+}
+
+
+// =====================================================
+// ORDER TRACKING HISTORY
+// =====================================================
+
+function orderTrackingMarkup(order) {
+  const events = Array.isArray(order.trackingEvents)
+    ? order.trackingEvents
+    : [];
+
+  if (!events.length) {
+    return `
+      <div class="mutedbox">
+        No tracking events recorded yet.
+      </div>
+    `;
+  }
+
+  return `
+    <div style="display:grid;gap:12px">
+      ${events.map(event => `
+        <div
+          style="
+            border-left:3px solid #a90f1a;
+            padding:5px 12px;
+          "
+        >
+          <b>${esc(event.status || 'Update')}</b>
+
+          <div class="sub">
+            ${esc(formatDate(event.created_at))}
+          </div>
+
+          ${event.message ? `
+            <p style="margin:6px 0">
+              ${esc(event.message)}
+            </p>
+          ` : ''}
+
+          ${event.location ? `
+            <div class="sub">
+              📍 ${esc(event.location)}
+            </div>
+          ` : ''}
+
+          ${event.source ? `
+            <div class="sub">
+              Updated by: ${esc(event.source)}
+            </div>
+          ` : ''}
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+
+// =====================================================
+// VIEW CUSTOMER ORDER DETAILS
+// =====================================================
+
+function viewOrder(orderId) {
+  const order = findOrder(orderId);
+
+  if (!order) {
+    showToast('Order not found.', true);
+    return;
+  }
+
+  const deliveryWindow = (
+    order.estimatedStart || order.estimatedEnd
+  )
+    ? `${esc(order.estimatedStart || 'Not set')} — ${
+        esc(order.estimatedEnd || 'Not set')
+      }`
+    : 'Not yet estimated';
+
+  const content = `
+    <div style="display:grid;gap:15px">
+
+      <div class="mutedbox">
+        <b>Order:</b> #${esc(order.id)}
+
+        <div style="margin-top:8px">
+          <b>Order Status:</b>
+          ${badge(order.status)}
+        </div>
+
+        <div style="margin-top:8px">
+          <b>Payment Status:</b>
+          ${badge(order.paymentStatus)}
+        </div>
+
+        <div style="margin-top:8px">
+          <b>Delivery Status:</b>
+          ${badge(order.deliveryStatus)}
+        </div>
+      </div>
+
+      <div>
+        <h3>Customer Information</h3>
+
+        <p>
+          <b>Customer:</b> ${esc(order.customer)}
+        </p>
+
+        <p>
+          <b>Recipient:</b> ${esc(order.recipient)}
+        </p>
+
+        <p>
+          <b>Phone:</b> ${esc(order.phone)}
+        </p>
+
+        <p>
+          <b>Delivery Address:</b>
+          ${esc(order.address)}
+        </p>
+
+        <p>
+          <b>Order Date:</b>
+          ${esc(formatDate(order.date))}
+        </p>
+      </div>
+
+      <div>
+        <h3>Purchased Products</h3>
+        ${orderItemsMarkup(order)}
+      </div>
+
+      <div class="mutedbox">
+        <div>
+          <b>Subtotal:</b> ${money(order.subtotal)}
+        </div>
+
+        <div style="margin-top:6px">
+          <b>Delivery Fee:</b>
+          ${money(order.deliveryFee)}
+        </div>
+
+        <div style="margin-top:8px;font-size:16px">
+          <b>Total:</b> ${money(order.total)}
+        </div>
+
+        <div style="margin-top:8px">
+          <b>Payment Method:</b>
+          ${esc(order.paymentMethod)}
+        </div>
+      </div>
+
+      <div>
+        <h3>Delivery Information</h3>
+
+        <p>
+          <b>Courier:</b>
+          ${esc(order.courierName || 'Not assigned')}
+        </p>
+
+        <p>
+          <b>Tracking Number:</b>
+          ${esc(order.trackingNumber || 'Not assigned')}
+        </p>
+
+        <p>
+          <b>Estimated Delivery:</b>
+          ${deliveryWindow}
+        </p>
+
+        <p>
+          <b>Delivered At:</b>
+          ${esc(formatDate(order.deliveredAt))}
+        </p>
+
+        <p>
+          <b>Customer Confirmed Receipt:</b>
+          ${order.receivedAt
+            ? esc(formatDate(order.receivedAt))
+            : 'Not confirmed'}
+        </p>
+
+        <p>
+          <b>Proof of Delivery:</b>
+          ${order.hasDeliveryProof
+            ? 'Uploaded'
+            : 'Not uploaded'}
+        </p>
+      </div>
+
+      ${order.notes ? `
+        <div>
+          <h3>Customer Notes</h3>
+          <div class="mutedbox">
+            ${esc(order.notes)}
+          </div>
+        </div>
+      ` : ''}
+
+      <div>
+        <h3>Tracking History</h3>
+        ${orderTrackingMarkup(order)}
+      </div>
+    </div>
+  `;
+
+  modal('Order Details', content);
+}
+
+
+// =====================================================
+// ORDER MANAGEMENT EDITOR
+// =====================================================
+
+function editOrder(orderId) {
+  const order = findOrder(orderId);
+
+  if (!order) {
+    showToast('Order not found.', true);
+    return;
+  }
+
+  if (['Completed', 'Cancelled'].includes(order.status)) {
+    viewOrder(orderId);
+    return;
+  }
+
+  const nextStatus = nextOrderStatus(order.status);
+
+  const paymentOptions = [
+    'Unpaid',
+    'Pending Verification',
+    'Paid',
+    'Failed'
+  ];
+
+  const paymentMarkup = paymentOptions.map(status => `
+    <option
+      value="${esc(status)}"
+      ${order.paymentStatus === status ? 'selected' : ''}
+    >
+      ${esc(status)}
+    </option>
+  `).join('');
+
+  const statusMarkup = nextStatus
+    ? `
+      <div class="field full">
+        <label>Advance Order Status</label>
+
+        <select name="status">
+          <option value="">
+            Keep Current: ${esc(order.status)}
+          </option>
+
+          <option value="${esc(nextStatus)}">
+            Advance to: ${esc(nextStatus)}
+          </option>
+        </select>
+
+        <div class="sub">
+          Orders advance one stage at a time.
+        </div>
+      </div>
+    `
+    : `
+      <div class="mutedbox">
+        This order has reached Delivered status.
+        Customer receipt confirmation will be
+        handled through the storefront.
+      </div>
+    `;
+
+  const content = `
+    <div class="mutedbox">
+      <b>Order:</b> #${esc(order.id)}
+
+      <div style="margin-top:6px">
+        <b>Customer:</b> ${esc(order.customer)}
+      </div>
+
+      <div style="margin-top:6px">
+        <b>Current Status:</b>
+        ${badge(order.status)}
+      </div>
+    </div>
+
+    <div class="formgrid" style="margin-top:15px">
+      ${statusMarkup}
+
+      <div class="field full">
+        <label>Payment Status</label>
+
+        <select name="payment_status">
+          ${paymentMarkup}
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Courier Name</label>
+
+        <input
+          name="courier_name"
+          maxlength="120"
+          value="${esc(order.courierName)}"
+          placeholder="e.g. J&T Express"
+        >
+      </div>
+
+      <div class="field">
+        <label>Tracking Number</label>
+
+        <input
+          name="tracking_number"
+          maxlength="150"
+          value="${esc(order.trackingNumber)}"
+          placeholder="Courier tracking number"
+        >
+      </div>
+
+      <div class="field">
+        <label>Estimated Delivery Start</label>
+
+        <input
+          name="estimated_delivery_start"
+          type="date"
+          value="${esc(order.estimatedStart)}"
+        >
+      </div>
+
+      <div class="field">
+        <label>Estimated Delivery End</label>
+
+        <input
+          name="estimated_delivery_end"
+          type="date"
+          value="${esc(order.estimatedEnd)}"
+        >
+      </div>
+
+      <div class="field full">
+        <label>Tracking Update Message</label>
+
+        <textarea
+          name="tracking_message"
+          maxlength="1000"
+          placeholder="e.g. Package has been picked up by courier."
+        ></textarea>
+      </div>
+
+      <div class="field full">
+        <label>Tracking Location (Optional)</label>
+
+        <input
+          name="tracking_location"
+          maxlength="200"
+          placeholder="e.g. Iloilo City sorting facility"
+        >
+      </div>
+    </div>
+  `;
+
+  modal(
+    'Manage Order',
+    content,
+    'Save Order Changes',
+    async formData => {
+      const changes = {};
+
+      const newStatus = String(
+        formData.get('status') || ''
+      ).trim();
+
+      if (newStatus && newStatus !== order.status) {
+        changes.status = newStatus;
+      }
+
+      const newPayment = String(
+        formData.get('payment_status') || ''
+      );
+
+      if (newPayment !== order.paymentStatus) {
+        changes.payment_status = newPayment;
+      }
+
+      const courier = String(
+        formData.get('courier_name') || ''
+      ).trim();
+
+      if (courier !== order.courierName) {
+        changes.courier_name = courier;
+      }
+
+      const trackingNumber = String(
+        formData.get('tracking_number') || ''
+      ).trim();
+
+      if (trackingNumber !== order.trackingNumber) {
+        changes.tracking_number = trackingNumber;
+      }
+
+      const start = String(
+        formData.get('estimated_delivery_start') || ''
+      );
+
+      const end = String(
+        formData.get('estimated_delivery_end') || ''
+      );
+
+      if (start !== order.estimatedStart) {
+        changes.estimated_delivery_start = start;
+      }
+
+      if (end !== order.estimatedEnd) {
+        changes.estimated_delivery_end = end;
+      }
+
+      const message = String(
+        formData.get('tracking_message') || ''
+      ).trim();
+
+      const location = String(
+        formData.get('tracking_location') || ''
+      ).trim();
+
+      if (message) {
+        changes.tracking_message = message;
+      }
+
+      if (location) {
+        changes.tracking_location = location;
+      }
+
+      if (!Object.keys(changes).length) {
+        showToast('No changes were made.');
+        return;
+      }
+
+      await apiRequest(
+        `${API.orders}${order.dbId}/`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(changes)
+        }
+      );
+
+      await Promise.all([
+        loadOrders(),
+        loadDashboard(),
+        loadReports()
+      ]);
+
+      render();
+      showToast('Order updated successfully.');
+    }
+  );
+}
+
+
+// =====================================================
+// END OF PART 5
+// =====================================================
+
+// PART 6 WILL CONTINUE HERE
+
+// =====================================================
+// CSV EXPORT HELPERS
+// =====================================================
+
+function csvCell(value) {
+  const text = String(value ?? '');
+
+  // Prevent spreadsheet applications from interpreting
+  // untrusted customer data as formulas.
+  const safe = /^[\s]*[=+\-@\t\r]/.test(text)
+    ? "'" + text
+    : text;
+
+  return `"${safe.replace(/"/g, '""')}"`;
+}
+
+function exportCsv(filename, headers, rows) {
+  const csv = [
+    headers.map(csvCell).join(','),
+    ...rows.map(row => row.map(csvCell).join(','))
+  ].join('\r\n');
+
+  const blob = new Blob(
+    ['\uFEFF', csv],
+    { type: 'text/csv;charset=utf-8;' }
+  );
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+
+// =====================================================
+// EXPORT ORDERS
+// =====================================================
+
+function exportOrders() {
+  exportCsv(
+    'honeybail-orders.csv',
+    [
+      'Order ID',
+      'Customer',
+      'Items',
+      'Subtotal',
+      'Delivery Fee',
+      'Total',
+      'Order Status',
+      'Payment Status',
+      'Payment Method',
+      'Delivery Status',
+      'Courier',
+      'Tracking Number',
+      'Date'
+    ],
+    orders.map(order => [
+      order.id,
+      order.customer,
+      order.items,
+      order.subtotal,
+      order.deliveryFee,
+      order.total,
+      order.status,
+      order.paymentStatus,
+      order.paymentMethod,
+      order.deliveryStatus,
+      order.courierName,
+      order.trackingNumber,
+      order.date
+    ])
+  );
+
+  showToast('Orders exported successfully.');
+}
+
+
+// =====================================================
+// EXPORT PRODUCTS
+// =====================================================
+
+function exportProducts() {
+  exportCsv(
+    'honeybail-products.csv',
+    [
+      'Product ID',
+      'Product Name',
+      'Category',
+      'Price',
+      'Stock',
+      'Description'
+    ],
+    products.map(product => [
+      product.id,
+      product.name,
+      product.category,
+      product.price,
+      product.stock,
+      product.description
+    ])
+  );
+
+  showToast('Products exported successfully.');
+}
+
+
+// =====================================================
+// EXPORT CUSTOMERS
+// =====================================================
+
+function exportCustomers() {
+  exportCsv(
+    'honeybail-customers.csv',
+    [
+      'Customer ID',
+      'Name',
+      'Email',
+      'Orders',
+      'Date Joined'
+    ],
+    customers.map(customer => [
+      customer.displayId,
+      customer.name,
+      customer.email,
+      customer.orders,
+      customer.joined
+    ])
+  );
+
+  showToast('Customers exported successfully.');
+}
+
+
+// =====================================================
+// EXPORT REPORTS
+// =====================================================
+
+function exportReports() {
+  exportCsv(
+    'honeybail-sales-report.csv',
+    [
+      'Order ID',
+      'Customer',
+      'Total',
+      'Payment Status',
+      'Payment Method',
+      'Order Status',
+      'Date'
+    ],
+    orders.map(order => [
+      order.id,
+      order.customer,
+      order.total,
+      order.paymentStatus,
+      order.paymentMethod,
+      order.status,
+      order.date
+    ])
+  );
+
+  showToast('Sales report exported successfully.');
+}
+
+
+// =====================================================
+// CUSTOMER DETAILS
+// =====================================================
+
+function viewCustomer(customerId) {
+  const customer = customers.find(
+    c => Number(c.id) === Number(customerId)
+  );
+
+  if (!customer) {
+    showToast('Customer not found.', true);
+    return;
+  }
+
+  const customerOrders = orders.filter(
+    order =>
+      Number(order.customerId) === Number(customer.id)
+  );
+
+  const rows = customerOrders.map(order => `
+    <tr>
+      <td>${esc(order.id)}</td>
+      <td>${money(order.total)}</td>
+      <td>${badge(order.status)}</td>
+      <td>${esc(formatShortDate(order.date))}</td>
+    </tr>
+  `).join('');
+
+  modal(
+    'Customer Details',
+    `
+      <div class="mutedbox">
+        <p><b>Customer ID:</b> ${esc(customer.displayId)}</p>
+        <p><b>Name:</b> ${esc(customer.name)}</p>
+        <p><b>Email:</b> ${esc(customer.email)}</p>
+        <p><b>Orders:</b> ${customerOrders.length}</p>
+        <p><b>Joined:</b> ${esc(formatDate(customer.joined))}</p>
+      </div>
+
+      <h3>Order History</h3>
+
+      ${table(
+        ['Order ID', 'Total', 'Status', 'Date'],
+        rows
+      )}
+    `
+  );
+}
+
+
+// =====================================================
+// SAVE STORE SETTINGS
+// =====================================================
+
+async function saveStoreSettings(form) {
+  const data = new FormData(form);
+
+  const payload = {
+    store_name: String(data.get('store_name') || '').trim(),
+    tagline: String(data.get('tagline') || '').trim(),
+    email: String(data.get('email') || '').trim(),
+    phone: String(data.get('phone') || '').trim(),
+    address: String(data.get('address') || '').trim()
+  };
+
+  if (!payload.store_name) {
+    showToast('Store name is required.', true);
+    return;
+  }
+
+  try {
+    await apiRequest(ADMIN_API.settings, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    settings = {
+      name: payload.store_name,
+      tagline: payload.tagline,
+      email: payload.email,
+      phone: payload.phone,
+      address: payload.address
+    };
+
+    render();
+    showToast('Store information saved successfully.');
+
+  } catch (error) {
+    showToast(error.message, true);
+  }
+}
+
+
+// =====================================================
+// NAVIGATION
+// =====================================================
+
+function navigate(page) {
+  const validPages = [
+    'dashboard',
+    'orders',
+    'products',
+    'customers',
+    'reports',
+    'cart',
+    'favorites',
+    'settings'
+  ];
+
+  if (!validPages.includes(page)) return;
+
+  currentPage = page;
+  render();
+
+  document.getElementById('sidebar')
+    .classList.remove('open');
+
+  document.getElementById('overlay')
+    .classList.remove('show');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+
+// =====================================================
+// CLICK EVENT HANDLERS
+// =====================================================
+
+document.addEventListener('click', async event => {
+  const button = event.target.closest(
+    '[data-page], [data-action]'
+  );
+
+  if (!button) return;
+
+  if (button.dataset.page) {
+    navigate(button.dataset.page);
+    return;
+  }
+
+  const action = button.dataset.action;
+  const id = Number(button.dataset.id);
+
+  try {
+    switch (action) {
+
+      case 'add-product':
+        productEditor();
+        break;
+
+      case 'edit-product': {
+        const product = products.find(
+          p => Number(p.id) === id
+        );
+
+        if (!product) {
+          showToast('Product not found.', true);
+          return;
+        }
+
+        productEditor(product);
+        break;
+      }
+
+      case 'delete-product':
+        await deleteProduct(id);
+        break;
+
+      case 'view-order':
+        viewOrder(id);
+        break;
+
+      case 'edit-order':
+        editOrder(id);
+        break;
+
+      case 'view-customer':
+        viewCustomer(id);
+        break;
+
+      case 'filter-orders':
+        orderFilter = button.dataset.value || 'All';
+        render();
+        break;
+
+      case 'settings-tab':
+        settingsTab = button.dataset.value || 'Store Info';
+        render();
+        break;
+
+      case 'export-orders':
+        exportOrders();
+        break;
+
+      case 'export-products':
+        exportProducts();
+        break;
+
+      case 'export-customers':
+        exportCustomers();
+        break;
+
+      case 'export-reports':
+        exportReports();
+        break;
+
+      case 'refresh-cart':
+        await loadAdminExtras();
+        render();
+        showToast('Cart activity refreshed.');
+        break;
+
+      case 'reload-data':
+        await reloadOne(button.dataset.key);
+        break;
+
+      default:
+        console.warn('Unknown action:', action);
+    }
+
+  } catch (error) {
+    console.error(error);
+    showToast(error.message, true);
+  }
+});
+
+
+// =====================================================
+// SEARCH AND FILTER INPUTS
+// =====================================================
+
+document.addEventListener('input', event => {
+  const target = event.target;
+
+  if (target.id === 'productSearch') {
+    productSearch = target.value;
+
+    const position = target.selectionStart;
+    render();
+
+    const replacement =
+      document.getElementById('productSearch');
+
+    replacement?.focus();
+    replacement?.setSelectionRange(position, position);
+  }
+
+  if (target.id === 'orderSearch') {
+    orderSearch = target.value;
+
+    const position = target.selectionStart;
+    render();
+
+    const replacement =
+      document.getElementById('orderSearch');
+
+    replacement?.focus();
+    replacement?.setSelectionRange(position, position);
+  }
+
+  if (target.id === 'customerSearch') {
+    customerSearch = target.value;
+
+    const position = target.selectionStart;
+    render();
+
+    const replacement =
+      document.getElementById('customerSearch');
+
+    replacement?.focus();
+    replacement?.setSelectionRange(position, position);
+  }
+});
+
+document.addEventListener('change', event => {
+  if (event.target.id === 'orderFilter') {
+    orderFilter = event.target.value;
+    render();
+  }
+});
+
+
+// =====================================================
+// FORM SUBMISSION HANDLERS
+// =====================================================
+
+document.addEventListener('submit', async event => {
+  if (event.target.id === 'storeSettingsForm') {
+    event.preventDefault();
+    await saveStoreSettings(event.target);
+  }
+});
+
+
+// =====================================================
+// MOBILE SIDEBAR
+// =====================================================
+
+document.getElementById('menuToggle')
+  .addEventListener('click', () => {
+    document.getElementById('sidebar')
+      .classList.toggle('open');
+
+    document.getElementById('overlay')
+      .classList.toggle('show');
+  });
+
+document.getElementById('overlay')
+  .addEventListener('click', () => {
+    document.getElementById('sidebar')
+      .classList.remove('open');
+
+    document.getElementById('overlay')
+      .classList.remove('show');
+  });
+
+
+// =====================================================
+// BACK TO CUSTOMER STOREFRONT
+// =====================================================
+
+document.getElementById('backStore')
+  .addEventListener('click', () => {
+    window.location.href = '/frontend/store.html';
+  });
+
+
+// =====================================================
+// ADMIN MENU AND LOGOUT
+// =====================================================
+
+document.getElementById('adminMenu')
+  .addEventListener('click', async () => {
+    if (!signedInUser) {
+      adminLoginModal();
+      return;
+    }
+
+    const confirmed = confirm(
+      'Do you want to sign out of the Honeybail Admin Panel?'
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await apiRequest(AUTH.logout, {
+        method: 'POST'
+      });
+
+      signedInUser = null;
+
+      products = [];
+      orders = [];
+      customers = [];
+      dashboardData = null;
+      reportData = null;
+      cartActivity = [];
+      favorites = [];
+
+      await refreshAdminIdentity();
+
+      document.getElementById('main').innerHTML = `
+        <div class="panel">
+          <h2>Signed Out</h2>
+          <p>Please sign in to access the admin panel.</p>
+
+          <button
+            class="primary"
+            id="signInAgain"
+          >
+            Sign In
+          </button>
+        </div>
+      `;
+
+      document.getElementById('signInAgain')
+        .addEventListener('click', adminLoginModal);
+
+      showToast('Signed out successfully.');
+
+    } catch (error) {
+      showToast(error.message, true);
+    }
+  });
+
+
+// =====================================================
+// NOTIFICATIONS
+// =====================================================
+
+document.getElementById('notificationBtn')
+  .addEventListener('click', () => {
+    const pending = orders.filter(
+      order => order.status === 'Pending'
+    ).length;
+
+    const delivery = orders.filter(
+      order => order.status === 'Out for Delivery'
+    ).length;
+
+    modal(
+      'Order Notifications',
+      `
+        <div class="mutedbox">
+          <p>
+            <b>Pending Orders:</b> ${pending}
+          </p>
+
+          <p>
+            <b>Out for Delivery:</b> ${delivery}
+          </p>
+
+          <p class="sub">
+            These counts are based on the latest
+            loaded Django order data.
+          </p>
+        </div>
+      `
+    );
+  });
+
+
+// =====================================================
+// ADMIN STARTUP
+// =====================================================
+
+async function initializeAdmin() {
+  document.getElementById('main').innerHTML = `
+    <div class="panel">
+      <h2>Loading Honeybail...</h2>
+      <p class="sub">
+        Checking your Django admin session.
+      </p>
+    </div>
+  `;
+
+  await refreshAdminIdentity();
+
+  if (!signedInUser?.is_staff) {
+    document.getElementById('main').innerHTML = `
+      <div class="panel">
+        <h2>Admin Sign In Required</h2>
+
+        <p class="sub">
+          Sign in using a Django staff or
+          superuser account to continue.
+        </p>
+
+        <button
+          class="primary"
+          id="initialSignIn"
+        >
+          Sign In
+        </button>
+      </div>
+    `;
+
+    document.getElementById('initialSignIn')
+      .addEventListener('click', adminLoginModal);
+
+    return;
+  }
+
+  await loadAllData();
+}
+
+initializeAdmin().catch(error => {
+  console.error('Admin initialization failed:', error);
+
+  document.getElementById('main').innerHTML = `
+    <div class="panel">
+      <h2>Could Not Load Admin Panel</h2>
+
+      <p class="sub">
+        ${esc(error.message)}
+      </p>
+
+      <button
+        class="primary"
+        id="retryInitialization"
+      >
+        Try Again
+      </button>
+    </div>
+  `;
+
+  document.getElementById('retryInitialization')
+    .addEventListener('click', initializeAdmin);
+});
+
+</script>
+</body>
+</html>
+
