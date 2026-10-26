@@ -36,6 +36,8 @@ DEBUG = config(
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
+    "192.168.0.248",
+    "e-commerce-w987.onrender.com",
 ]
 
 
