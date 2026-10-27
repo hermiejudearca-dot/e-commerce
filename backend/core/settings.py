@@ -134,7 +134,7 @@ DATABASES = {
 
         "PASSWORD": config(
             "DB_PASSWORD",
-            default="12345678",
+            default="123456789",
         ),
 
         "HOST": config(
@@ -246,6 +246,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5500",
     "http://localhost:5500",
+    "http://192.168.0.248:5500",
 ]
 
 # Allows browser session cookies to be sent with API requests.
