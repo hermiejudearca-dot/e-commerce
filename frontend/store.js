@@ -25,8 +25,17 @@
 // 1. API CONFIGURATION
 // ==========================================================
 
-const ROOT = 'http://127.0.0.1:8000';
-const API = ROOT + '/api/store/';
+
+const IS_VS_CODE_LIVE_SERVER =
+  window.location.port === '5500' ||
+  window.location.port === '5501';
+
+const ROOT = IS_VS_CODE_LIVE_SERVER
+  ? `${window.location.protocol}//${window.location.hostname}:8000`
+  : window.location.origin;
+
+const API = `${ROOT}/api/store/`;
+
 
 const CHECKOUT_BACKEND_READY = true;
 

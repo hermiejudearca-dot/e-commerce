@@ -591,7 +591,7 @@ class ProductReview(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(
+            models.UniqueConstraint(       
                 fields=["user", "product"],
                 name="store_review_unique",
             )
