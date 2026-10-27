@@ -1,18 +1,34 @@
 
-const API_ORIGIN = "http://127.0.0.1:8000";
-const API_BASE = `${API_ORIGIN}/api`;
-const API_URL = `${API_BASE}/products/`;
 
-const API = {
-  dashboard: `${API_BASE}/dashboard/`,
-  products: API_URL,
-  orders: `${API_BASE}/orders/`,
-  customers: `${API_BASE}/customers/`,
-  reports: `${API_BASE}/reports/`,
-  cart: `${API_BASE}/cart-activity/`,
-  favorites: `${API_BASE}/favorites/`,
-  settings: `${API_BASE}/settings/`
-};
+  const API_ORIGIN =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"
+          ? "http://127.0.0.1:8000"
+          : "https://e-commerce-w987.onrender.com";
+
+  const API_BASE = `${API_ORIGIN}/api`;
+
+  const API_URL = `${API_BASE}/products/`;
+
+  const API = {
+      dashboard: `${API_BASE}/dashboard/`,
+      products: `${API_BASE}/products/`,
+      orders: `${API_BASE}/orders/`,
+      customers: `${API_BASE}/customers/`,
+      reports: `${API_BASE}/reports/`,
+      cart: `${API_BASE}/cart-activity/`,
+      favorites: `${API_BASE}/favorites/`,
+      settings: `${API_BASE}/settings/`
+  };
+
+  const AUTH = {
+      me: `${API_BASE}/auth/me/`,
+      login: `${API_BASE}/auth/login/`,
+      logout: `${API_BASE}/auth/logout/`,
+      register: `${API_BASE}/auth/register/`,
+      csrf: `${API_BASE}/csrf/`
+  };
+
 
 const peso = value =>
   new Intl.NumberFormat("en-PH", {

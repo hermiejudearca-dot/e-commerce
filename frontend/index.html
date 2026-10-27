@@ -657,8 +657,14 @@ button { cursor:pointer; }
 // DJANGO API CONFIGURATION
 // =====================================================
 
-const API_ORIGIN = window.DJANGO_API_URL ||
-  `${window.location.protocol}//${window.location.hostname}:8000`;
+
+const API_ORIGIN = window.DJANGO_API_URL || (
+    ["localhost", "127.0.0.1"].includes(window.location.hostname) &&
+    ["5500", "5501"].includes(window.location.port)
+        ? "http://127.0.0.1:8000"
+        : window.location.origin
+);
+
 
 const API = {
   products: `${API_ORIGIN}/api/products/`,

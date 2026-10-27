@@ -1,41 +1,16 @@
 
 'use strict';
 
-/*
-============================================================
- HONEYBAIL CUSTOMER STOREFRONT
- ICE BLUE EDITION
-
- CORRECTED VERSION — PART 1 OF 8
-
- Django API: http://127.0.0.1:8000/api/store/
-
- Features preserved:
- - Customer authentication
- - Cart and automatic quantity saving
- - Favorites
- - Buy Now and checkout
- - Saved addresses
- - Orders and reviews
-============================================================
-*/
-
-
-// ==========================================================
-// 1. API CONFIGURATION
-// ==========================================================
-
 
 const IS_VS_CODE_LIVE_SERVER =
-  window.location.port === '5500' ||
-  window.location.port === '5501';
+  window.location.port === "5500" ||
+  window.location.port === "5501";
 
 const ROOT = IS_VS_CODE_LIVE_SERVER
   ? `${window.location.protocol}//${window.location.hostname}:8000`
-  : window.location.origin;
+  : "https://e-commerce-w987.onrender.com";
 
 const API = `${ROOT}/api/store/`;
-
 
 const CHECKOUT_BACKEND_READY = true;
 
