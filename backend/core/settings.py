@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
 
-    # Honeybail application
+    # Honeybail applications
     "product",
     "storefront",
 ]
@@ -69,13 +69,17 @@ INSTALLED_APPS = [
 # ============================================================
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+
+    # Serve collected static files on Render
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+
+    # CORS support
+    "corsheaders.middleware.CorsMiddleware",
 
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -156,9 +160,6 @@ DATABASES = {
 # AUTHENTICATION AND PASSWORD VALIDATION
 # ============================================================
 
-# Keep Django's default User model.
-# The Customer model is linked to it through a OneToOneField.
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": (
@@ -201,11 +202,6 @@ REST_FRAMEWORK = {
     ],
 }
 
-# Note:
-# REST_FRAMEWORK permissions apply to DRF views.
-# The existing Honeybail JsonResponse views use their own
-# authentication and permission checks.
-
 
 # ============================================================
 # LANGUAGE AND TIMEZONE
@@ -228,6 +224,22 @@ STATIC_URL = "/static/"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# WhiteNoise serves collected CSS and JavaScript files,
+# including Django Admin's static assets.
+
+STORAGES = {
+    "default": {
+        "BACKEND": (
+            "django.core.files.storage.FileSystemStorage"
+        ),
+    },
+    "staticfiles": {
+        "BACKEND": (
+            "whitenoise.storage.CompressedStaticFilesStorage"
+        ),
+    },
+}
+
 
 # ============================================================
 # MEDIA FILES
@@ -242,15 +254,10 @@ MEDIA_ROOT = BASE_DIR / "media"
 # CORS CONFIGURATION
 # ============================================================
 
-# Allows the local HTML/JavaScript frontend to communicate
-# with Django when using VS Code Live Server.
-
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5500",
     "http://localhost:5500",
 ]
-
-# Allows browser session cookies to be sent with API requests.
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -259,16 +266,10 @@ CORS_ALLOW_CREDENTIALS = True
 # CSRF PROTECTION
 # ============================================================
 
-# Trusted local frontend origins for unsafe requests,
-# including POST, PATCH, PUT, and DELETE.
-
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:5500",
     "http://localhost:5500",
 ]
-
-# Keep CSRF protection enabled.
-# The frontend must send the CSRF token with write requests.
 
 CSRF_COOKIE_HTTPONLY = False
 
@@ -281,9 +282,9 @@ CSRF_COOKIE_SAMESITE = "Lax"
 # SESSION CONFIGURATION
 # ============================================================
 
-# Django sessions will maintain customer login state.
-
-SESSION_ENGINE = "django.contrib.sessions.backends.db"
+SESSION_ENGINE = (
+    "django.contrib.sessions.backends.db"
+)
 
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
 
@@ -307,7 +308,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # EMAIL CONFIGURATION
 # ============================================================
 
-# During development, emails appear in the terminal.
-# Configure a real email service before deployment.
-
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = (
+    "django.core.mail.backends.console.EmailBackend"
+)
