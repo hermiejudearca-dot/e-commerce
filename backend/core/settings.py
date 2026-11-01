@@ -52,11 +52,17 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+
+    # Cloudinary storage integration
+    "cloudinary_storage",
+
+    # Static files
     "django.contrib.staticfiles",
 
     # Third-party applications
     "rest_framework",
     "corsheaders",
+    "cloudinary",
 
     # Honeybail applications
     "product",
@@ -217,22 +223,51 @@ USE_TZ = True
 
 
 # ============================================================
-# STATIC FILES
+# CLOUDINARY CONFIGURATION
+# ============================================================
+
+# These values must match the environment variables already
+# configured in your Render web service.
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": config(
+        "CLOUDINARY_CLOUD_NAME",
+        default="",
+    ),
+
+    "API_KEY": config(
+        "CLOUDINARY_API_KEY",
+        default="",
+    ),
+
+    "API_SECRET": config(
+        "CLOUDINARY_API_SECRET",
+        default="",
+    ),
+}
+
+
+# ============================================================
+# STATIC FILES AND MEDIA STORAGE
 # ============================================================
 
 STATIC_URL = "/static/"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# WhiteNoise serves collected CSS and JavaScript files,
-# including Django Admin's static assets.
+# Product images uploaded through Django ImageField are stored
+# on Cloudinary instead of the local Render filesystem.
+#
+# WhiteNoise continues to serve collected static files,
+# including CSS, JavaScript, and Django Admin assets.
 
 STORAGES = {
     "default": {
         "BACKEND": (
-            "django.core.files.storage.FileSystemStorage"
+            "cloudinary_storage.storage.MediaCloudinaryStorage"
         ),
     },
+
     "staticfiles": {
         "BACKEND": (
             "whitenoise.storage.CompressedStaticFilesStorage"
@@ -240,11 +275,8 @@ STORAGES = {
     },
 }
 
-
-# ============================================================
-# MEDIA FILES
-# ============================================================
-
+# Retained for compatibility with existing local development
+# and code that references these settings.
 MEDIA_URL = "/media/"
 
 MEDIA_ROOT = BASE_DIR / "media"

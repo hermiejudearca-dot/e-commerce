@@ -1,5 +1,6 @@
 
 import json
+from io import BytesIO
 from datetime import date
 from decimal import Decimal, InvalidOperation
 
@@ -8,6 +9,7 @@ from django.db import IntegrityError, transaction
 from django.db.models import Sum
 from django.db.models.functions import TruncMonth
 from django.http import JsonResponse
+from django.http.multipartparser import MultiPartParser, MultiPartParserError
 from django.utils import timezone
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods
@@ -54,6 +56,34 @@ def request_data(request):
         return json.loads(request.body.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError):
         return None
+
+
+def request_data_and_files(request):
+    """
+    Return form data and uploaded files for product create/update requests.
+
+    Django's normal request.POST/request.FILES parsing is automatic for POST,
+    but multipart PATCH/PUT requests need to be parsed explicitly.
+    """
+    content_type = request.content_type or ""
+
+    if not content_type.startswith("multipart/form-data"):
+        return request_data(request), {}
+
+    if request.method == "POST":
+        return request.POST, request.FILES
+
+    try:
+        parser = MultiPartParser(
+            request.META,
+            BytesIO(request.body),
+            request.upload_handlers,
+            request.encoding,
+        )
+        data, files = parser.parse()
+        return data, files
+    except (MultiPartParserError, ValueError, TypeError):
+        return None, {}
 
 
 def customer_for_request(request):
@@ -161,7 +191,9 @@ def validate_product_data(data, partial=False):
     return None
 
 
-def apply_product_data(product, data, request):
+def apply_product_data(product, data, files=None):
+    files = files or {}
+
     for field in ("name", "category", "description"):
         if field in data:
             setattr(product, field, str(data.get(field, "")).strip())
@@ -172,8 +204,9 @@ def apply_product_data(product, data, request):
     if "stock" in data:
         product.stock = int(data["stock"])
 
-    if "image" in request.FILES:
-        product.image = request.FILES["image"]
+    # If no new image is uploaded, keep the existing image.
+    if "image" in files:
+        product.image = files["image"]
 
 
 # ==========================================================
@@ -198,14 +231,14 @@ def product_list(request):
     if permission_error:
         return permission_error
 
-    data = request_data(request)
+    data, files = request_data_and_files(request)
     error = validate_product_data(data)
 
     if error:
         return json_error(error)
 
     product = Product()
-    apply_product_data(product, data, request)
+    apply_product_data(product, data, files)
     product.save()
 
     return JsonResponse(
@@ -239,13 +272,13 @@ def product_detail(request, product_id):
         product.save(update_fields=["is_active", "updated_at"])
         return JsonResponse({"message": "Product archived."})
 
-    data = request_data(request)
+    data, files = request_data_and_files(request)
     error = validate_product_data(data, partial=True)
 
     if error:
         return json_error(error)
 
-    apply_product_data(product, data, request)
+    apply_product_data(product, data, files)
     product.save()
 
     return JsonResponse({
