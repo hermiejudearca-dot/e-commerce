@@ -1,16 +1,38 @@
 
 'use strict';
 
+/*
+============================================================
+ HONEYBAIL CUSTOMER STOREFRONT
+ ICE BLUE EDITION
 
-const IS_VS_CODE_LIVE_SERVER =
-  window.location.port === "5500" ||
-  window.location.port === "5501";
+ CORRECTED VERSION — PART 1 OF 8
 
-const ROOT = IS_VS_CODE_LIVE_SERVER
-  ? `${window.location.protocol}//${window.location.hostname}:8000`
-  : "https://e-commerce-w987.onrender.com";
+ Django API: http://127.0.0.1:8000/api/store/
 
-const API = `${ROOT}/api/store/`;
+ Features preserved:
+ - Customer authentication
+ - Cart and automatic quantity saving
+ - Favorites
+ - Buy Now and checkout
+ - Saved addresses
+ - Orders and reviews
+============================================================
+*/
+
+
+// ==========================================================
+// 1. API CONFIGURATION
+// ==========================================================
+
+const ROOT = (
+  window.location.hostname === 'localhost' ||
+  window.location.hostname === '127.0.0.1'
+)
+  ? 'http://127.0.0.1:8000'
+  : 'https://e-commerce-w987.onrender.com';
+
+const API = ROOT + '/api/store/';
 
 const CHECKOUT_BACKEND_READY = true;
 
@@ -1858,24 +1880,15 @@ function renderCheckoutAddresses() {
     return;
   }
 
-  if (!addresses.length) {
-    container.innerHTML = `
-      <div class="card address-empty">
-
-        <p>
-          Add a delivery address before placing your order.
-        </p>
-
-        <button
-          type="button"
-          class="primary"
-          data-action="open-add-address"
-        >
-          + Add Delivery Address
-        </button>
-
-      </div>
-    `;
+ 
+if (!addresses.length) {
+  container.innerHTML = `
+    <div class="card address-empty">
+      <p>
+        Add a delivery address before placing your order.
+      </p>
+    </div>
+  `;
 
   } else {
     container.innerHTML = addresses.map(address => `
@@ -2518,6 +2531,7 @@ async function validateCheckoutStock() {
 // 53. SUBMIT CHECKOUT
 // ==========================================================
 
+
 async function submitCheckout(event) {
   event.preventDefault();
 
@@ -2556,7 +2570,7 @@ async function submitCheckout(event) {
       new FormData(form)
     );
 
-    // This storefront currently supports COD only.
+    // Cash on Delivery only.
     if (
       formData.payment_method &&
       formData.payment_method !== 'COD'
@@ -2566,7 +2580,7 @@ async function submitCheckout(event) {
       );
     }
 
-    // Verify the order-policy checkbox if present.
+    // Validate order policy.
     const policyCheckbox = $('orderPolicy');
 
     if (
@@ -2578,6 +2592,7 @@ async function submitCheckout(event) {
       );
     }
 
+    // Load customer delivery addresses.
     await loadAddresses();
 
     const address = addresses.find(
@@ -2599,17 +2614,19 @@ async function submitCheckout(event) {
       );
     }
 
+    // Validate current product stock before checkout.
     const items = await validateCheckoutStock();
 
-    // These are the customer and delivery details.
-    // Django must calculate the authoritative total.
+    // Prepare order information for Django.
     const orderPayload = {
       address_id: Number(address.id),
       payment_method: 'COD',
       notes: formData.notes || '',
-      policy_accepted: true
+      policy_accepted: true,
+      checkout_mode: checkoutMode
     };
 
+    // BUY NOW CHECKOUT
     if (checkoutMode === 'buy') {
       if (!buyNowItem) {
         throw Error(
@@ -2623,6 +2640,7 @@ async function submitCheckout(event) {
       };
 
     } else {
+      // CART CHECKOUT
       const selectedIds = items.map(
         item => Number(item.cart_item_id)
       );
@@ -2642,28 +2660,15 @@ async function submitCheckout(event) {
         selectedIds;
     }
 
-    // Submit to the actual Django endpoint.
+    // Submit order to Django.
+    // The backend must save the order and deduct stock.
     const result = await req(
       'orders/',
       'POST',
       orderPayload
     );
 
-    // Do not reset the cart or checkout until Django
-    // confirms that the order was successfully created.
-    checkoutMode = 'cart';
-    buyNowItem = null;
-
-    selectedCartItemIds.clear();
-    cartSelectionInitialized = false;
-
-    form.reset();
-
-    await loadCart();
-
-    page('orders');
-
-    // The backend may use either order_id or id.
+    // Save order information before resetting checkout.
     const orderNumber =
       result.order_id ?? result.id ?? 'New';
 
@@ -2672,6 +2677,32 @@ async function submitCheckout(event) {
       result.grand_total ??
       checkoutGrandTotal()
     );
+
+    // Reset checkout only after Django confirms success.
+    checkoutMode = 'cart';
+    buyNowItem = null;
+
+    selectedCartItemIds.clear();
+    cartSelectionInitialized = false;
+
+    form.reset();
+
+    // IMPORTANT FIX:
+    // Get the latest cart and product stock from Django.
+    try {
+      await Promise.all([
+        loadCart(),
+        loadProducts()
+      ]);
+    } catch (refreshError) {
+      console.warn(
+        'Order saved, but refreshing store data failed:',
+        refreshError
+      );
+    }
+
+    // Open order history.
+    page('orders');
 
     notify(
       `Order #${orderNumber} placed successfully! ` +
@@ -2686,6 +2717,7 @@ async function submitCheckout(event) {
     renderCheckoutSummary();
   }
 }
+
 
 
 // ==========================================================
@@ -3335,7 +3367,7 @@ async function confirmLogout() {
 
 document.addEventListener('click', event => {
   const button = event.target.closest(
-    'button[data-page], button[data-action]'
+    '[data-page], [data-action]'
   );
 
   if (!button || button.disabled) {
