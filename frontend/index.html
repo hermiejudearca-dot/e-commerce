@@ -683,7 +683,8 @@ const AUTH = {
 
 const ADMIN_API = {
   cartActivity: `${API_ORIGIN}/api/cart-activity/`,
-  settings: `${API_ORIGIN}/api/settings/`
+  settings: `${API_ORIGIN}/api/settings/`,
+  favorites: `${API_ORIGIN}/api/admin/favorites/`
 };
 
 
@@ -2238,48 +2239,318 @@ function renderCartActivity() {
 
 
 // =====================================================
-// FAVORITES PAGE
+// FAVORITES ? STOREFRONT REPORT
 // =====================================================
 
-// NOTE:
-// The current product API does not expose a staff-only
-// favorites report for storefront.Favorite.
-//
-// We intentionally do not invent customer favorites
-// or display sample records as real database entries.
+let favoritesReport = null;
+
+// Tracks whether Favorites data is loading.
+let favoritesLoading = false;
+
+// Stores an error message if the API request fails.
+let favoritesError = '';
+
+
+// =====================================================
+// RENDER CUSTOMER FAVORITES
+// =====================================================
 
 function renderFavorites() {
+
+  // Protect customer information from signed-out users.
+  if (!signedInUser?.is_staff) {
+    return `
+      ${head(
+        'Favorites',
+        'Customer wishlist activity and favorite products.'
+      )}
+
+      <section class="panel">
+        <div class="empty">
+          Sign in with a staff account to view favorites.
+        </div>
+      </section>
+    `;
+  }
+
+  const data = favoritesReport || {};
+
+  const items = Array.isArray(data.favorites)
+    ? data.favorites
+    : [];
+
+  const popular = Array.isArray(data.most_favorited)
+    ? data.most_favorited
+    : [];
+
+
+  // =====================================================
+  // CUSTOMER FAVORITES TABLE
+  // =====================================================
+
+  const favoriteRows = items.map(item => `
+    <tr>
+      <td>
+        ${esc(item.customer || 'Unknown')}
+      </td>
+
+      <td>
+        ${esc(item.email || '—')}
+      </td>
+
+      <td>
+        <div class="product-cell">
+          <span class="product-emoji">
+
+            ${item.product_image
+              ? `
+                <img
+                  src="${esc(item.product_image)}"
+                  alt="${esc(item.product_name || 'Product')}"
+                  loading="lazy"
+                  onerror="this.parentElement.textContent='🍩'"
+                >
+              `
+              : '🍩'
+            }
+
+          </span>
+
+          <b>
+            ${esc(item.product_name || 'Unknown')}
+          </b>
+        </div>
+      </td>
+
+      <td>
+        ${money(item.price)}
+      </td>
+    </tr>
+  `).join('');
+
+
+  // =====================================================
+  // MOST FAVORITED PRODUCTS TABLE
+  // =====================================================
+
+  const popularRows = popular.map(item => `
+    <tr>
+      <td>
+        <div class="product-cell">
+          <span class="product-emoji">
+
+            ${item.product_image
+              ? `
+                <img
+                  src="${esc(item.product_image)}"
+                  alt="${esc(item.product_name || 'Product')}"
+                  loading="lazy"
+                  onerror="this.parentElement.textContent='🍩'"
+                >
+              `
+              : '🍩'
+            }
+
+          </span>
+
+          <b>
+            ${esc(item.product_name || 'Unknown')}
+          </b>
+        </div>
+      </td>
+
+      <td>
+        ${Number(item.favorite_count || 0)}
+      </td>
+    </tr>
+  `).join('');
+
+
+  // =====================================================
+  // FAVORITES PAGE CONTENT
+  // =====================================================
+
+  let content = '';
+
+  // Show loading message while requesting data.
+  if (favoritesLoading) {
+
+    content = `
+      <section class="panel">
+        <div class="empty">
+          Loading customer favorites...
+        </div>
+      </section>
+    `;
+
+  }
+
+  // Show the actual error if the request fails.
+  else if (favoritesError) {
+
+    content = `
+      <section class="panel">
+        <div class="empty">
+
+          <h3>
+            Could not load favorites
+          </h3>
+
+          <p>
+            ${esc(favoritesError)}
+          </p>
+
+        </div>
+      </section>
+    `;
+
+  }
+
+  // Show this before the first request completes.
+  else if (!favoritesReport) {
+
+    content = `
+      <section class="panel">
+        <div class="empty">
+          Open this page to load customer favorites.
+        </div>
+      </section>
+    `;
+
+  }
+
+  // Display real data from Django.
+  else {
+
+    content = `
+
+      <!-- FAVORITES STATISTICS -->
+
+      <section class="stats">
+
+        ${stat(
+          '♡',
+          'Total Favorites',
+          Number(data.total_favorites || 0)
+        )}
+
+        ${stat(
+          '★',
+          'Favorited Products',
+          Number(data.total_favorited_products || 0)
+        )}
+
+      </section>
+
+
+      <!-- CUSTOMER FAVORITES -->
+
+      <section class="panel">
+
+        <div class="panelhead">
+          <h3>Customer Favorites</h3>
+        </div>
+
+        ${items.length
+          ? table(
+              [
+                'Customer',
+                'Email',
+                'Product',
+                'Price'
+              ],
+              favoriteRows
+            )
+          : `
+              <div class="empty">
+                No customer favorites yet.
+                Saved products will appear here.
+              </div>
+            `
+        }
+
+      </section>
+
+
+      <!-- MOST FAVORITED PRODUCTS -->
+
+      <section
+        class="panel"
+        style="margin-top:16px"
+      >
+
+        <div class="panelhead">
+          <h3>Most Favorited Products</h3>
+        </div>
+
+        ${table(
+          [
+            'Product',
+            'Number of Favorites'
+          ],
+          popularRows
+        )}
+
+      </section>
+    `;
+
+  }
+
+
   return `
     ${head(
       'Favorites',
       'Customer wishlist activity and favorite products.'
     )}
 
-    <section class="panel">
-      <div class="panelhead">
-        <h3>Customer Favorites</h3>
-      </div>
-
-      <div class="empty">
-        <div style="font-size:32px;margin-bottom:12px">
-          ♡
-        </div>
-
-        <h3>Favorites report is not connected yet</h3>
-
-        <p>
-          Your customer storefront can save favorites,
-          but the admin reporting endpoint has not been
-          added yet.
-        </p>
-
-        <p class="sub">
-          We'll connect this page to the real
-          storefront favorites database in a later step.
-        </p>
-      </div>
-    </section>
+    ${content}
   `;
+}
+
+
+// =====================================================
+// LOAD CUSTOMER FAVORITES FROM DJANGO
+// =====================================================
+
+async function loadFavoritesReport() {
+
+  // Only staff accounts can retrieve this report.
+  if (!signedInUser?.is_staff) {
+    return;
+  }
+
+  favoritesLoading = true;
+  favoritesError = '';
+
+  if (currentPage === 'favorites') {
+    render();
+  }
+
+  try {
+
+    // Use our existing authenticated API helper.
+    favoritesReport = await apiRequest(
+      ADMIN_API.favorites
+    );
+
+  } catch (error) {
+
+    favoritesReport = null;
+
+    favoritesError =
+      error.message || 'Unable to load favorites.';
+
+  } finally {
+
+    favoritesLoading = false;
+
+    // Avoid interrupting another page if the user
+    // navigated away while favorites were loading.
+    if (currentPage === 'favorites') {
+      render();
+    }
+
+  }
 }
 
 
@@ -3678,6 +3949,10 @@ function navigate(page) {
 
   currentPage = page;
   render();
+
+  if (page === 'favorites') {
+    loadFavoritesReport();
+  }
 
   document.getElementById('sidebar')
     .classList.remove('open');

@@ -135,6 +135,12 @@ urlpatterns = [
         name="favorites",
     ),
 
+    path(
+    "admin/favorites/",
+    views.admin_favorites_report,
+    name="admin-favorites-report",
+    ),
+
     # ======================================================
     # STORE SETTINGS
     # ======================================================

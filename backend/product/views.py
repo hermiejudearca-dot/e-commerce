@@ -1401,3 +1401,71 @@ def store_settings(request):
             ),
         },
     })
+
+# ==========================================================
+# ADMIN FAVORITES REPORT
+# Reads actual customer favorites from the Storefront app
+# ==========================================================
+
+@require_http_methods(["GET"])
+def admin_favorites_report(request):
+    permission_error = require_staff(request)
+
+    if permission_error:
+        return permission_error
+
+    # Import separately so we don't interfere with
+    # the original Product app's Favorite model.
+    from storefront.models import Favorite as StorefrontFavorite
+
+    favorites = (
+        StorefrontFavorite.objects
+        .select_related("user", "product")
+        .order_by("product__name", "user__username")
+    )
+
+    favorite_records = []
+    product_counts = {}
+
+    for favorite in favorites:
+        user = favorite.user
+        product = favorite.product
+
+        image_url = (
+            request.build_absolute_uri(product.image.url)
+            if product.image
+            else None
+        )
+
+        favorite_records.append({
+            "id": favorite.id,
+            "customer": user.get_full_name() or user.username,
+            "email": user.email,
+            "product_id": product.id,
+            "product_name": product.name,
+            "product_image": image_url,
+            "price": str(product.price),
+        })
+
+        if product.id not in product_counts:
+            product_counts[product.id] = {
+                "product_id": product.id,
+                "product_name": product.name,
+                "product_image": image_url,
+                "favorite_count": 0,
+            }
+
+        product_counts[product.id]["favorite_count"] += 1
+
+    most_favorited = sorted(
+        product_counts.values(),
+        key=lambda item: item["favorite_count"],
+        reverse=True,
+    )
+
+    return JsonResponse({
+        "total_favorites": len(favorite_records),
+        "total_favorited_products": len(product_counts),
+        "favorites": favorite_records,
+        "most_favorited": most_favorited,
+    })
