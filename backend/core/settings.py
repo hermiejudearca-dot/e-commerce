@@ -53,11 +53,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
 
-    # Cloudinary storage integration
-    "cloudinary_storage",
 
     # Static files
     "django.contrib.staticfiles",
+
+    # Cloudinary storage integration
+    "cloudinary_storage",
 
     # Third-party applications
     "rest_framework",
