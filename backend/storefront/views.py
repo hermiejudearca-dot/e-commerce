@@ -1,4 +1,3 @@
-
 import json
 from decimal import Decimal
 
@@ -12,7 +11,7 @@ from django.utils import timezone
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods
 
-from product.models import Product
+from product.models import Product, CartActivity
 from .models import (
     CustomerProfile,
     DeliveryAddress,
@@ -347,6 +346,45 @@ def products(request):
     })
 
 
+def record_cart_activity(user, product, action, quantity):
+    """
+    Save a storefront cart event for the Honeybail admin dashboard.
+
+    CartActivity is kept in the existing product app so the dashboard
+    can use one historical activity table. The activity is linked
+    directly to the authenticated Django user; it does not create a
+    second Customer record.
+    """
+    if product is None:
+        return
+
+    CartActivity.objects.create(
+        user=user,
+        product=product,
+        product_name=product.name,
+        action=action,
+        quantity=quantity,
+    )
+
+
+def cart_customer_name(user=None, legacy_customer=None):
+    """Return a readable customer name for admin cart records."""
+    if user is not None:
+        profile = getattr(user, "store_profile", None)
+
+        if profile and profile.full_name:
+            return profile.full_name
+
+        full_name = user.get_full_name().strip()
+
+        return full_name or user.email or user.get_username()
+
+    if legacy_customer is not None:
+        return legacy_customer.name
+
+    return "Unknown customer"
+
+
 # ==========================================================
 # SHOPPING CART
 # ==========================================================
@@ -357,6 +395,10 @@ def cart(request):
 
     if denied:
         return denied
+
+    # ------------------------------------------------------
+    # GET: CURRENT CUSTOMER CART
+    # ------------------------------------------------------
 
     if request.method == "GET":
         items = list(
@@ -400,6 +442,10 @@ def cart(request):
     if data is None:
         return err("Invalid JSON.")
 
+    # ------------------------------------------------------
+    # POST: ADD PRODUCT TO CART
+    # ------------------------------------------------------
+
     if request.method == "POST":
         product_id = positive_integer(data.get("product_id"))
         quantity = positive_integer(data.get("quantity", 1))
@@ -435,6 +481,13 @@ def cart(request):
             if item:
                 item.quantity = new_quantity
                 item.save(update_fields=["quantity"])
+
+                record_cart_activity(
+                    request.user,
+                    product,
+                    "Quantity Updated",
+                    new_quantity,
+                )
             else:
                 CartItem.objects.create(
                     user=request.user,
@@ -442,7 +495,18 @@ def cart(request):
                     quantity=quantity,
                 )
 
+                record_cart_activity(
+                    request.user,
+                    product,
+                    "Added",
+                    quantity,
+                )
+
         return JsonResponse({"ok": True})
+
+    # ------------------------------------------------------
+    # PATCH / DELETE: UPDATE OR REMOVE CART ITEM
+    # ------------------------------------------------------
 
     item_id = positive_integer(data.get("item_id"))
 
@@ -453,6 +517,7 @@ def cart(request):
         item = (
             CartItem.objects
             .select_for_update()
+            .select_related("product")
             .filter(pk=item_id, user=request.user)
             .first()
         )
@@ -461,6 +526,13 @@ def cart(request):
             return err("Cart item not found.", 404)
 
         if request.method == "DELETE":
+            record_cart_activity(
+                request.user,
+                item.product,
+                "Removed",
+                item.quantity,
+            )
+
             item.delete()
 
         else:
@@ -485,10 +557,90 @@ def cart(request):
                     "Quantity exceeds stock or product unavailable."
                 )
 
+            previous_quantity = item.quantity
             item.quantity = quantity
             item.save(update_fields=["quantity"])
 
+            if quantity != previous_quantity:
+                record_cart_activity(
+                    request.user,
+                    product,
+                    "Quantity Updated",
+                    quantity,
+                )
+
     return JsonResponse({"ok": True})
+
+
+# ==========================================================
+# ADMIN CART OVERVIEW
+# Current cart contents + historical cart activity
+# ==========================================================
+
+@require_http_methods(["GET"])
+def admin_cart_overview(request):
+    if not request.user.is_authenticated:
+        return err("Please sign in to access the admin dashboard.", 401)
+
+    if not request.user.is_staff:
+        return err("You do not have permission to view cart activity.", 403)
+
+    # Current cart contents are read from the active storefront cart.
+    current_items = (
+        CartItem.objects
+        .select_related("user", "user__store_profile", "product")
+        .order_by("-id")[:500]
+    )
+
+    current_carts = []
+
+    for item in current_items:
+        current_carts.append({
+            "id": item.id,
+            "customer": cart_customer_name(item.user),
+            "email": item.user.email,
+            "product_id": item.product_id,
+            "product_name": item.product.name,
+            "quantity": item.quantity,
+            "unit_price": str(item.product.price),
+            "subtotal": str(item.product.price * item.quantity),
+        })
+
+    # Historical activity is stored separately from current cart rows.
+    activities = (
+        CartActivity.objects
+        .select_related("user", "user__store_profile", "customer", "product")
+        .order_by("-created_at")[:500]
+    )
+
+    activity_rows = []
+
+    for activity in activities:
+        activity_rows.append({
+            "id": activity.id,
+            "customer": cart_customer_name(
+                getattr(activity, "user", None),
+                activity.customer,
+            ),
+            "product_id": activity.product_id,
+            "product_name": activity.product_name,
+            "action": activity.action,
+            "quantity": activity.quantity,
+            "created_at": activity.created_at.isoformat(),
+        })
+
+    return JsonResponse({
+        "current_carts": current_carts,
+        "activities": activity_rows,
+        "summary": {
+            "current_cart_lines": len(current_carts),
+            "current_cart_quantity": sum(
+                item["quantity"] for item in current_carts
+            ),
+            "historical_activity_count": len(activity_rows),
+        },
+    })
+
 
 # ==========================================================
 # FAVORITES
@@ -782,6 +934,7 @@ def addresses(request):
         "address": serialize_address(address),
     })
 
+
 # ==========================================================
 # VERIFIED PRODUCT REVIEWS
 # ==========================================================
@@ -911,6 +1064,7 @@ def reviews(request, product_id):
     )
 
     return JsonResponse({"ok": True})
+
 
 # ==========================================================
 # CUSTOMER ORDERS + SELECTED CHECKOUT + DISCOUNTED SHIPPING
@@ -1276,6 +1430,20 @@ def orders(request):
                 item.pk
                 for item in cart_items
             ]
+
+            # Record the cart items as removed because they have
+            # successfully moved into an order.
+            for cart_item in cart_items:
+                purchased_product = locked_products.get(
+                    cart_item.product_id
+                )
+
+                record_cart_activity(
+                    request.user,
+                    purchased_product,
+                    "Removed",
+                    cart_item.quantity,
+                )
 
             CartItem.objects.filter(
                 user=request.user,

@@ -19,6 +19,14 @@ urlpatterns = [
     # Shopping cart
     path('cart/', views.cart, name='store_cart'),
 
+    # Admin cart overview
+    # Current cart contents + historical cart activity
+    path(
+        'admin/cart-overview/',
+        views.admin_cart_overview,
+        name='admin_cart_overview',
+    ),
+
     # Customer favorites
     path('favorites/', views.favorites, name='store_favorites'),
 

@@ -653,18 +653,16 @@ button { cursor:pointer; }
 
 <script>
 
-// =====================================================
-// DJANGO API CONFIGURATION
-// =====================================================
-
+ // =====================================================
+ // DJANGO API CONFIGURATION
+ // =====================================================
 
 const API_ORIGIN = window.DJANGO_API_URL || (
-    ["localhost", "127.0.0.1"].includes(window.location.hostname) &&
-    ["5500", "5501"].includes(window.location.port)
-        ? "http://127.0.0.1:8000"
-        : window.location.origin
+  ["localhost", "127.0.0.1"].includes(window.location.hostname) &&
+  ["5500", "5501"].includes(window.location.port)
+    ? "http://127.0.0.1:8000"
+    : window.location.origin
 );
-
 
 const API = {
   products: `${API_ORIGIN}/api/products/`,
@@ -682,7 +680,7 @@ const AUTH = {
 };
 
 const ADMIN_API = {
-  cartActivity: `${API_ORIGIN}/api/cart-activity/`,
+  cartOverview: `${API_ORIGIN}/api/store/admin/cart-overview/`,
   settings: `${API_ORIGIN}/api/settings/`,
   favorites: `${API_ORIGIN}/api/admin/favorites/`
 };
@@ -837,10 +835,46 @@ async function loadAdminExtras() {
   if (!signedInUser?.is_staff) return;
 
   try {
-    const data = await apiRequest(ADMIN_API.cartActivity);
-    cartActivity = data.activities || [];
+    const data = await apiRequest(ADMIN_API.cartOverview);
+
+    currentCarts = Array.isArray(data.current_carts)
+      ? data.current_carts
+      : [];
+
+    cartActivity = Array.isArray(data.activities)
+      ? data.activities
+      : [];
+
+    const summary = data.summary || {};
+
+    cartSummary = {
+      current_cart_lines: Number(
+        summary.current_cart_lines ?? currentCarts.length
+      ),
+      current_cart_quantity: Number(
+        summary.current_cart_quantity ??
+        currentCarts.reduce(
+          (total, item) => total + Number(item.quantity || 0),
+          0
+        )
+      ),
+      historical_activity_count: Number(
+        summary.historical_activity_count ?? cartActivity.length
+      )
+    };
+
     clearError('cart');
+
   } catch (error) {
+    currentCarts = [];
+    cartActivity = [];
+
+    cartSummary = {
+      current_cart_lines: 0,
+      current_cart_quantity: 0,
+      historical_activity_count: 0
+    };
+
     showError('cart', error.message);
   }
 
@@ -858,6 +892,7 @@ async function loadAdminExtras() {
 
     storeSettingsLoaded = true;
     clearError('settings');
+
   } catch (error) {
     showError('settings', error.message);
   }
@@ -874,7 +909,15 @@ let customers = [];
 let dashboardData = null;
 let reportData = null;
 let apiErrors = {};
+let currentCarts = [];
 let cartActivity = [];
+
+let cartSummary = {
+  current_cart_lines: 0,
+  current_cart_quantity: 0,
+  historical_activity_count: 0
+};
+
 let favorites = [];
 
 let settings = {
@@ -1338,7 +1381,6 @@ function nextOrderStatus(status) {
   return ORDER_STAGES[index + 1];
 }
 
-
 // =====================================================
 // DASHBOARD STATISTIC CARDS
 // =====================================================
@@ -1657,7 +1699,7 @@ function renderDashboard() {
         <td>${esc(order.customer)}</td>
         <td>${order.items}</td>
         <td>${money(order.total)}</td>
-        <td>${badge(order.status)}</td>
+        <td>${badge(order.status)}
       </tr>
     `).join('');
 
@@ -1916,12 +1958,6 @@ function renderProducts() {
 
 
 // =====================================================
-// END OF PART 3
-// =====================================================
-
-// PART 4 WILL CONTINUE HERE
-
-// =====================================================
 // CUSTOMERS PAGE
 // =====================================================
 
@@ -2164,15 +2200,30 @@ function renderReports() {
   `;
 }
 
-
 // =====================================================
 // CART ACTIVITY PAGE
 // =====================================================
 
 function renderCartActivity() {
+  const carts = Array.isArray(currentCarts)
+    ? currentCarts
+    : [];
+
   const activities = Array.isArray(cartActivity)
     ? cartActivity
     : [];
+
+  const currentCartLines = Number(
+    cartSummary.current_cart_lines ?? carts.length
+  );
+
+  const currentCartQuantity = Number(
+    cartSummary.current_cart_quantity ??
+    carts.reduce(
+      (total, item) => total + Number(item.quantity || 0),
+      0
+    )
+  );
 
   const addedCount = activities.filter(
     item => item.action === 'Added'
@@ -2186,7 +2237,18 @@ function renderCartActivity() {
     item => item.action === 'Quantity Updated'
   ).length;
 
-  const rows = activities.map(activity => `
+  const currentCartRows = carts.map(item => `
+    <tr>
+      <td><b>${esc(item.customer || 'Unknown')}</b></td>
+      <td>${esc(item.email || '—')}</td>
+      <td>${esc(item.product_name || 'Unknown')}</td>
+      <td>${Number(item.quantity || 0)}</td>
+      <td>${money(item.unit_price)}</td>
+      <td><b>${money(item.subtotal)}</b></td>
+    </tr>
+  `).join('');
+
+  const activityRows = activities.map(activity => `
     <tr>
       <td>${esc(activity.customer || 'Unknown')}</td>
       <td>${esc(activity.product_name || 'Unknown')}</td>
@@ -2199,13 +2261,15 @@ function renderCartActivity() {
   return `
     ${head(
       'Cart Activity',
-      'Monitor activity from the original customer cart API.'
+      'Monitor current customer carts and historical cart activity.'
     )}
 
     ${errorBox('cart')}
 
     <section class="stats">
-      ${stat('🛒', 'Activity Records', activities.length)}
+      ${stat('🛒', 'Current Cart Lines', currentCartLines)}
+      ${stat('📦', 'Items in Carts', currentCartQuantity)}
+      ${stat('◷', 'Activity Records', activities.length)}
       ${stat('＋', 'Items Added', addedCount)}
       ${stat('−', 'Items Removed', removedCount)}
       ${stat('✎', 'Quantity Updates', updatedCount)}
@@ -2213,15 +2277,38 @@ function renderCartActivity() {
 
     <section class="panel">
       <div class="panelhead">
-        <h3>Recent Cart Activity</h3>
+        <h3>Current Cart Contents</h3>
 
-        <button
-          class="secondary"
-          data-action="refresh-cart"
-        >
+        <button class="secondary" data-action="refresh-cart">
           ↻ Refresh
         </button>
       </div>
+
+      <p class="sub">
+        Products customers currently have in their shopping carts.
+      </p>
+
+      ${table(
+        [
+          'Customer',
+          'Email',
+          'Product',
+          'Quantity',
+          'Unit Price',
+          'Subtotal'
+        ],
+        currentCartRows
+      )}
+    </section>
+
+    <section class="panel">
+      <div class="panelhead">
+        <h3>Recent Cart Activity</h3>
+      </div>
+
+      <p class="sub">
+        Historical records of products added, updated, and removed.
+      </p>
 
       ${table(
         [
@@ -2231,7 +2318,7 @@ function renderCartActivity() {
           'Quantity',
           'Date'
         ],
-        rows
+        activityRows
       )}
     </section>
   `;
@@ -2239,32 +2326,20 @@ function renderCartActivity() {
 
 
 // =====================================================
-// FAVORITES ? STOREFRONT REPORT
+// FAVORITES PAGE — REAL STOREFRONT FAVORITES
 // =====================================================
 
 let favoritesReport = null;
-
-// Tracks whether Favorites data is loading.
 let favoritesLoading = false;
-
-// Stores an error message if the API request fails.
 let favoritesError = '';
 
-
-// =====================================================
-// RENDER CUSTOMER FAVORITES
-// =====================================================
-
 function renderFavorites() {
-
-  // Protect customer information from signed-out users.
   if (!signedInUser?.is_staff) {
     return `
       ${head(
         'Favorites',
         'Customer wishlist activity and favorite products.'
       )}
-
       <section class="panel">
         <div class="empty">
           Sign in with a staff account to view favorites.
@@ -2274,107 +2349,60 @@ function renderFavorites() {
   }
 
   const data = favoritesReport || {};
-
   const items = Array.isArray(data.favorites)
     ? data.favorites
     : [];
-
   const popular = Array.isArray(data.most_favorited)
     ? data.most_favorited
     : [];
 
-
-  // =====================================================
-  // CUSTOMER FAVORITES TABLE
-  // =====================================================
-
   const favoriteRows = items.map(item => `
     <tr>
-      <td>
-        ${esc(item.customer || 'Unknown')}
-      </td>
-
-      <td>
-        ${esc(item.email || '—')}
-      </td>
-
+      <td>${esc(item.customer || 'Unknown')}</td>
+      <td>${esc(item.email || '—')}</td>
       <td>
         <div class="product-cell">
           <span class="product-emoji">
-
             ${item.product_image
-              ? `
-                <img
-                  src="${esc(item.product_image)}"
-                  alt="${esc(item.product_name || 'Product')}"
-                  loading="lazy"
-                  onerror="this.parentElement.textContent='🍩'"
-                >
-              `
-              : '🍩'
-            }
-
+              ? `<img
+                   src="${esc(item.product_image)}"
+                   alt="${esc(item.product_name || 'Product')}"
+                   loading="lazy"
+                   onerror="this.parentElement.textContent='🍩'"
+                 >`
+              : '🍩'}
           </span>
-
-          <b>
-            ${esc(item.product_name || 'Unknown')}
-          </b>
+          <b>${esc(item.product_name || 'Unknown')}</b>
         </div>
       </td>
-
-      <td>
-        ${money(item.price)}
-      </td>
+      <td>${money(item.price)}</td>
     </tr>
   `).join('');
-
-
-  // =====================================================
-  // MOST FAVORITED PRODUCTS TABLE
-  // =====================================================
 
   const popularRows = popular.map(item => `
     <tr>
       <td>
         <div class="product-cell">
           <span class="product-emoji">
-
             ${item.product_image
-              ? `
-                <img
-                  src="${esc(item.product_image)}"
-                  alt="${esc(item.product_name || 'Product')}"
-                  loading="lazy"
-                  onerror="this.parentElement.textContent='🍩'"
-                >
-              `
-              : '🍩'
-            }
-
+              ? `<img
+                   src="${esc(item.product_image)}"
+                   alt="${esc(item.product_name || 'Product')}"
+                   loading="lazy"
+                   onerror="this.parentElement.textContent='🍩'"
+                 >`
+              : '🍩'}
           </span>
-
-          <b>
-            ${esc(item.product_name || 'Unknown')}
-          </b>
+          <b>${esc(item.product_name || 'Unknown')}</b>
         </div>
       </td>
-
-      <td>
-        ${Number(item.favorite_count || 0)}
-      </td>
+      <td>${Number(item.favorite_count || 0)}</td>
     </tr>
   `).join('');
 
-
-  // =====================================================
-  // FAVORITES PAGE CONTENT
-  // =====================================================
-
   let content = '';
 
-  // Show loading message while requesting data.
   if (favoritesLoading) {
-
     content = `
       <section class="panel">
         <div class="empty">
@@ -2382,33 +2410,18 @@ function renderFavorites() {
         </div>
       </section>
     `;
-
   }
-
-  // Show the actual error if the request fails.
   else if (favoritesError) {
-
     content = `
       <section class="panel">
         <div class="empty">
-
-          <h3>
-            Could not load favorites
-          </h3>
-
-          <p>
-            ${esc(favoritesError)}
-          </p>
-
+          <h3>Could not load favorites</h3>
+          <p>${esc(favoritesError)}</p>
         </div>
       </section>
     `;
-
   }
-
-  // Show this before the first request completes.
   else if (!favoritesReport) {
-
     content = `
       <section class="panel">
         <div class="empty">
@@ -2416,18 +2429,10 @@ function renderFavorites() {
         </div>
       </section>
     `;
-
   }
-
-  // Display real data from Django.
   else {
-
     content = `
-
-      <!-- FAVORITES STATISTICS -->
-
       <section class="stats">
-
         ${stat(
           '♡',
           'Total Favorites',
@@ -2439,14 +2444,9 @@ function renderFavorites() {
           'Favorited Products',
           Number(data.total_favorited_products || 0)
         )}
-
       </section>
 
-
-      <!-- CUSTOMER FAVORITES -->
-
       <section class="panel">
-
         <div class="panelhead">
           <h3>Customer Favorites</h3>
         </div>
@@ -2462,23 +2462,15 @@ function renderFavorites() {
               favoriteRows
             )
           : `
-              <div class="empty">
-                No customer favorites yet.
-                Saved products will appear here.
-              </div>
-            `
+            <div class="empty">
+              No customer favorites yet.
+              Saved products will appear here.
+            </div>
+          `
         }
-
       </section>
 
-
-      <!-- MOST FAVORITED PRODUCTS -->
-
-      <section
-        class="panel"
-        style="margin-top:16px"
-      >
-
+      <section class="panel" style="margin-top:16px">
         <div class="panelhead">
           <h3>Most Favorited Products</h3>
         </div>
@@ -2490,12 +2482,9 @@ function renderFavorites() {
           ],
           popularRows
         )}
-
       </section>
     `;
-
   }
-
 
   return `
     ${head(
@@ -2513,11 +2502,7 @@ function renderFavorites() {
 // =====================================================
 
 async function loadFavoritesReport() {
-
-  // Only staff accounts can retrieve this report.
-  if (!signedInUser?.is_staff) {
-    return;
-  }
+  if (!signedInUser?.is_staff) return;
 
   favoritesLoading = true;
   favoritesError = '';
@@ -2527,29 +2512,22 @@ async function loadFavoritesReport() {
   }
 
   try {
-
-    // Use our existing authenticated API helper.
     favoritesReport = await apiRequest(
       ADMIN_API.favorites
     );
 
   } catch (error) {
-
     favoritesReport = null;
 
     favoritesError =
       error.message || 'Unable to load favorites.';
 
   } finally {
-
     favoritesLoading = false;
 
-    // Avoid interrupting another page if the user
-    // navigated away while favorites were loading.
     if (currentPage === 'favorites') {
       render();
     }
-
   }
 }
 
@@ -2591,7 +2569,6 @@ function renderStoreInfoSettings() {
     <div class="setting-layout">
       <div>
         <div class="store-logo">🍩</div>
-
         <p class="sub">
           Your Honeybail store information.
         </p>
@@ -2663,10 +2640,7 @@ function renderStoreInfoSettings() {
           </div>
 
           <div class="modal-actions">
-            <button
-              class="primary"
-              type="submit"
-            >
+            <button class="primary" type="submit">
               Save Store Information
             </button>
           </div>
@@ -2686,7 +2660,6 @@ function renderShippingSettings() {
     <div class="setting-layout">
       <div>
         <div class="store-logo">🚚</div>
-
         <p class="sub">
           Current checkout delivery configuration.
         </p>
@@ -2696,25 +2669,16 @@ function renderShippingSettings() {
         <div class="formgrid">
           <div class="field">
             <label>Delivery Fee</label>
-
-            <input
-              value="₱50.00"
-              readonly
-            >
+            <input value="₱50.00" readonly>
           </div>
 
           <div class="field">
             <label>Delivery Fee Type</label>
-
-            <input
-              value="Fixed Delivery Fee"
-              readonly
-            >
+            <input value="Fixed Delivery Fee" readonly>
           </div>
 
           <div class="field full">
             <label>Delivery Status</label>
-
             <div class="mutedbox">
               Delivery updates are entered manually
               by authorized Honeybail staff through
@@ -2724,7 +2688,6 @@ function renderShippingSettings() {
 
           <div class="field full">
             <label>Courier Integration</label>
-
             <div class="mutedbox">
               Automatic courier tracking is not
               connected yet. Tracking numbers and
@@ -2755,7 +2718,6 @@ function renderPaymentSettings() {
     <div class="setting-layout">
       <div>
         <div class="store-logo">₱</div>
-
         <p class="sub">
           Current customer payment methods.
         </p>
@@ -2764,7 +2726,6 @@ function renderPaymentSettings() {
       <div>
         <div class="field">
           <label>Cash on Delivery (COD)</label>
-
           <div class="mutedbox">
             Enabled for customer checkout.
           </div>
@@ -2772,7 +2733,6 @@ function renderPaymentSettings() {
 
         <div class="field" style="margin-top:15px">
           <label>GCash</label>
-
           <div class="mutedbox">
             Not available yet. A verified payment
             integration is required.
@@ -2781,7 +2741,6 @@ function renderPaymentSettings() {
 
         <div class="field" style="margin-top:15px">
           <label>Maya</label>
-
           <div class="mutedbox">
             Not available yet. A verified payment
             integration is required.
@@ -2807,7 +2766,6 @@ function renderNotificationSettings() {
     <div class="setting-layout">
       <div>
         <div class="store-logo">🔔</div>
-
         <p class="sub">
           Admin notification information.
         </p>
@@ -2903,13 +2861,6 @@ function render() {
       );
     });
 }
-
-
-// =====================================================
-// END OF PART 4
-// =====================================================
-
-// PART 5 WILL CONTINUE HERE
 
 // =====================================================
 // MODAL SYSTEM
@@ -3404,7 +3355,6 @@ function viewOrder(orderId) {
   modal('Order Details', content);
 }
 
-
 // =====================================================
 // ORDER MANAGEMENT EDITOR
 // =====================================================
@@ -3658,20 +3608,14 @@ function editOrder(orderId) {
 
 
 // =====================================================
-// END OF PART 5
-// =====================================================
-
-// PART 6 WILL CONTINUE HERE
-
-// =====================================================
 // CSV EXPORT HELPERS
 // =====================================================
 
 function csvCell(value) {
   const text = String(value ?? '');
 
-  // Prevent spreadsheet applications from interpreting
-  // untrusted customer data as formulas.
+  // Prevent spreadsheet apps from interpreting
+  // customer-controlled text as a formula.
   const safe = /^[\s]*[=+\-@\t\r]/.test(text)
     ? "'" + text
     : text;
@@ -3928,7 +3872,6 @@ async function saveStoreSettings(form) {
   }
 }
 
-
 // =====================================================
 // NAVIGATION
 // =====================================================
@@ -3952,6 +3895,14 @@ function navigate(page) {
 
   if (page === 'favorites') {
     loadFavoritesReport();
+  }
+
+  if (page === 'cart' && signedInUser?.is_staff) {
+    loadAdminExtras().then(() => {
+      if (currentPage === 'cart') {
+        render();
+      }
+    });
   }
 
   document.getElementById('sidebar')
@@ -4163,7 +4114,7 @@ document.getElementById('overlay')
 
 document.getElementById('backStore')
   .addEventListener('click', () => {
-    window.location.href = '/frontend/store.html';
+    window.location.href = '/';
   });
 
 
@@ -4196,8 +4147,16 @@ document.getElementById('adminMenu')
       customers = [];
       dashboardData = null;
       reportData = null;
+      currentCarts = [];
       cartActivity = [];
+      cartSummary = {
+        current_cart_lines: 0,
+        current_cart_quantity: 0,
+        historical_activity_count: 0
+      };
       favorites = [];
+      favoritesReport = null;
+      favoritesError = '';
 
       await refreshAdminIdentity();
 
@@ -4333,4 +4292,3 @@ initializeAdmin().catch(error => {
 </script>
 </body>
 </html>
-

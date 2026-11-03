@@ -145,6 +145,7 @@ class CartItem(models.Model):
         return f"{self.customer.name}: {self.product.name} x {self.quantity}"
 
 
+
 class CartActivity(models.Model):
     ACTION_CHOICES = [
         ("Added", "Added"),
@@ -152,6 +153,7 @@ class CartActivity(models.Model):
         ("Removed", "Removed"),
     ]
 
+    # Original customer relationship preserved.
     customer = models.ForeignKey(
         Customer,
         on_delete=models.SET_NULL,
@@ -159,6 +161,17 @@ class CartActivity(models.Model):
         null=True,
         blank=True,
     )
+
+    # Connect historical activity to the actual
+    # storefront customer account.
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name="store_cart_activities",
+        null=True,
+        blank=True,
+    )
+
     product = models.ForeignKey(
         Product,
         on_delete=models.SET_NULL,
@@ -166,8 +179,12 @@ class CartActivity(models.Model):
         null=True,
         blank=True,
     )
+
     product_name = models.CharField(max_length=100)
-    action = models.CharField(max_length=30, choices=ACTION_CHOICES)
+    action = models.CharField(
+        max_length=30,
+        choices=ACTION_CHOICES,
+    )
     quantity = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -176,6 +193,7 @@ class CartActivity(models.Model):
 
     def __str__(self):
         return f"{self.action}: {self.product_name}"
+
 
 
 class Favorite(models.Model):
