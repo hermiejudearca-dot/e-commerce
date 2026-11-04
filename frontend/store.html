@@ -1,21 +1,11 @@
-
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 
 <head>
   <meta charset="utf-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#DDF3FF">
-
-  <meta
-    name="description"
-    content="Shop your favorite sweet treats at Honeybail."
-  >
+  <meta name="description" content="Shop your favorite sweet treats at Honeybail.">
 
   <title>Honeybail | Shop</title>
 
@@ -27,108 +17,87 @@
   <!-- ==========================================
        HEADER AND NAVIGATION
        ========================================== -->
+<!-- ==========================================
+     HONEYBAIL COMBINED HEADER
+     LARGE LOGO LEFT - NAVIGATION RIGHT
+     ========================================== -->
 
-  <header class="top">
-    <div class="navwrap">
+<header class="top honeybail-top" id="hero">
 
-      <a
-        href="#shop"
-        class="brand"
-        data-page="shop"
-      >
-        🍯 HONEYBAIL
-      </a>
+    <div class="honeybail-top-inner">
 
-      <nav aria-label="Main navigation">
+        <!-- TOP ROW -->
 
-        <button
-          type="button"
-          data-page="shop"
-        >
-          Shop
-        </button>
+        <div class="honeybail-main-row">
 
-        <button
-          type="button"
-          data-page="favorites"
-        >
-          ♡ Favorites
-        </button>
+            <!-- LARGE HONEYBAIL LOGO -->
 
-        <button
-          type="button"
-          data-page="cart"
-        >
-          🛒 Cart
-          <span id="cartCount">0</span>
-        </button>
+            <h1 class="hero-brand-title">
+                H<span class="donut-o" aria-label="O">O</span>NEYBAIL
+            </h1>
 
-        <button
-          type="button"
-          data-page="orders"
-        >
-          My Orders
-        </button>
+            <!-- NAVIGATION BUTTONS -->
 
-        <button
-          type="button"
-          id="account"
-          data-page="login"
-        >
-          Login
-        </button>
+            <nav class="honeybail-navigation"
+                 aria-label="Main navigation">
 
-        <button
-          type="button"
-          id="logout"
-          hidden
-        >
-          Logout
-        </button>
+                <button type="button" data-page="shop">
+                    Shop
+                </button>
 
-      </nav>
-    </div>
-  </header>
+                <button type="button" data-page="favorites">
+                    ♡ Favorites
+                </button>
 
+                <button type="button" data-page="cart">
+                    🛒 Cart <span id="cartCount">0</span>
+                </button>
 
-  <!-- ==========================================
-       HONEYBAIL HERO
-       ========================================== -->
+                <button type="button" data-page="orders">
+                    My Orders
+                </button>
 
-  <section class="hero" id="hero">
+                <button
+                    type="button"
+                    id="account"
+                    data-page="login"
+                >
+                    Login
+                </button>
 
-    <div class="herowrap">
+                <button
+                    type="button"
+                    id="logout"
+                    hidden
+                >
+                    Logout
+                </button>
 
-      <div class="eyebrow">
-        HONEYBAIL · SWEET TREATS
-      </div>
+            </nav>
 
-      <h1>
-        Small Treats,
-        <br>
-        Big Happiness.
-      </h1>
+        </div>
 
-      <p>
-        Delicious little moments,
-        made sweeter for you.
-      </p>
+        <!-- TAGLINE UNDER THE TOP ROW -->
 
-      <button
-        type="button"
-        class="light"
-        data-page="shop"
-      >
-        Explore Treats ↓
-      </button>
+        <div class="honeybail-subtitle">
+
+            <p class="hero-tagline">
+                Small Treats, Big Happiness.
+            </p>
+
+            <button
+                type="button"
+                class="light hero-button"
+                data-page="shop"
+            >
+                Explore Treats ↓
+            </button>
+
+        </div>
 
     </div>
 
-    <div class="heroart" aria-hidden="true">
-      🍩
-    </div>
-
-  </section>
+</header>
 
 
   <!-- ==========================================
@@ -137,11 +106,7 @@
 
   <main class="wrap">
 
-    <div
-      id="notice"
-      role="status"
-      aria-live="polite"
-    ></div>
+    <div id="notice" role="status" aria-live="polite"></div>
 
 
     <!-- ========================================
@@ -153,34 +118,22 @@
       <div class="sectionhead">
 
         <div>
-          <p class="eyebrow">
-            HANDPICKED FOR YOU
-          </p>
+          <p class="eyebrow">HANDPICKED FOR YOU</p>
 
           <h2>Our Products</h2>
 
           <p class="muted">
-            Fresh favorites from our
-            Honeybail collection.
+            Fresh favorites from our Honeybail collection.
           </p>
         </div>
 
-        <button
-          type="button"
-          id="refresh"
-          class="outline"
-        >
+        <button type="button" id="refresh" class="outline">
           ↻ Refresh
         </button>
 
       </div>
 
-      <!-- Products rendered by store.js -->
-
-      <div
-        id="products"
-        class="productgrid"
-      ></div>
+      <div id="products" class="productgrid"></div>
 
     </section>
 
@@ -191,10 +144,7 @@
 
     <section id="loginPage" hidden>
 
-      <form
-        id="loginForm"
-        class="auth card"
-      >
+      <form id="loginForm" class="auth card">
 
         <h2>Welcome back!</h2>
 
@@ -224,20 +174,14 @@
           >
         </label>
 
-        <button
-          type="submit"
-          class="primary"
-        >
+        <button type="submit" class="primary">
           Login
         </button>
 
         <p>
           New here?
 
-          <a
-            href="#register"
-            data-page="register"
-          >
+          <a href="#register" data-page="register">
             Create an account
           </a>
         </p>
@@ -253,10 +197,7 @@
 
     <section id="registerPage" hidden>
 
-      <form
-        id="registerForm"
-        class="auth card"
-      >
+      <form id="registerForm" class="auth card">
 
         <h2>Join Honeybail ♡</h2>
 
@@ -306,20 +247,14 @@
           >
         </label>
 
-        <button
-          type="submit"
-          class="primary"
-        >
+        <button type="submit" class="primary">
           Create Account
         </button>
 
         <p>
           Already have an account?
 
-          <a
-            href="#login"
-            data-page="login"
-          >
+          <a href="#login" data-page="login">
             Log in
           </a>
         </p>
@@ -335,15 +270,10 @@
 
     <section id="cartPage" hidden>
 
-      <!-- CART HEADING -->
-
       <div class="sectionhead cart-page-heading">
 
         <div>
-
-          <p class="eyebrow">
-            YOUR SWEET PICKS
-          </p>
+          <p class="eyebrow">YOUR SWEET PICKS</p>
 
           <h2>Shopping Cart</h2>
 
@@ -351,35 +281,16 @@
             Select your favorites, edit quantities,
             and review your total before checkout.
           </p>
-
         </div>
 
-        <button
-          type="button"
-          class="outline"
-          data-page="shop"
-        >
+        <button type="button" class="outline" data-page="shop">
           ← Continue Shopping
         </button>
 
       </div>
 
 
-      <!-- MAIN CART CONTAINER -->
-
       <div class="card shopping-cart-card">
-
-        <!--
-          JavaScript renders:
-          - Select All Available checkbox
-          - Product selection checkboxes
-          - Product images and information
-          - Quantity editor with minus and plus
-          - Product subtotal
-          - Remove action
-
-          The IDs below are preserved for store.js.
-        -->
 
         <div
           id="cartItems"
@@ -392,8 +303,6 @@
         </div>
 
 
-        <!-- CART SUMMARY -->
-
         <div class="cart-summary">
 
           <div class="cart-summary-content">
@@ -402,48 +311,33 @@
               Order Summary
             </h3>
 
-            <!--
-              JavaScript displays:
-              Selected Subtotal
-              Discounted Shipping
-              Grand Total
-            -->
-
             <div
               id="cartTotal"
               class="cart-totals"
               aria-live="polite"
             >
+
               <div class="cart-total-line">
-
                 <span>Selected Subtotal</span>
-
                 <strong>₱0.00</strong>
-
               </div>
 
               <div class="cart-total-line">
-
                 <span>Discounted Shipping</span>
-
                 <strong>₱0.00</strong>
-
               </div>
 
               <div class="cart-total-line cart-grand-total">
-
                 <strong>Grand Total</strong>
-
                 <strong>₱0.00</strong>
-
               </div>
+
             </div>
 
-
             <p class="cart-shipping-note muted">
-              Shipping starts at ₱50 for the first
-              unit, plus ₱20 for every additional
-              unit in your selected order.
+              Shipping starts at ₱50 for the first unit,
+              plus ₱20 for every additional unit
+              in your selected order.
             </p>
 
             <p class="cart-checkout-note muted">
@@ -451,9 +345,6 @@
               in your checkout. Unchecked products
               will remain in your cart.
             </p>
-
-
-            <!-- CHECKOUT SELECTED BUTTON -->
 
             <button
               type="button"
@@ -474,12 +365,6 @@
 
 
     <!-- ========================================
-         END OF PART 1
-         ======================================== -->
-
-    <!-- PASTE PART 2 DIRECTLY BELOW THIS LINE -->
-
-    <!-- ========================================
          FAVORITES PAGE
          ======================================== -->
 
@@ -488,9 +373,7 @@
       <div class="sectionhead">
 
         <div>
-          <p class="eyebrow">
-            YOUR WISHLIST
-          </p>
+          <p class="eyebrow">YOUR WISHLIST</p>
 
           <h2>Saved Favorites ♡</h2>
 
@@ -500,32 +383,13 @@
           </p>
         </div>
 
-        <button
-          type="button"
-          class="outline"
-          data-page="shop"
-        >
+        <button type="button" class="outline" data-page="shop">
           ← Continue Shopping
         </button>
 
       </div>
 
-      <!--
-        JavaScript renders favorite products here.
-
-        Favorite products retain:
-        - Product image
-        - Product name and price
-        - Add to Cart
-        - Buy Now
-        - Remove from Favorites
-        - Customer reviews
-      -->
-
-      <div
-        id="favorites"
-        class="productgrid"
-      ></div>
+      <div id="favorites" class="productgrid"></div>
 
     </section>
 
@@ -539,9 +403,7 @@
       <div class="sectionhead">
 
         <div>
-          <p class="eyebrow">
-            MY HONEYBAIL
-          </p>
+          <p class="eyebrow">MY HONEYBAIL</p>
 
           <h2>My Account</h2>
 
@@ -551,18 +413,12 @@
           </p>
         </div>
 
-        <button
-          type="button"
-          class="outline"
-          data-page="shop"
-        >
+        <button type="button" class="outline" data-page="shop">
           ← Back to Shop
         </button>
 
       </div>
 
-
-      <!-- ACCOUNT LAYOUT -->
 
       <div class="account-layout">
 
@@ -572,52 +428,34 @@
 
           <div class="account-card-heading">
 
-            <div
-              class="account-avatar"
-              aria-hidden="true"
-            >
+            <div class="account-avatar" aria-hidden="true">
               ♡
             </div>
 
             <div>
-              <p class="eyebrow">
-                CUSTOMER PROFILE
-              </p>
-
+              <p class="eyebrow">CUSTOMER PROFILE</p>
               <h3>Profile Information</h3>
             </div>
 
           </div>
 
-
           <div class="account-profile-details">
 
             <p>
               <strong>Name:</strong>
-
-              <span id="profileName">
-                —
-              </span>
+              <span id="profileName">—</span>
             </p>
 
             <p>
               <strong>Email:</strong>
-
-              <span id="profileEmail">
-                —
-              </span>
+              <span id="profileEmail">—</span>
             </p>
 
           </div>
 
-
           <div class="actions">
 
-            <button
-              type="button"
-              class="outline"
-              data-page="orders"
-            >
+            <button type="button" class="outline" data-page="orders">
               View My Orders →
             </button>
 
@@ -633,47 +471,23 @@
           <div class="sectionhead">
 
             <div>
-              <p class="eyebrow">
-                DELIVERY DETAILS
-              </p>
+              <p class="eyebrow">DELIVERY DETAILS</p>
 
               <h3>Saved Addresses</h3>
 
               <p class="muted">
-                Keep your delivery addresses
-                ready for a faster checkout.
+                Keep your delivery addresses ready
+                for a faster checkout.
               </p>
             </div>
 
-
-            <button
-              type="button"
-              id="addAddressBtn"
-              class="outline"
-            >
+            <button type="button" id="addAddressBtn" class="outline">
               + Add Address
             </button>
 
           </div>
 
-
-          <!--
-            JavaScript renders saved address cards.
-
-            Each saved address may include:
-            - Address label
-            - Recipient name
-            - Contact number
-            - Complete address
-            - Edit
-            - Set Default
-            - Delete
-          -->
-
-          <div
-            id="savedAddresses"
-            class="stack"
-          >
+          <div id="savedAddresses" class="stack">
             <p class="muted">
               No saved addresses yet.
             </p>
@@ -695,9 +509,7 @@
       <div class="sectionhead">
 
         <div>
-          <p class="eyebrow">
-            DELIVERY INFORMATION
-          </p>
+          <p class="eyebrow">DELIVERY INFORMATION</p>
 
           <h2 id="addressFormTitle">
             Add Delivery Address
@@ -709,29 +521,14 @@
           </p>
         </div>
 
-
-        <button
-          type="button"
-          id="cancelAddressBtn"
-          class="outline"
-        >
+        <button type="button" id="cancelAddressBtn" class="outline">
           ← Back
         </button>
 
       </div>
 
 
-      <!-- ADDRESS FORM -->
-
-      <form
-        id="addressForm"
-        class="card checkout address-form-card"
-      >
-
-        <!--
-          Used by JavaScript to distinguish
-          adding an address from editing one.
-        -->
+      <form id="addressForm" class="card checkout address-form-card">
 
         <input
           type="hidden"
@@ -739,36 +536,16 @@
           id="addressId"
         >
 
-
-        <!-- ADDRESS LABEL -->
-
         <label>
           Address Label
 
-          <select
-            name="label"
-            required
-          >
-            <option value="Home">
-              Home
-            </option>
-
-            <option value="Work">
-              Work
-            </option>
-
-            <option value="School">
-              School
-            </option>
-
-            <option value="Other">
-              Other
-            </option>
+          <select name="label" required>
+            <option value="Home">Home</option>
+            <option value="Work">Work</option>
+            <option value="School">School</option>
+            <option value="Other">Other</option>
           </select>
         </label>
-
-
-        <!-- RECIPIENT NAME -->
 
         <label>
           Recipient Full Name
@@ -783,9 +560,6 @@
           >
         </label>
 
-
-        <!-- CONTACT NUMBER -->
-
         <label>
           Contact Number
 
@@ -798,9 +572,6 @@
             required
           >
         </label>
-
-
-        <!-- STREET ADDRESS -->
 
         <label>
           House Number / Street / Building
@@ -815,9 +586,6 @@
           >
         </label>
 
-
-        <!-- BARANGAY -->
-
         <label>
           Barangay
 
@@ -829,9 +597,6 @@
             required
           >
         </label>
-
-
-        <!-- CITY OR MUNICIPALITY -->
 
         <label>
           City / Municipality
@@ -846,9 +611,6 @@
           >
         </label>
 
-
-        <!-- PROVINCE -->
-
         <label>
           Province
 
@@ -861,9 +623,6 @@
             required
           >
         </label>
-
-
-        <!-- POSTAL CODE -->
 
         <label>
           ZIP Code
@@ -878,9 +637,6 @@
           >
         </label>
 
-
-        <!-- DEFAULT ADDRESS -->
-
         <label class="agree">
 
           <input
@@ -892,23 +648,13 @@
 
         </label>
 
-
-        <!-- FORM ACTIONS -->
-
         <div class="actions address-form-actions">
 
-          <button
-            type="submit"
-            class="primary"
-          >
+          <button type="submit" class="primary">
             Save Address
           </button>
 
-          <button
-            type="button"
-            class="outline"
-            data-page="account"
-          >
+          <button type="button" class="outline" data-page="account">
             Cancel
           </button>
 
@@ -920,12 +666,6 @@
 
 
     <!-- ========================================
-         END OF PART 2
-         ======================================== -->
-
-    <!-- PASTE PART 3 DIRECTLY BELOW THIS LINE -->
-
-    <!-- ========================================
          MY ORDERS PAGE
          ======================================== -->
 
@@ -934,9 +674,7 @@
       <div class="sectionhead">
 
         <div>
-          <p class="eyebrow">
-            PURCHASE HISTORY
-          </p>
+          <p class="eyebrow">PURCHASE HISTORY</p>
 
           <h2>My Orders</h2>
 
@@ -946,37 +684,20 @@
           </p>
         </div>
 
-        <button
-          type="button"
-          class="outline"
-          data-page="shop"
-        >
+        <button type="button" class="outline" data-page="shop">
           ← Continue Shopping
         </button>
 
       </div>
 
-      <!--
-        store.js renders:
-        - Order number
-        - Order date
-        - Ordered products
-        - Total amount
-        - Order status
-        - Delivery tracking steps
-        - Review buttons for delivered products
-      -->
-
-      <div
-        id="orders"
-        class="stack orders-list"
-      ></div>
+      <div id="orders" class="stack orders-list"></div>
 
     </section>
 
 
     <!-- ========================================
          CHECKOUT PAGE
+         UPDATED ORDER
          ======================================== -->
 
     <section id="checkoutPage" hidden>
@@ -984,9 +705,7 @@
       <div class="sectionhead">
 
         <div>
-          <p class="eyebrow">
-            ALMOST THERE
-          </p>
+          <p class="eyebrow">ALMOST THERE</p>
 
           <h2>Secure Checkout 🛍️</h2>
 
@@ -997,37 +716,25 @@
           </p>
         </div>
 
-        <button
-          type="button"
-          id="checkoutBack"
-          class="outline"
-        >
+        <button type="button" id="checkoutBack" class="outline">
           ← Back
         </button>
 
       </div>
 
 
-      <!-- MAIN CHECKOUT FORM -->
-
-      <form
-        id="checkoutForm"
-        class="checkout-layout"
-      >
+      <form id="checkoutForm" class="checkout-layout">
 
 
         <!-- ====================================
-             DELIVERY ADDRESS
+             01. DELIVERY ADDRESS
              ==================================== -->
 
         <div class="card checkout-address-card">
 
           <div class="checkout-card-heading">
-
             <span aria-hidden="true">📍</span>
-
             <h3>Delivery Address</h3>
-
           </div>
 
           <p class="muted">
@@ -1035,16 +742,7 @@
             your Honeybail treats delivered.
           </p>
 
-
-          <!-- SAVED DELIVERY ADDRESSES -->
-
-          <div
-            id="checkoutAddresses"
-            class="stack"
-          ></div>
-
-
-          <!-- ADD NEW ADDRESS -->
+          <div id="checkoutAddresses" class="stack"></div>
 
           <button
             type="button"
@@ -1055,44 +753,30 @@
           </button>
 
 
-          <!--
-            Legacy checkout fields retained
-            for compatibility with older code.
-          -->
+          <!-- LEGACY FIELDS -->
 
           <div id="checkoutLegacyFields" hidden>
 
             <label>
               Recipient Name
 
-              <input
-                name="recipient"
-                maxlength="120"
-              >
+              <input name="recipient" maxlength="120">
             </label>
 
             <label>
               Contact Number
 
-              <input
-                name="phone"
-                maxlength="30"
-              >
+              <input name="phone" maxlength="30">
             </label>
 
             <label>
               Delivery Address
 
-              <textarea
-                name="address"
-                maxlength="2000"
-              ></textarea>
+              <textarea name="address" maxlength="2000"></textarea>
             </label>
 
           </div>
 
-
-          <!-- CONFIRM DELIVERY DETAILS -->
 
           <label class="agree">
 
@@ -1103,8 +787,7 @@
             >
 
             I confirm that my selected delivery
-            address and contact information
-            are correct.
+            address and contact information are correct.
 
           </label>
 
@@ -1112,24 +795,98 @@
 
 
         <!-- ====================================
-             PAYMENT METHOD
+             02. PRODUCT & ORDER SUMMARY
+             ==================================== -->
+
+        <div class="card checkout-summary-card">
+
+          <div class="checkout-card-heading">
+            <span aria-hidden="true">🛒</span>
+            <h3>Product & Order Summary</h3>
+          </div>
+
+          <p class="muted">
+            Review your products, quantities,
+            and total payment before proceeding.
+          </p>
+
+          <p class="checkout-quantity-label muted">
+            Total Items:
+            <strong id="checkoutQuantity">0 item(s)</strong>
+          </p>
+
+          <div id="checkoutItems" class="stack"></div>
+
+
+          <!-- ORDER TOTALS -->
+
+          <div class="checkout-totals">
+
+            <p>
+              <span>Subtotal</span>
+              <strong id="checkoutSubtotal">₱0.00</strong>
+            </p>
+
+            <p>
+              <span>Delivery Fee</span>
+              <strong id="checkoutDeliveryFee">₱0.00</strong>
+            </p>
+
+            <h3>
+              <span>Grand Total</span>
+              <strong id="checkoutTotal">₱0.00</strong>
+            </h3>
+
+          </div>
+
+          <p class="muted checkout-delivery-note">
+            Delivery starts at ₱50 for the first unit,
+            plus ₱20 for each additional unit.
+            The total is calculated using the selected quantities.
+          </p>
+
+        </div>
+
+
+        <!-- ====================================
+             03. ORDER NOTES
+             ==================================== -->
+
+        <div class="card checkout-notes-card">
+
+          <div class="checkout-card-heading">
+            <span aria-hidden="true">📝</span>
+            <h3>Order Notes</h3>
+          </div>
+
+          <label>
+            Special Instructions (Optional)
+
+            <textarea
+              name="notes"
+              maxlength="1000"
+              placeholder="Any delivery instructions or special requests?"
+            ></textarea>
+
+          </label>
+
+        </div>
+
+
+        <!-- ====================================
+             04. PAYMENT METHOD
              ==================================== -->
 
         <div class="card checkout-payment-card">
 
           <div class="checkout-card-heading">
-
             <span aria-hidden="true">💳</span>
-
             <h3>Payment Method</h3>
-
           </div>
 
           <p class="muted">
-            Choose how you would like
-            to pay for your order.
+            Choose how you would like to pay for your order.
           </p>
-
 
           <div class="payment-options">
 
@@ -1203,11 +960,7 @@
 
           </div>
 
-
-          <p
-            class="muted"
-            id="paymentNotice"
-          >
+          <p class="muted" id="paymentNotice">
             Cash on Delivery is currently available.
             No online payment will be collected.
           </p>
@@ -1216,108 +969,7 @@
 
 
         <!-- ====================================
-             ORDER NOTES
-             ==================================== -->
-
-        <div class="card checkout-notes-card">
-
-          <div class="checkout-card-heading">
-
-            <span aria-hidden="true">📝</span>
-
-            <h3>Order Notes</h3>
-
-          </div>
-
-          <label>
-            Special Instructions (Optional)
-
-            <textarea
-              name="notes"
-              maxlength="1000"
-              placeholder="Any delivery instructions or special requests?"
-            ></textarea>
-
-          </label>
-
-        </div>
-
-
-        <!-- ====================================
-             ORDER SUMMARY
-             ==================================== -->
-
-        <div class="card checkout-summary-card">
-
-          <div class="checkout-card-heading">
-
-            <span aria-hidden="true">🛒</span>
-
-            <h3>Order Summary</h3>
-
-          </div>
-
-          <p class="muted">
-            Review the products included
-            in your checkout.
-          </p>
-
-
-          <!--
-            JavaScript renders selected cart items.
-
-            Buy Now renders only the chosen product.
-          -->
-
-          <div
-            id="checkoutItems"
-            class="stack"
-          ></div>
-
-
-          <!-- ORDER TOTALS -->
-
-          <div class="checkout-totals">
-
-            <p>
-              <span>Subtotal</span>
-
-              <strong id="checkoutSubtotal">
-                ₱0.00
-              </strong>
-            </p>
-
-            <p>
-              <span>Delivery Fee</span>
-
-              <strong id="checkoutDeliveryFee">
-                ₱0.00
-              </strong>
-            </p>
-
-            <h3>
-              <span>Grand Total</span>
-
-              <strong id="checkoutTotal">
-                ₱0.00
-              </strong>
-            </h3>
-
-          </div>
-
-
-          <p class="muted checkout-delivery-note">
-            Delivery starts at ₱50 for the first
-            unit, plus ₱20 for each additional unit.
-            The total is calculated using the
-            selected quantities.
-          </p>
-
-        </div>
-
-
-        <!-- ====================================
-             ORDER POLICY
+             05. ORDER POLICY
              ==================================== -->
 
         <div class="policy">
@@ -1327,33 +979,30 @@
           </h3>
 
           <p>
-            Please double-check your selected
-            products, quantities, delivery address,
-            and payment method before confirming
-            your order.
+            Please double-check your selected products,
+            quantities, delivery address, and payment
+            method before confirming your order.
           </p>
 
           <p>
             Once your order is being prepared,
-            changes or cancellations may
-            no longer be possible.
+            changes or cancellations may no longer be possible.
           </p>
 
           <p>
             Because our treats are perishable,
             change-of-mind returns may be limited.
             If your order is incorrect, damaged,
-            or has a quality concern, please
-            contact us so we can assist you.
-            Your rights under applicable consumer
-            laws remain protected.
+            or has a quality concern, please contact us
+            so we can assist you. Your rights under
+            applicable consumer laws remain protected.
           </p>
-
 
           <label class="agree">
 
             <input
               type="checkbox"
+              id="orderPolicy"
               name="policy"
               required
             >
@@ -1367,7 +1016,7 @@
 
 
         <!-- ====================================
-             PLACE ORDER
+             06. PLACE ORDER
              ==================================== -->
 
         <button
@@ -1378,12 +1027,9 @@
           Confirm & Place Order →
         </button>
 
-
         <p class="muted">
-          Your order will only be submitted
-          after you confirm.
-          Cash on Delivery is currently
-          the available payment method.
+          Your order will only be submitted after you confirm.
+          Cash on Delivery is currently the available payment method.
         </p>
 
       </form>
@@ -1400,33 +1046,22 @@
       <div class="sectionhead">
 
         <div>
-          <p class="eyebrow">
-            REAL CUSTOMER EXPERIENCES
-          </p>
+          <p class="eyebrow">REAL CUSTOMER EXPERIENCES</p>
 
-          <h2 id="reviewTitle">
-            Customer Reviews
-          </h2>
+          <h2 id="reviewTitle">Customer Reviews</h2>
 
           <p class="muted">
             Read experiences shared by customers
-            who purchased and received
-            their Honeybail treats.
+            who purchased and received your Honeybail treats.
           </p>
         </div>
 
-        <button
-          type="button"
-          class="outline"
-          data-page="shop"
-        >
+        <button type="button" class="outline" data-page="shop">
           ← Back to Shop
         </button>
 
       </div>
 
-
-      <!-- REVIEW SUMMARY -->
 
       <div
         id="reviewSummary"
@@ -1434,12 +1069,7 @@
       ></div>
 
 
-      <!-- CUSTOMER REVIEW CARDS -->
-
-      <div
-        id="reviews"
-        class="stack"
-      ></div>
+      <div id="reviews" class="stack"></div>
 
     </section>
 
@@ -1453,79 +1083,49 @@
       <div class="sectionhead">
 
         <div>
-          <p class="eyebrow">
-            SHARE YOUR EXPERIENCE
-          </p>
+          <p class="eyebrow">SHARE YOUR EXPERIENCE</p>
 
           <h2>Review Your Purchase ♡</h2>
 
           <p class="muted">
-            Tell us what you think about
-            your Honeybail treats.
+            Tell us what you think about your Honeybail treats.
           </p>
         </div>
 
-        <button
-          type="button"
-          class="outline"
-          data-page="orders"
-        >
+        <button type="button" class="outline" data-page="orders">
           ← My Orders
         </button>
 
       </div>
 
 
-      <form
-        id="reviewForm"
-        class="card checkout review-form-card"
-      >
+      <form id="reviewForm" class="card checkout review-form-card">
 
         <h3 id="writeReviewProductName">
           Product Review
         </h3>
 
         <p class="muted">
-          Reviews are available only
-          for products included in your
-          delivered orders.
+          Reviews are available only for products
+          included in your delivered orders.
         </p>
 
-
-        <!-- RATING -->
 
         <label>
           Rating
 
-          <select
-            name="rating"
-            required
-          >
-            <option value="5">
-              ★★★★★ — 5 Stars
-            </option>
+          <select name="rating" required>
 
-            <option value="4">
-              ★★★★☆ — 4 Stars
-            </option>
+            <option value="5">★★★★★ — Excellent</option>
+            <option value="4">★★★★☆ — Good</option>
+            <option value="3">★★★☆☆ — Average</option>
+            <option value="2">★★☆☆☆ — Poor</option>
+            <option value="1">★☆☆☆☆ — Very Poor</option>
 
-            <option value="3">
-              ★★★☆☆ — 3 Stars
-            </option>
-
-            <option value="2">
-              ★★☆☆☆ — 2 Stars
-            </option>
-
-            <option value="1">
-              ★☆☆☆☆ — 1 Star
-            </option>
           </select>
 
         </label>
 
-
-        <!-- REVIEW COMMENT -->
 
         <label>
           Your Review
@@ -1540,22 +1140,13 @@
         </label>
 
 
-        <!-- REVIEW ACTIONS -->
-
         <div class="actions review-form-actions">
 
-          <button
-            type="submit"
-            class="primary"
-          >
+          <button type="submit" class="primary">
             Submit Review
           </button>
 
-          <button
-            type="button"
-            id="deleteReview"
-            class="outline"
-          >
+          <button type="button" id="deleteReview" class="outline">
             Delete My Review
           </button>
 
@@ -1565,11 +1156,6 @@
 
     </section>
 
-
-  <!-- ==========================================
-       END OF MAIN CONTENT
-       ========================================== -->
-
   </main>
 
 
@@ -1577,10 +1163,7 @@
        LOGOUT CONFIRMATION
        ========================================== -->
 
-  <dialog
-    id="logoutDialog"
-    aria-labelledby="logoutDialogTitle"
-  >
+  <dialog id="logoutDialog" aria-labelledby="logoutDialogTitle">
 
     <div class="dialog-content">
 
@@ -1589,26 +1172,16 @@
       </h3>
 
       <p>
-        Are you sure you want to
-        log out of Honeybail?
+        Are you sure you want to log out of Honeybail?
       </p>
-
 
       <div class="actions">
 
-        <button
-          type="button"
-          id="cancelLogout"
-          class="outline"
-        >
+        <button type="button" id="cancelLogout" class="outline">
           Stay Logged In
         </button>
 
-        <button
-          type="button"
-          id="confirmLogout"
-          class="primary"
-        >
+        <button type="button" id="confirmLogout" class="primary">
           Yes, Log Out
         </button>
 
@@ -1624,8 +1197,7 @@
        ========================================== -->
 
   <footer>
-    Made with ♡ · HONEYBAIL ·
-    Small Treats, Big Happiness
+    Made with ♡ · HONEYBAIL · Small Treats, Big Happiness
   </footer>
 
 

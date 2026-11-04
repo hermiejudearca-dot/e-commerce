@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,21 +19,16 @@
   --blue:#e3efff;
   --shadow:0 8px 28px #4b10100b;
 }
-
 * { box-sizing:border-box; }
-
 body {
   margin:0;
   background:#faf8f6;
   color:var(--ink);
   font:14px/1.45 Inter,Segoe UI,Arial,sans-serif;
 }
-
 button,input,select,textarea { font:inherit; }
 button { cursor:pointer; }
-
 .app { min-height:100vh; }
-
 .topbar {
   height:64px;
   background:linear-gradient(90deg,#970b16,#b81723);
@@ -48,48 +42,40 @@ button { cursor:pointer; }
   z-index:5;
   box-shadow:0 3px 12px #6b000020;
 }
-
 .brand {
   font-weight:900;
   letter-spacing:1.5px;
   font-size:20px;
   line-height:1;
 }
-
 .brand small {
   display:block;
   font-size:8px;
   letter-spacing:.6px;
   margin-top:4px;
 }
-
 .hamb {
   background:transparent;
   color:white;
   border:0;
   font-size:23px;
 }
-
 .top-title { font-size:13px; opacity:.95; }
-
 .top-right {
   margin-left:auto;
   display:flex;
   align-items:center;
   gap:16px;
 }
-
 .top-right button {
   background:transparent;
   border:0;
   color:white;
 }
-
 .layout {
   display:flex;
   min-height:calc(100vh - 64px);
 }
-
 .sidebar {
   width:220px;
   flex-shrink:0;
@@ -100,7 +86,6 @@ button { cursor:pointer; }
   flex-direction:column;
   gap:5px;
 }
-
 .navbtn {
   display:flex;
   align-items:center;
@@ -115,26 +100,21 @@ button { cursor:pointer; }
   font-size:13px;
   transition:.18s;
 }
-
 .navbtn:hover,.navbtn.active {
   background:#c32732;
   color:white;
 }
-
 .navbtn .ico {
   width:20px;
   font-size:17px;
   text-align:center;
 }
-
 .nav-spacer { flex:1; min-height:24px; }
-
 .backstore {
   border-top:1px solid #ffffff26;
   padding-top:14px;
   margin-top:8px;
 }
-
 .main {
   padding:25px;
   flex:1;
@@ -143,7 +123,6 @@ button { cursor:pointer; }
   margin:0 auto;
   width:100%;
 }
-
 .pagehead {
   display:flex;
   justify-content:space-between;
@@ -151,14 +130,11 @@ button { cursor:pointer; }
   gap:14px;
   margin-bottom:20px;
 }
-
 .pagehead h1 {
   font-size:24px;
   margin:0 0 4px;
 }
-
 .sub { color:var(--muted); font-size:13px; }
-
 .datepill {
   background:white;
   border:1px solid var(--line);
@@ -166,28 +142,24 @@ button { cursor:pointer; }
   border-radius:9px;
   color:#8e151e;
 }
-
 .stats {
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
   gap:14px;
   margin-bottom:18px;
 }
-
 .stat,.panel,.tablewrap {
   background:white;
   border:1px solid var(--line);
   border-radius:13px;
   box-shadow:var(--shadow);
 }
-
 .stat {
   padding:18px;
   display:flex;
   gap:13px;
   align-items:center;
 }
-
 .stat-icon {
   width:42px;
   height:42px;
@@ -198,27 +170,22 @@ button { cursor:pointer; }
   color:var(--red);
   font-size:20px;
 }
-
 .stat-label { font-size:12px; color:var(--muted); }
 .stat strong { display:block; font-size:22px; margin:3px 0; }
 .positive { font-size:11px; color:#19864a; }
-
 .grid2 {
   display:grid;
   grid-template-columns:1.2fr 1fr;
   gap:16px;
   margin-bottom:16px;
 }
-
 .grid3 {
   display:grid;
   grid-template-columns:1.2fr 1fr .8fr;
   gap:16px;
   margin-bottom:16px;
 }
-
 .panel { padding:18px; min-width:0; }
-
 .panelhead {
   display:flex;
   justify-content:space-between;
@@ -226,9 +193,7 @@ button { cursor:pointer; }
   gap:10px;
   margin-bottom:15px;
 }
-
 .panelhead h3 { margin:0; font-size:15px; }
-
 .linkbtn {
   border:0;
   background:transparent;
@@ -236,10 +201,8 @@ button { cursor:pointer; }
   font-weight:700;
   font-size:12px;
 }
-
 .chart { height:205px; width:100%; display:block; }
 .recent-list { display:flex; flex-direction:column; }
-
 .recent-row {
   display:grid;
   grid-template-columns:1.1fr 1fr .6fr .7fr;
@@ -249,9 +212,7 @@ button { cursor:pointer; }
   border-bottom:1px solid #f3eeeb;
   font-size:11px;
 }
-
 .recent-row:last-child { border:0; }
-
 .badge {
   display:inline-block;
   border-radius:5px;
@@ -260,21 +221,60 @@ button { cursor:pointer; }
   font-weight:700;
   white-space:nowrap;
 }
-
 .Pending { background:var(--orange); color:#b86a08; }
-.Paid,.In-Stock,.Delivered { background:var(--green); color:#168046; }
-.Shipped,.Processing { background:var(--blue); color:#1761b0; }
-.Cancelled,.Low-Stock,.Failed { background:#ffe6e3; color:#bf392b; }
+.Paid,.In-Stock,.Delivered {
+  background:var(--green);
+  color:#168046;
+}
+.Shipped,.Processing {
+  background:var(--blue);
+  color:#1761b0;
+}
+.Cancelled,.Low-Stock,.Failed {
+  background:#ffe6e3;
+  color:#bf392b;
+}
+.Out-for-Delivery {
+  background:#f2e5ff;
+  color:#7134a4;
+}
+.badge.Out-of-Stock {
+  background:#fee2e2;
+  color:#b91c1c;
+  border:1px solid #fecaca;
+}
+
+/* Clickable order status */
+.order-status-trigger {
+  border:0;
+  background:transparent;
+  padding:0;
+  font:inherit;
+  cursor:pointer;
+}
+.order-status-trigger .badge {
+  transition:filter .15s ease;
+}
+.order-status-trigger:hover .badge {
+  filter:brightness(.94);
+}
+.order-status-trigger:focus-visible {
+  outline:2px solid var(--red);
+  outline-offset:3px;
+  border-radius:6px;
+}
+.order-status-trigger[disabled] {
+  cursor:not-allowed;
+  opacity:.7;
+}
 
 .tablewrap { overflow:auto; }
-
 .toolbar {
   display:flex;
   gap:10px;
   flex-wrap:wrap;
   margin-bottom:14px;
 }
-
 .toolbar input,.toolbar select,
 .field input,.field select,.field textarea {
   border:1px solid #e6dedb;
@@ -284,31 +284,26 @@ button { cursor:pointer; }
   outline:none;
   min-width:140px;
 }
-
 .toolbar input:focus,.field input:focus,
 .field select:focus,.field textarea:focus {
   border-color:#c52a35;
   box-shadow:0 0 0 3px #c52a3510;
 }
-
 .primary,.secondary,.danger {
   border:0;
   border-radius:8px;
   padding:10px 14px;
   font-weight:700;
 }
-
 .primary { background:var(--red); color:white; }
 .primary:hover { background:#830a13; }
 .secondary { background:#f6ecea; color:#8f111a; }
 .danger { background:#ffeded; color:#b51a25; }
-
 .table {
   border-collapse:collapse;
   width:100%;
   white-space:nowrap;
 }
-
 .table th {
   background:#fffaf8;
   color:#777;
@@ -316,17 +311,13 @@ button { cursor:pointer; }
   text-align:left;
   padding:13px 15px;
 }
-
 .table td {
   padding:13px 15px;
   border-top:1px solid #f0eae7;
   font-size:12px;
 }
-
 .table tr:hover td { background:#fffdfc; }
-
 .actions { display:flex; gap:6px; }
-
 .smallbtn {
   border:1px solid #eee0dc;
   background:white;
@@ -334,15 +325,12 @@ button { cursor:pointer; }
   padding:5px 8px;
   color:#7f111a;
 }
-
 .smallbtn:hover { background:#fff0ef; }
-
 .product-cell {
   display:flex;
   align-items:center;
   gap:10px;
 }
-
 .product-emoji {
   width:34px;
   height:34px;
@@ -354,61 +342,51 @@ button { cursor:pointer; }
   overflow:hidden;
   flex-shrink:0;
 }
-
 .product-emoji img {
   width:100%;
   height:100%;
   object-fit:cover;
 }
-
 .empty {
   text-align:center;
   color:var(--muted);
   padding:35px;
 }
-
 .formgrid {
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:14px;
 }
-
 .field {
   display:flex;
   flex-direction:column;
   gap:6px;
 }
-
 .field label { font-size:12px; font-weight:700; }
 .field.full { grid-column:1/-1; }
 .field textarea { min-height:85px; }
-
 .settings-tabs {
   display:flex;
   gap:8px;
   flex-wrap:wrap;
   margin-bottom:18px;
 }
-
 .tab {
   border:1px solid var(--line);
   border-radius:8px;
   padding:9px 14px;
   background:white;
 }
-
 .tab.active {
   background:var(--red);
   color:white;
   border-color:var(--red);
 }
-
 .setting-layout {
   display:grid;
   grid-template-columns:200px 1fr;
   gap:25px;
 }
-
 .store-logo {
   width:110px;
   height:110px;
@@ -420,7 +398,6 @@ button { cursor:pointer; }
   font-size:42px;
   margin-bottom:12px;
 }
-
 .mutedbox {
   background:#fff9f6;
   border:1px solid var(--line);
@@ -428,7 +405,6 @@ button { cursor:pointer; }
   border-radius:9px;
   color:var(--muted);
 }
-
 .bar-chart {
   height:220px;
   display:flex;
@@ -437,7 +413,6 @@ button { cursor:pointer; }
   padding:12px 8px 0;
   border-bottom:1px solid var(--line);
 }
-
 .bar-col {
   flex:1;
   display:flex;
@@ -449,7 +424,6 @@ button { cursor:pointer; }
   font-size:10px;
   color:var(--muted);
 }
-
 .bar {
   width:70%;
   max-width:40px;
@@ -457,11 +431,8 @@ button { cursor:pointer; }
   border-radius:5px 5px 0 0;
   min-height:6px;
 }
-
 .bar-label { padding-bottom:8px; }
-
 .quick-actions { display:grid; gap:9px; }
-
 .quick-actions button {
   text-align:left;
   background:#fff8f6;
@@ -470,7 +441,6 @@ button { cursor:pointer; }
   padding:12px;
   color:#8e121c;
 }
-
 .footer {
   padding:18px 0 0;
   color:#a49b98;
@@ -478,7 +448,6 @@ button { cursor:pointer; }
   display:flex;
   justify-content:space-between;
 }
-
 .notice {
   padding:12px 14px;
   border-radius:8px;
@@ -486,12 +455,10 @@ button { cursor:pointer; }
   color:#166b37;
   margin-bottom:14px;
 }
-
 .error-notice {
   background:#ffeded;
   color:#a90f1a;
 }
-
 .modal-backdrop {
   position:fixed;
   inset:0;
@@ -501,7 +468,6 @@ button { cursor:pointer; }
   place-items:center;
   padding:20px;
 }
-
 .modal {
   background:white;
   width:min(560px,100%);
@@ -511,30 +477,25 @@ button { cursor:pointer; }
   padding:22px;
   box-shadow:0 20px 70px #0003;
 }
-
 .modalhead {
   display:flex;
   align-items:center;
   justify-content:space-between;
   margin-bottom:18px;
 }
-
 .modalhead h2 { margin:0; font-size:19px; }
-
 .close {
   border:0;
   background:#f6eeee;
   border-radius:7px;
   padding:6px 10px;
 }
-
 .modal-actions {
   display:flex;
   justify-content:flex-end;
   gap:8px;
   margin-top:18px;
 }
-
 .hidden { display:none!important; }
 .mobile-overlay { display:none; }
 
@@ -545,7 +506,6 @@ button { cursor:pointer; }
   .grid3 { grid-template-columns:1fr 1fr; }
   .grid3 .panel:last-child { grid-column:1/-1; }
 }
-
 @media(max-width:720px) {
   .topbar { padding:0 13px; }
   .brand { font-size:16px; }
@@ -583,74 +543,56 @@ button { cursor:pointer; }
 }
 </style>
 </head>
-
 <body>
 <div class="app">
   <header class="topbar">
     <button class="hamb" id="menuToggle" aria-label="Toggle menu">☰</button>
-
     <div class="brand">
       HONEYBAIL
       <small>✦ SMALL TREATS, BIG HAPPINESS ✦</small>
     </div>
-
     <div class="top-title">Admin Panel</div>
-
     <div class="top-right">
       <button id="notificationBtn" title="Notifications">♧</button>
       <button id="adminMenu">◉ Admin⌄</button>
     </div>
   </header>
-
   <div class="mobile-overlay" id="overlay"></div>
-
   <div class="layout">
     <aside class="sidebar" id="sidebar">
       <button class="navbtn active" data-page="dashboard">
         <span class="ico">⌂</span>Dashboard
       </button>
-
       <button class="navbtn" data-page="orders">
         <span class="ico">▣</span>Orders
       </button>
-
       <button class="navbtn" data-page="products">
         <span class="ico">◉</span>Products
       </button>
-
       <button class="navbtn" data-page="customers">
         <span class="ico">♟</span>Customers
       </button>
-
       <button class="navbtn" data-page="reports">
         <span class="ico">▥</span>Reports
       </button>
-
       <button class="navbtn" data-page="cart">
         <span class="ico">🛒</span>Cart Activity
       </button>
-
       <button class="navbtn" data-page="favorites">
         <span class="ico">♡</span>Favorites
       </button>
-
       <button class="navbtn" data-page="settings">
         <span class="ico">⚙</span>Settings
       </button>
-
       <div class="nav-spacer"></div>
-
       <button class="navbtn backstore" id="backStore">
         <span class="ico">↗</span>Back to Store
       </button>
     </aside>
-
     <main class="main" id="main"></main>
   </div>
 </div>
-
 <div id="modalRoot"></div>
-
 <script>
 
  // =====================================================
@@ -685,39 +627,70 @@ const ADMIN_API = {
   favorites: `${API_ORIGIN}/api/admin/favorites/`
 };
 
-
 // =====================================================
-// CSRF COOKIE HELPERS
+// DJANGO CSRF TOKEN HANDLING
 // =====================================================
 
 function getCookie(name) {
-  const part = document.cookie
-    .split('; ')
-    .find(x => x.startsWith(name + '='));
+  const cookies = document.cookie.split(';');
 
-  return part
-    ? decodeURIComponent(part.slice(name.length + 1))
-    : null;
+  for (const cookie of cookies) {
+    const trimmed = cookie.trim();
+
+    if (trimmed.startsWith(`${name}=`)) {
+      return decodeURIComponent(
+        trimmed.substring(name.length + 1)
+      );
+    }
+  }
+
+  return '';
 }
 
+let csrfTokenPromise = null;
+
 async function ensureCsrfToken() {
-  const response = await fetch(`${API_ORIGIN}/api/csrf/`, {
-    credentials: 'include'
-  });
+  let token = getCookie('csrftoken');
 
-  if (!response.ok) {
-    throw new Error('Could not initialize CSRF protection.');
+  if (token) {
+    return token;
   }
 
-  const token = getCookie('csrftoken');
+  if (!csrfTokenPromise) {
+    csrfTokenPromise = (async () => {
+      const response = await fetch(
+        `${API_ORIGIN}/api/store/csrf/`,
+        {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'Accept': 'application/json'
+          }
+        }
+      );
 
-  if (!token) {
-    throw new Error(
-      'CSRF cookie missing. Use 127.0.0.1 for both Live Server and Django.'
-    );
+      if (!response.ok) {
+        throw new Error(
+          `Unable to initialize CSRF protection (HTTP ${response.status}).`
+        );
+      }
+
+      token = getCookie('csrftoken');
+
+      if (!token) {
+        throw new Error(
+          'Django did not provide a CSRF cookie. Check your CSRF and CORS settings.'
+        );
+      }
+
+      return token;
+
+    })().finally(() => {
+      csrfTokenPromise = null;
+    });
   }
 
-  return token;
+  return csrfTokenPromise;
 }
 
 
@@ -1007,7 +980,7 @@ function formatShortDate(value) {
 
 
 // =====================================================
-// STATUS BADGE
+// STATUS BADGES
 // =====================================================
 
 function badge(status) {
@@ -1015,6 +988,39 @@ function badge(status) {
   const cls = safe.replace(/[^a-zA-Z0-9_-]/g, '-');
 
   return `<span class="badge ${cls}">${esc(safe)}</span>`;
+}
+
+// Finalized deliveries remain read-only.
+function orderStatusIsLocked(order) {
+  return order.status === 'Cancelled' || (
+    order.status === 'Delivered' && (
+      order.paymentStatus === 'Paid' ||
+      Boolean(order.receivedAt) ||
+      Boolean(order.hasDeliveryProof)
+    )
+  );
+}
+
+function orderStatusBadge(order) {
+  if (
+    orderStatusIsLocked(order) ||
+    !ORDER_STAGES.includes(order.status)
+  ) {
+    return badge(order.status);
+  }
+
+  return `
+    <button
+      type="button"
+      class="order-status-trigger"
+      data-action="change-order-status"
+      data-id="${Number(order.dbId)}"
+      aria-label="Change status for order ${esc(order.id)}"
+      title="Click to change order status"
+    >
+      ${badge(order.status)}
+    </button>
+  `;
 }
 
 
@@ -1144,8 +1150,9 @@ function normalizeOrder(o) {
     total: Number(o.total_amount || o.total || 0),
     subtotal: Number(o.subtotal || 0),
     deliveryFee: Number(o.delivery_fee || 0),
-    status: o.status || 'Pending',
-    deliveryStatus: o.delivery_status || 'Not Shipped',
+
+    status: normalizeOrderStatus(o.status || 'Pending'),
+
     paymentStatus: o.payment_status || 'Unpaid',
     paymentMethod: o.payment_method || 'COD',
     address: o.address || '',
@@ -1361,18 +1368,44 @@ async function reloadOne(key) {
 
 const ORDER_STAGES = [
   'Pending',
-  'Confirmed',
-  'Processing',
-  'Preparing',
-  'Packed',
   'Shipped',
-  'In Transit',
   'Out for Delivery',
   'Delivered'
 ];
 
+const LEGACY_ORDER_STATUS_MAP = {
+  'Confirmed': 'Pending',
+  'Processing': 'Pending',
+  'Preparing': 'Pending',
+  'Packed': 'Pending',
+  'In Transit': 'Shipped',
+  'Completed': 'Delivered'
+};
+
+function normalizeOrderStatus(status) {
+  const raw = String(status || 'Pending').trim();
+
+  const currentStatus = ORDER_STAGES.find(
+    stage => stage.toLowerCase() === raw.toLowerCase()
+  );
+
+  if (currentStatus) {
+    return currentStatus;
+  }
+
+  const legacyEntry = Object.entries(
+    LEGACY_ORDER_STATUS_MAP
+  ).find(
+    ([legacyStatus]) =>
+      legacyStatus.toLowerCase() === raw.toLowerCase()
+  );
+
+  return legacyEntry ? legacyEntry[1] : raw;
+}
+
 function nextOrderStatus(status) {
-  const index = ORDER_STAGES.indexOf(status);
+  const currentStatus = normalizeOrderStatus(status);
+  const index = ORDER_STAGES.indexOf(currentStatus);
 
   if (index < 0 || index >= ORDER_STAGES.length - 1) {
     return null;
@@ -1380,6 +1413,7 @@ function nextOrderStatus(status) {
 
   return ORDER_STAGES[index + 1];
 }
+
 
 // =====================================================
 // DASHBOARD STATISTIC CARDS
@@ -1424,7 +1458,13 @@ function productRows(list) {
         <td>${stock}</td>
 
         <td>
-          ${badge(stock <= 5 ? 'Low Stock' : 'In Stock')}
+          ${badge(
+            stock <= 0
+              ? 'Out of Stock'
+              : stock <= 5
+                ? 'Low Stock'
+                : 'In Stock'
+          )}
         </td>
 
         <td>
@@ -1461,14 +1501,7 @@ function orderRows(list) {
       <td>${esc(o.customer)}</td>
       <td>${o.items}</td>
       <td>${money(o.total)}</td>
-
-      <td>
-        ${badge(o.status)}
-        <div class="sub">
-          ${esc(o.deliveryStatus)}
-        </div>
-      </td>
-
+      <td>${orderStatusBadge(o)}</td>
       <td>${esc(formatDate(o.date))}</td>
 
       <td>
@@ -1600,24 +1633,29 @@ function soldProducts() {
 
   orders.forEach(order => {
     (order.itemDetails || []).forEach(item => {
-      const name = item.product_name || 'Unknown product';
-      const quantity = Number(item.quantity || 0);
+      const productId = item.product_id ?? item.productId ?? null;
+      const name = item.product_name || item.name || 'Unknown product';
 
-      totals.set(
+      const key = productId !== null
+        ? `id:${productId}`
+        : `name:${String(name).trim().toLowerCase()}`;
+
+      const existing = totals.get(key) || {
+        productId,
         name,
-        (totals.get(name) || 0) + quantity
-      );
+        quantity: 0
+      };
+
+      existing.quantity += Number(item.quantity || 0);
+      totals.set(key, existing);
     });
   });
 
-  return [...totals.entries()]
-    .map(([name, quantity]) => ({
-      name,
-      quantity
-    }))
+  return [...totals.values()]
     .sort((a, b) => b.quantity - a.quantity)
     .slice(0, 5);
 }
+
 
 function topProductsMarkup() {
   const sold = soldProducts();
@@ -1630,16 +1668,62 @@ function topProductsMarkup() {
     `;
   }
 
-  return sold.map(product => `
-    <div
-      class="recent-row"
-      style="grid-template-columns:32px 1fr 30px"
-    >
-      <span class="product-emoji">🍩</span>
-      <span>${esc(product.name)}</span>
-      <b>${product.quantity}</b>
-    </div>
-  `).join('');
+  return sold.map(product => {
+    const matchingProduct = products.find(item => {
+      if (
+        product.productId !== null &&
+        product.productId !== undefined
+      ) {
+        return Number(item.id) === Number(product.productId);
+      }
+
+      return String(item.name || '').trim().toLowerCase() ===
+        String(product.name || '').trim().toLowerCase();
+    });
+
+    // Existing Cloudinary image URL.
+    const imageUrl = matchingProduct?.image
+      ? String(matchingProduct.image).trim()
+      : '';
+
+    const imageMarkup = imageUrl
+      ? `
+        <img
+          src="${esc(imageUrl)}"
+          alt="${esc(product.name)}"
+          loading="lazy"
+          decoding="async"
+          style="
+            width:36px;
+            height:36px;
+            object-fit:cover;
+            border-radius:9px;
+            display:block;
+          "
+          onerror="
+            this.onerror=null;
+            this.replaceWith(document.createTextNode('🍩'));
+          "
+        >
+      `
+      : `
+        <span class="product-emoji">🍩</span>
+      `;
+
+    return `
+      <div
+        class="recent-row"
+        style="
+          grid-template-columns:36px minmax(0,1fr) 30px;
+          align-items:center;
+        "
+      >
+        ${imageMarkup}
+        <span>${esc(product.name)}</span>
+        <b>${product.quantity}</b>
+      </div>
+    `;
+  }).join('');
 }
 
 
@@ -1685,7 +1769,7 @@ function renderDashboard() {
         <b>#${esc(order.id)}</b>
         <span>${esc(order.customer)}</span>
         <span>${money(order.total)}</span>
-        ${badge(order.status)}
+        ${orderStatusBadge(order)}
       </div>
     `).join('') || `
       <div class="empty">
@@ -1699,7 +1783,7 @@ function renderDashboard() {
         <td>${esc(order.customer)}</td>
         <td>${order.items}</td>
         <td>${money(order.total)}</td>
-        <td>${badge(order.status)}
+        <td>${orderStatusBadge(order)}</td>
       </tr>
     `).join('');
 
@@ -1807,9 +1891,7 @@ function renderDashboard() {
 function renderOrders() {
   const statuses = [
     'All',
-    ...ORDER_STAGES,
-    'Completed',
-    'Cancelled'
+    ...ORDER_STAGES
   ];
 
   const filteredOrders = orders.filter(order => {
@@ -2200,6 +2282,7 @@ function renderReports() {
   `;
 }
 
+
 // =====================================================
 // CART ACTIVITY PAGE
 // =====================================================
@@ -2352,6 +2435,7 @@ function renderFavorites() {
   const items = Array.isArray(data.favorites)
     ? data.favorites
     : [];
+
   const popular = Array.isArray(data.most_favorited)
     ? data.most_favorited
     : [];
@@ -2518,7 +2602,6 @@ async function loadFavoritesReport() {
 
   } catch (error) {
     favoritesReport = null;
-
     favoritesError =
       error.message || 'Unable to load favorites.';
 
@@ -2668,21 +2751,21 @@ function renderShippingSettings() {
       <div>
         <div class="formgrid">
           <div class="field">
-            <label>Delivery Fee</label>
+            <label>First Item Delivery Fee</label>
             <input value="₱50.00" readonly>
           </div>
 
           <div class="field">
-            <label>Delivery Fee Type</label>
-            <input value="Fixed Delivery Fee" readonly>
+            <label>Each Additional Item</label>
+            <input value="₱20.00" readonly>
           </div>
 
           <div class="field full">
-            <label>Delivery Status</label>
+            <label>Order Status Workflow</label>
             <div class="mutedbox">
-              Delivery updates are entered manually
-              by authorized Honeybail staff through
-              the Orders page.
+              Pending → Shipped → Out for Delivery → Delivered.
+              Authorized staff can select a status from
+              the dashboard or the Orders page.
             </div>
           </div>
 
@@ -2698,10 +2781,11 @@ function renderShippingSettings() {
         </div>
 
         <p class="sub" style="margin-top:15px">
-          The ₱50.00 fee is configured in the
-          Django storefront checkout backend.
-          Changing this display does not change
-          the checkout amount.
+          Delivery fees are calculated by the Django
+          storefront checkout backend: ₱50.00 for the
+          first item and ₱20.00 for each additional item.
+          Changing this display does not change the
+          checkout amount.
         </p>
       </div>
     </div>
@@ -2861,6 +2945,7 @@ function render() {
       );
     });
 }
+
 
 // =====================================================
 // MODAL SYSTEM
@@ -3206,6 +3291,110 @@ function orderTrackingMarkup(order) {
 
 
 // =====================================================
+// QUICK ORDER STATUS SELECTOR
+// =====================================================
+
+function changeOrderStatusModal(orderId) {
+  const order = findOrder(orderId);
+
+  if (!order) {
+    showToast('Order not found. Refresh the Orders page.', true);
+    return;
+  }
+
+  if (
+    orderStatusIsLocked(order) ||
+    !ORDER_STAGES.includes(order.status)
+  ) {
+    showToast('This order is finalized or cannot be changed.', true);
+    return;
+  }
+
+  const choices = ORDER_STAGES.map(status => `
+    <option
+      value="${esc(status)}"
+      ${order.status === status ? 'selected' : ''}
+    >
+      ${esc(status)}
+    </option>
+  `).join('');
+
+  modal(`Change Order Status — #${order.id}`, `
+    <div class="mutedbox">
+      <b>Order:</b> #${esc(order.id)}
+
+      <p style="margin:8px 0 0">
+        <b>Customer:</b> ${esc(order.customer)}
+      </p>
+
+      <p style="margin:8px 0 0">
+        <b>Current:</b> ${badge(order.status)}
+      </p>
+    </div>
+
+    <div class="field" style="margin-top:15px">
+      <label for="quickOrderStatus">
+        Choose new status
+      </label>
+
+      <select
+        id="quickOrderStatus"
+        name="status"
+        required
+      >
+        ${choices}
+      </select>
+    </div>
+
+    <p class="sub" style="margin-top:12px">
+      The selected stage is saved in Django and added
+      to the tracking history. Payment status is separate.
+      Paid or customer-confirmed deliveries cannot be reopened.
+    </p>
+  `, 'Save Status', async formData => {
+    const newStatus = String(
+      formData.get('status') || ''
+    ).trim();
+
+    if (!ORDER_STAGES.includes(newStatus)) {
+      throw new Error('Choose a valid order status.');
+    }
+
+    if (newStatus === order.status) {
+      showToast('Order status is unchanged.');
+      return;
+    }
+
+    // Django validates and saves this status.
+    await apiRequest(
+      `${API.orders}${order.dbId}/`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          status: newStatus
+        })
+      }
+    );
+
+    await Promise.all([
+      loadOrders(),
+      loadDashboard(),
+      loadReports()
+    ]);
+
+    render();
+
+    showToast(
+      `Order #${order.id} updated to ${newStatus}.`
+    );
+  });
+}
+
+
+// =====================================================
 // VIEW CUSTOMER ORDER DETAILS
 // =====================================================
 
@@ -3239,11 +3428,6 @@ function viewOrder(orderId) {
         <div style="margin-top:8px">
           <b>Payment Status:</b>
           ${badge(order.paymentStatus)}
-        </div>
-
-        <div style="margin-top:8px">
-          <b>Delivery Status:</b>
-          ${badge(order.deliveryStatus)}
         </div>
       </div>
 
@@ -3355,6 +3539,634 @@ function viewOrder(orderId) {
   modal('Order Details', content);
 }
 
+
+// =====================================================
+// MAIN PAGE RENDERER
+// =====================================================
+
+function render() {
+  const main = document.getElementById('main');
+
+  if (!main) return;
+
+  const pages = {
+    dashboard: renderDashboard,
+    orders: renderOrders,
+    products: renderProducts,
+    customers: renderCustomers,
+    reports: renderReports,
+    cart: renderCartActivity,
+    favorites: renderFavorites,
+    settings: renderSettings
+  };
+
+  const renderer = pages[currentPage] || renderDashboard;
+
+  main.innerHTML = renderer();
+
+  document.querySelectorAll('.navbtn[data-page]')
+    .forEach(button => {
+      button.classList.toggle(
+        'active',
+        button.dataset.page === currentPage
+      );
+    });
+}
+
+
+// =====================================================
+// MODAL SYSTEM
+// =====================================================
+
+function closeModal() {
+  document.getElementById('modalRoot').innerHTML = '';
+}
+
+function modal(title, content, submitText = null, onSubmit = null) {
+  const root = document.getElementById('modalRoot');
+
+  root.innerHTML = `
+    <div class="modal-backdrop">
+      <div class="modal">
+        <div class="modalhead">
+          <h2>${esc(title)}</h2>
+
+          <button
+            type="button"
+            class="close"
+            id="closeModalBtn"
+            aria-label="Close modal"
+          >✕</button>
+        </div>
+
+        <form id="modalForm">
+          ${content}
+
+          <div class="modal-actions">
+            <button
+              type="button"
+              class="secondary"
+              id="cancelModalBtn"
+            >
+              Close
+            </button>
+
+            ${submitText ? `
+              <button
+                type="submit"
+                class="primary"
+                id="modalSubmitBtn"
+              >
+                ${esc(submitText)}
+              </button>
+            ` : ''}
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('closeModalBtn')
+    .addEventListener('click', closeModal);
+
+  document.getElementById('cancelModalBtn')
+    .addEventListener('click', closeModal);
+
+  root.querySelector('.modal-backdrop')
+    .addEventListener('click', event => {
+      if (event.target.classList.contains('modal-backdrop')) {
+        closeModal();
+      }
+    });
+
+  document.getElementById('modalForm')
+    .addEventListener('submit', async event => {
+      event.preventDefault();
+
+      if (!onSubmit) return;
+
+      const form = event.currentTarget;
+      const button = document.getElementById('modalSubmitBtn');
+      const formData = new FormData(form);
+
+      if (button) {
+        button.disabled = true;
+        button.textContent = 'Saving...';
+      }
+
+      try {
+        await onSubmit(formData);
+        closeModal();
+      } catch (error) {
+        showToast(error.message, true);
+
+        if (button) {
+          button.disabled = false;
+          button.textContent = submitText || 'Save';
+        }
+      }
+    });
+}
+
+
+// =====================================================
+// PRODUCT EDITOR
+// =====================================================
+
+function productEditor(product = null) {
+  const editing = Boolean(product);
+
+  const content = `
+    <div class="formgrid">
+      <div class="field full">
+        <label>Product Name</label>
+
+        <input
+          name="name"
+          value="${esc(product?.name || '')}"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Category</label>
+
+        <input
+          name="category"
+          value="${esc(product?.category || 'Others')}"
+        >
+      </div>
+
+      <div class="field">
+        <label>Price (₱)</label>
+
+        <input
+          name="price"
+          type="number"
+          min="0"
+          step="0.01"
+          value="${esc(product?.price ?? '')}"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Stock</label>
+
+        <input
+          name="stock"
+          type="number"
+          min="0"
+          step="1"
+          value="${esc(product?.stock ?? 0)}"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Product Image</label>
+
+        <input
+          name="image"
+          type="file"
+          accept="image/*"
+        >
+      </div>
+
+      <div class="field full">
+        <label>Description</label>
+
+        <textarea name="description">${esc(
+          product?.description || ''
+        )}</textarea>
+      </div>
+    </div>
+  `;
+
+  modal(
+    editing ? 'Edit Product' : 'Add New Product',
+    content,
+    editing ? 'Save Changes' : 'Add Product',
+    async formData => {
+      const url = editing
+        ? `${API.products}${product.id}/`
+        : API.products;
+
+      const response = await apiRequest(url, {
+        method: editing ? 'PATCH' : 'POST',
+        body: formData
+      });
+
+      await loadProducts();
+      await loadDashboard();
+      render();
+
+      showToast(
+        editing
+          ? 'Product updated successfully.'
+          : 'Product added successfully.'
+      );
+
+      return response;
+    }
+  );
+}
+
+
+// =====================================================
+// ARCHIVE PRODUCT
+// =====================================================
+
+async function deleteProduct(productId) {
+  const product = products.find(
+    p => Number(p.id) === Number(productId)
+  );
+
+  if (!product) {
+    showToast('Product not found.', true);
+    return;
+  }
+
+  const confirmed = confirm(
+    `Archive "${product.name}"?\n\n` +
+    'The product will be hidden from the customer store, ' +
+    'but its database record will be preserved.'
+  );
+
+  if (!confirmed) return;
+
+  try {
+    await apiRequest(
+      `${API.products}${productId}/`,
+      { method: 'DELETE' }
+    );
+
+    await loadProducts();
+    await loadDashboard();
+    render();
+
+    showToast('Product archived successfully.');
+  } catch (error) {
+    showToast(error.message, true);
+  }
+}
+
+
+// =====================================================
+// ORDER LOOKUP
+// =====================================================
+
+function findOrder(orderId) {
+  return orders.find(
+    order => Number(order.dbId) === Number(orderId)
+  );
+}
+
+
+// =====================================================
+// ORDER ITEMS TABLE
+// =====================================================
+
+function orderItemsMarkup(order) {
+  const items = Array.isArray(order.itemDetails)
+    ? order.itemDetails
+    : [];
+
+  if (!items.length) {
+    return `
+      <div class="mutedbox">
+        No order item details available.
+      </div>
+    `;
+  }
+
+  const rows = items.map(item => {
+    const quantity = Number(item.quantity || 0);
+    const unitPrice = Number(item.unit_price || 0);
+
+    return `
+      <tr>
+        <td>${esc(item.product_name || item.name)}</td>
+        <td>${quantity}</td>
+        <td>${money(unitPrice)}</td>
+        <td>${money(unitPrice * quantity)}</td>
+      </tr>
+    `;
+  }).join('');
+
+  return table(
+    ['Product', 'Quantity', 'Unit Price', 'Subtotal'],
+    rows
+  );
+}
+
+
+// =====================================================
+// ORDER TRACKING HISTORY
+// =====================================================
+
+function orderTrackingMarkup(order) {
+  const events = Array.isArray(order.trackingEvents)
+    ? order.trackingEvents
+    : [];
+
+  if (!events.length) {
+    return `
+      <div class="mutedbox">
+        No tracking events recorded yet.
+      </div>
+    `;
+  }
+
+  return `
+    <div style="display:grid;gap:12px">
+      ${events.map(event => `
+        <div
+          style="
+            border-left:3px solid #a90f1a;
+            padding:5px 12px;
+          "
+        >
+          <b>${esc(event.status || 'Update')}</b>
+
+          <div class="sub">
+            ${esc(formatDate(event.created_at))}
+          </div>
+
+          ${event.message ? `
+            <p style="margin:6px 0">
+              ${esc(event.message)}
+            </p>
+          ` : ''}
+
+          ${event.location ? `
+            <div class="sub">
+              📍 ${esc(event.location)}
+            </div>
+          ` : ''}
+
+          ${event.source ? `
+            <div class="sub">
+              Updated by: ${esc(event.source)}
+            </div>
+          ` : ''}
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+
+// =====================================================
+// QUICK ORDER STATUS SELECTOR
+// =====================================================
+
+function changeOrderStatusModal(orderId) {
+  const order = findOrder(orderId);
+
+  if (!order) {
+    showToast('Order not found. Refresh the Orders page.', true);
+    return;
+  }
+
+  if (
+    orderStatusIsLocked(order) ||
+    !ORDER_STAGES.includes(order.status)
+  ) {
+    showToast('This order is finalized or cannot be changed.', true);
+    return;
+  }
+
+  const choices = ORDER_STAGES.map(status => `
+    <option
+      value="${esc(status)}"
+      ${order.status === status ? 'selected' : ''}
+    >
+      ${esc(status)}
+    </option>
+  `).join('');
+
+  modal(`Change Order Status — #${order.id}`, `
+    <div class="mutedbox">
+      <b>Order:</b> #${esc(order.id)}
+
+      <p style="margin:8px 0 0">
+        <b>Customer:</b> ${esc(order.customer)}
+      </p>
+
+      <p style="margin:8px 0 0">
+        <b>Current:</b> ${badge(order.status)}
+      </p>
+    </div>
+
+    <div class="field" style="margin-top:15px">
+      <label for="quickOrderStatus">
+        Choose new status
+      </label>
+
+      <select
+        id="quickOrderStatus"
+        name="status"
+        required
+      >
+        ${choices}
+      </select>
+    </div>
+
+    <p class="sub" style="margin-top:12px">
+      The selected stage is saved in Django and added
+      to the tracking history. Payment status is separate.
+      Paid or customer-confirmed deliveries cannot be reopened.
+    </p>
+  `, 'Save Status', async formData => {
+    const newStatus = String(
+      formData.get('status') || ''
+    ).trim();
+
+    if (!ORDER_STAGES.includes(newStatus)) {
+      throw new Error('Choose a valid order status.');
+    }
+
+    if (newStatus === order.status) {
+      showToast('Order status is unchanged.');
+      return;
+    }
+
+    // Django validates and saves this status.
+    await apiRequest(
+      `${API.orders}${order.dbId}/`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          status: newStatus
+        })
+      }
+    );
+
+    await Promise.all([
+      loadOrders(),
+      loadDashboard(),
+      loadReports()
+    ]);
+
+    render();
+
+    showToast(
+      `Order #${order.id} updated to ${newStatus}.`
+    );
+  });
+}
+
+
+// =====================================================
+// VIEW CUSTOMER ORDER DETAILS
+// =====================================================
+
+function viewOrder(orderId) {
+  const order = findOrder(orderId);
+
+  if (!order) {
+    showToast('Order not found.', true);
+    return;
+  }
+
+  const deliveryWindow = (
+    order.estimatedStart || order.estimatedEnd
+  )
+    ? `${esc(order.estimatedStart || 'Not set')} — ${
+        esc(order.estimatedEnd || 'Not set')
+      }`
+    : 'Not yet estimated';
+
+  const content = `
+    <div style="display:grid;gap:15px">
+
+      <div class="mutedbox">
+        <b>Order:</b> #${esc(order.id)}
+
+        <div style="margin-top:8px">
+          <b>Order Status:</b>
+          ${badge(order.status)}
+        </div>
+
+        <div style="margin-top:8px">
+          <b>Payment Status:</b>
+          ${badge(order.paymentStatus)}
+        </div>
+      </div>
+
+      <div>
+        <h3>Customer Information</h3>
+
+        <p>
+          <b>Customer:</b> ${esc(order.customer)}
+        </p>
+
+        <p>
+          <b>Recipient:</b> ${esc(order.recipient)}
+        </p>
+
+        <p>
+          <b>Phone:</b> ${esc(order.phone)}
+        </p>
+
+        <p>
+          <b>Delivery Address:</b>
+          ${esc(order.address)}
+        </p>
+
+        <p>
+          <b>Order Date:</b>
+          ${esc(formatDate(order.date))}
+        </p>
+      </div>
+
+      <div>
+        <h3>Purchased Products</h3>
+        ${orderItemsMarkup(order)}
+      </div>
+
+      <div class="mutedbox">
+        <div>
+          <b>Subtotal:</b> ${money(order.subtotal)}
+        </div>
+
+        <div style="margin-top:6px">
+          <b>Delivery Fee:</b>
+          ${money(order.deliveryFee)}
+        </div>
+
+        <div style="margin-top:8px;font-size:16px">
+          <b>Total:</b> ${money(order.total)}
+        </div>
+
+        <div style="margin-top:8px">
+          <b>Payment Method:</b>
+          ${esc(order.paymentMethod)}
+        </div>
+      </div>
+
+      <div>
+        <h3>Delivery Information</h3>
+
+        <p>
+          <b>Courier:</b>
+          ${esc(order.courierName || 'Not assigned')}
+        </p>
+
+        <p>
+          <b>Tracking Number:</b>
+          ${esc(order.trackingNumber || 'Not assigned')}
+        </p>
+
+        <p>
+          <b>Estimated Delivery:</b>
+          ${deliveryWindow}
+        </p>
+
+        <p>
+          <b>Delivered At:</b>
+          ${esc(formatDate(order.deliveredAt))}
+        </p>
+
+        <p>
+          <b>Customer Confirmed Receipt:</b>
+          ${order.receivedAt
+            ? esc(formatDate(order.receivedAt))
+            : 'Not confirmed'}
+        </p>
+
+        <p>
+          <b>Proof of Delivery:</b>
+          ${order.hasDeliveryProof
+            ? 'Uploaded'
+            : 'Not uploaded'}
+        </p>
+      </div>
+
+      ${order.notes ? `
+        <div>
+          <h3>Customer Notes</h3>
+          <div class="mutedbox">
+            ${esc(order.notes)}
+          </div>
+        </div>
+      ` : ''}
+
+      <div>
+        <h3>Tracking History</h3>
+        ${orderTrackingMarkup(order)}
+      </div>
+    </div>
+  `;
+
+  modal('Order Details', content);
+}
+
+
 // =====================================================
 // ORDER MANAGEMENT EDITOR
 // =====================================================
@@ -3367,12 +4179,15 @@ function editOrder(orderId) {
     return;
   }
 
-  if (['Completed', 'Cancelled'].includes(order.status)) {
+  // Finalized deliveries and cancelled orders are read-only.
+  // Unpaid, unconfirmed delivered orders can still be corrected.
+  if (
+    orderStatusIsLocked(order) ||
+    !ORDER_STAGES.includes(order.status)
+  ) {
     viewOrder(orderId);
     return;
   }
-
-  const nextStatus = nextOrderStatus(order.status);
 
   const paymentOptions = [
     'Unpaid',
@@ -3390,33 +4205,27 @@ function editOrder(orderId) {
     </option>
   `).join('');
 
-  const statusMarkup = nextStatus
-    ? `
-      <div class="field full">
-        <label>Advance Order Status</label>
+  const statusMarkup = `
+    <div class="field full">
+      <label>Order Status</label>
 
-        <select name="status">
-          <option value="">
-            Keep Current: ${esc(order.status)}
+      <select name="status" required>
+        ${ORDER_STAGES.map(status => `
+          <option
+            value="${esc(status)}"
+            ${order.status === status ? 'selected' : ''}
+          >
+            ${esc(status)}
           </option>
+        `).join('')}
+      </select>
 
-          <option value="${esc(nextStatus)}">
-            Advance to: ${esc(nextStatus)}
-          </option>
-        </select>
-
-        <div class="sub">
-          Orders advance one stage at a time.
-        </div>
+      <div class="sub">
+        Select any stage. The backend protects
+        finalized deliveries.
       </div>
-    `
-    : `
-      <div class="mutedbox">
-        This order has reached Delivered status.
-        Customer receipt confirmation will be
-        handled through the storefront.
-      </div>
-    `;
+    </div>
+  `;
 
   const content = `
     <div class="mutedbox">
@@ -3614,8 +4423,6 @@ function editOrder(orderId) {
 function csvCell(value) {
   const text = String(value ?? '');
 
-  // Prevent spreadsheet apps from interpreting
-  // customer-controlled text as a formula.
   const safe = /^[\s]*[=+\-@\t\r]/.test(text)
     ? "'" + text
     : text;
@@ -3664,7 +4471,6 @@ function exportOrders() {
       'Order Status',
       'Payment Status',
       'Payment Method',
-      'Delivery Status',
       'Courier',
       'Tracking Number',
       'Date'
@@ -3679,7 +4485,6 @@ function exportOrders() {
       order.status,
       order.paymentStatus,
       order.paymentMethod,
-      order.deliveryStatus,
       order.courierName,
       order.trackingNumber,
       order.date
@@ -3872,6 +4677,7 @@ async function saveStoreSettings(form) {
   }
 }
 
+
 // =====================================================
 // NAVIGATION
 // =====================================================
@@ -3961,6 +4767,11 @@ document.addEventListener('click', async event => {
 
       case 'view-order':
         viewOrder(id);
+        break;
+
+      // New: clickable order-status badges.
+      case 'change-order-status':
+        changeOrderStatusModal(id);
         break;
 
       case 'edit-order':
@@ -4149,11 +4960,13 @@ document.getElementById('adminMenu')
       reportData = null;
       currentCarts = [];
       cartActivity = [];
+
       cartSummary = {
         current_cart_lines: 0,
         current_cart_quantity: 0,
         historical_activity_count: 0
       };
+
       favorites = [];
       favoritesReport = null;
       favoritesError = '';
@@ -4195,8 +5008,16 @@ document.getElementById('notificationBtn')
       order => order.status === 'Pending'
     ).length;
 
-    const delivery = orders.filter(
+    const shipped = orders.filter(
+      order => order.status === 'Shipped'
+    ).length;
+
+    const outForDelivery = orders.filter(
       order => order.status === 'Out for Delivery'
+    ).length;
+
+    const delivered = orders.filter(
+      order => order.status === 'Delivered'
     ).length;
 
     modal(
@@ -4208,7 +5029,15 @@ document.getElementById('notificationBtn')
           </p>
 
           <p>
-            <b>Out for Delivery:</b> ${delivery}
+            <b>Shipped Orders:</b> ${shipped}
+          </p>
+
+          <p>
+            <b>Out for Delivery:</b> ${outForDelivery}
+          </p>
+
+          <p>
+            <b>Delivered Orders:</b> ${delivered}
           </p>
 
           <p class="sub">

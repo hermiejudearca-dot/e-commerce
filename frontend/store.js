@@ -1,4 +1,3 @@
-
 'use strict';
 
 /*
@@ -6,17 +5,19 @@
  HONEYBAIL CUSTOMER STOREFRONT
  ICE BLUE EDITION
 
- CORRECTED VERSION — PART 1 OF 8
+ UPDATED VERSION
 
- Django API: http://127.0.0.1:8000/api/store/
+ Django API:
+ http://127.0.0.1:8000/api/store/
 
- Features preserved:
+ Features:
  - Customer authentication
  - Cart and automatic quantity saving
  - Favorites
  - Buy Now and checkout
  - Saved addresses
  - Orders and reviews
+ - Editable Buy Now quantity
 ============================================================
 */
 
@@ -41,15 +42,12 @@ const CHECKOUT_BACKEND_READY = true;
 // 2. SHIPPING CONFIGURATION
 // ==========================================================
 
-// These values match storefront/views.py.
-//
 // First item: ₱50
 // Each additional item: ₱20
 
 const FIRST_ITEM_DELIVERY_FEE = 50;
 const ADDITIONAL_ITEM_DELIVERY_FEE = 20;
 
-// Compatibility with existing code.
 const DELIVERY_FEE = FIRST_ITEM_DELIVERY_FEE;
 
 function calculateDeliveryFee(totalQuantity) {
@@ -106,30 +104,30 @@ function positiveInteger(value) {
 // 4. APPLICATION STATE
 // ==========================================================
 
-// Currently logged-in customer.
 let user = null;
 
-// Data loaded from Django.
 let products = [];
 let cart = [];
 let favorites = [];
 let addresses = [];
 
-// Current product selected for review.
 let reviewProduct = null;
 
 // Checkout mode:
 // 'cart' = selected shopping cart items
 // 'buy'  = Buy Now product
+
 let checkoutMode = 'cart';
 let buyNowItem = null;
 
 // Delivery address state.
+
 let selectedAddressId = null;
 let addressReturnPage = 'account';
 let addressFeatureAvailable = true;
 
 // Prevent duplicate order submissions.
+
 let submittingOrder = false;
 
 
@@ -137,11 +135,8 @@ let submittingOrder = false;
 // 5. CART SELECTION STATE
 // ==========================================================
 
-// Store cart-item IDs, not product IDs.
 let selectedCartItemIds = new Set();
 
-// Automatically select available products on the
-// first cart load. Preserve selection afterward.
 let cartSelectionInitialized = false;
 
 
@@ -149,7 +144,6 @@ let cartSelectionInitialized = false;
 // 6. AUTOMATIC QUANTITY SAVING STATE
 // ==========================================================
 
-// Prevent overlapping saves for the same cart item.
 const savingCartItemIds = new Set();
 
 
@@ -204,11 +198,6 @@ function availableCartItems() {
 // ==========================================================
 // 8. PAGE CONFIGURATION
 // ==========================================================
-
-// Each page name maps to an HTML section ID.
-//
-// Example:
-// 'favorites' -> id="favoritesPage"
 
 const pages = [
   'shop',
@@ -290,6 +279,7 @@ function imageURL(value) {
     }
 
     return url.href;
+
   } catch {
     return '';
   }
@@ -380,11 +370,6 @@ function itemHasStockProblem(item) {
 // 13. DJANGO API REQUESTS
 // ==========================================================
 
-// All requests include session cookies.
-//
-// POST, PATCH, and DELETE initialize CSRF protection
-// and send Django's CSRF token.
-
 async function req(path, method = 'GET', data) {
   const headers = {};
 
@@ -398,6 +383,7 @@ async function req(path, method = 'GET', data) {
           credentials: 'include'
         }
       );
+
     } catch {
       throw Error(
         'Cannot connect to Django CSRF endpoint.'
@@ -438,6 +424,7 @@ async function req(path, method = 'GET', data) {
             })
       }
     );
+
   } catch {
     throw Error(
       'Cannot connect to Django. Check that runserver is running.'
@@ -466,6 +453,7 @@ async function req(path, method = 'GET', data) {
 async function act(callback) {
   try {
     await callback();
+
   } catch (error) {
     console.error(error);
 
@@ -479,28 +467,7 @@ async function act(callback) {
 
 // ==========================================================
 // END OF PART 1 OF 8
-//
-// NEXT: PART 2 — NAVIGATION, SESSION,
-// PRODUCT DISPLAY AND SHOPPING CART
 // ==========================================================
-
-/*
-============================================================
- HONEYBAIL CUSTOMER STOREFRONT
- ICE BLUE EDITION
-
- PART 2 OF 8
-
- NAVIGATION
- CUSTOMER SESSION
- PRODUCT DISPLAY
- FAVORITES HEART STATE
- SHOPPING CART
- AUTOMATIC QUANTITY SAVING
-============================================================
-*/
-
-
 // ==========================================================
 // 15. PAGE NAVIGATION
 // ==========================================================
@@ -510,13 +477,11 @@ function page(name) {
     name = 'shop';
   }
 
-  // Keep private customer pages protected.
   if (protectedPages.includes(name) && !user) {
     name = 'login';
     notify('Please log in to continue.');
   }
 
-  // Display the selected page.
   for (const item of pages) {
     const section = $(item + 'Page');
 
@@ -525,14 +490,12 @@ function page(name) {
     }
   }
 
-  // Only show the shop hero on the Shop page.
   const hero = $('hero');
 
   if (hero) {
     hero.hidden = name !== 'shop';
   }
 
-  // Load data when opening a page.
   if (name === 'cart' && user) {
     act(loadCart);
   }
@@ -586,7 +549,6 @@ function identity() {
     logoutButton.hidden = !user;
   }
 
-  // Update any optional account-name display.
   const accountName = $('accountName');
 
   if (accountName) {
@@ -614,6 +576,7 @@ async function session() {
     const data = await req('me/');
 
     user = data.customer || null;
+
   } catch (error) {
     user = null;
 
@@ -639,14 +602,12 @@ async function loadProducts() {
       ? data.products
       : [];
 
-    // Render the product cards using the current
-    // saved Favorites state.
     renderProducts();
 
-    // Refresh any product-related panels that exist.
     if (typeof renderFavorites === 'function') {
       renderFavorites();
     }
+
   } catch (error) {
     const container = $('products');
 
@@ -663,19 +624,6 @@ async function loadProducts() {
 // ==========================================================
 // 19. CHECK WHETHER A PRODUCT IS FAVORITED
 // ==========================================================
-
-// Django returns Favorites in this format:
-//
-// {
-//   "favorites": [
-//     {
-//       "product": {
-//         "id": 1,
-//         "name": "Product name"
-//       }
-//     }
-//   ]
-// }
 
 function isProductFavorited(productId) {
   const id = Number(productId);
@@ -854,16 +802,12 @@ async function loadCart() {
     )
   );
 
-  // Remove selections for items that no longer
-  // exist or are no longer available.
   for (const id of selectedCartItemIds) {
     if (!availableIds.has(id)) {
       selectedCartItemIds.delete(id);
     }
   }
 
-  // Select available items on the first load.
-  // Preserve the customer's selection afterward.
   if (!cartSelectionInitialized) {
     selectedCartItemIds = new Set(availableIds);
 
@@ -983,7 +927,6 @@ async function changeCartQuantity(itemId, change) {
 
   savingCartItemIds.add(id);
 
-  // Show the new quantity immediately.
   item.quantity = newQuantity;
 
   updateCartCount();
@@ -1000,14 +943,15 @@ async function changeCartQuantity(itemId, change) {
     );
 
     await loadCart();
+
   } catch (error) {
-    // Restore the previous display if saving fails.
     item.quantity = oldQuantity;
 
     updateCartCount();
     renderCart();
 
     throw error;
+
   } finally {
     savingCartItemIds.delete(id);
 
@@ -1075,26 +1019,7 @@ async function removeCartItem(itemId) {
 
 // ==========================================================
 // END OF PART 2 OF 8
-//
-// NEXT: PART 3 — CART DESIGN,
-// SELECTED ITEMS AND ORDER SUMMARY
 // ==========================================================
-
-/*
-============================================================
- HONEYBAIL CUSTOMER STOREFRONT
- ICE BLUE EDITION
-
- PART 3 OF 8
-
- CART LAYOUT
- ITEM SELECTION
- QUANTITY CONTROLS
- LIVE ORDER SUMMARY
-============================================================
-*/
-
-
 // ==========================================================
 // 28. RENDER CART PRODUCT ROW
 // ==========================================================
@@ -1196,7 +1121,6 @@ function cartItemHTML(item) {
             class="cart-quantity-button"
             data-action="qty-plus"
             data-id="${id}"
-            aria-label="Increase quantity"
             ${
               unavailable ||
               quantity >= stock ||
@@ -1378,26 +1302,7 @@ function renderCart() {
 
 // ==========================================================
 // END OF PART 3 OF 8
-//
-// NEXT: PART 4 — FAVORITES,
-// BUY NOW, MY ACCOUNT AND ADDRESSES
 // ==========================================================
-
-/*
-============================================================
- HONEYBAIL CUSTOMER STOREFRONT
- ICE BLUE EDITION
-
- PART 4 OF 8
-
- FAVORITES
- BUY NOW
- MY ACCOUNT
- SAVED ADDRESSES
-============================================================
-*/
-
-
 // ==========================================================
 // 31. LOAD FAVORITES
 // ==========================================================
@@ -1419,9 +1324,6 @@ async function loadFavorites() {
     : [];
 
   renderFavorites();
-
-  // Essential: refresh the product cards so the
-  // favorite hearts reflect the saved server state.
   renderProducts();
 }
 
@@ -1565,8 +1467,6 @@ async function addFavorite(productId) {
     throw Error('Invalid product.');
   }
 
-  // Refresh the saved state before deciding whether
-  // this action adds or removes a favorite.
   await loadFavorites();
 
   const alreadySaved = isProductFavorited(id);
@@ -1580,7 +1480,6 @@ async function addFavorite(productId) {
       }
     );
 
-    // Update only after the server confirms success.
     favorites = favorites.filter(item => {
       const product = item.product || item;
 
@@ -1601,7 +1500,6 @@ async function addFavorite(productId) {
       }
     );
 
-    // Read the saved state back from Django.
     await loadFavorites();
 
     notify('Added to your favorites! ♥');
@@ -1643,8 +1541,6 @@ async function buyNow(productId) {
     );
   }
 
-  // Buy Now is a separate checkout mode.
-  // It does not add another item to the cart.
   checkoutMode = 'buy';
 
   buyNowItem = {
@@ -1671,7 +1567,6 @@ async function loadAccount() {
     return;
   }
 
-  // Refresh the customer's actual server-side profile.
   const data = await req('me/');
 
   user = data.customer || user;
@@ -1697,7 +1592,6 @@ async function loadAccount() {
       user.email || '—';
   }
 
-  // Load this customer's saved delivery addresses.
   await loadAddresses();
 
   renderAccountAddresses();
@@ -1729,8 +1623,6 @@ async function loadAddresses() {
       Number(item.id) === Number(selectedAddressId)
   );
 
-  // Preserve a valid selection. Otherwise use the
-  // default address, or the first saved address.
   if (!selectedAddress) {
     const defaultAddress = addresses.find(
       item => item.is_default
@@ -1880,15 +1772,14 @@ function renderCheckoutAddresses() {
     return;
   }
 
- 
-if (!addresses.length) {
-  container.innerHTML = `
-    <div class="card address-empty">
-      <p>
-        Add a delivery address before placing your order.
-      </p>
-    </div>
-  `;
+  if (!addresses.length) {
+    container.innerHTML = `
+      <div class="card address-empty">
+        <p>
+          Add a delivery address before placing your order.
+        </p>
+      </div>
+    `;
 
   } else {
     container.innerHTML = addresses.map(address => `
@@ -1925,12 +1816,10 @@ if (!addresses.length) {
 
       </label>
     `).join('') + `
-      
+
     `;
   }
 
-  // Use the existing confirmation checkbox from HTML.
-  // Do not generate a second element with the same ID.
   const confirmation = $('confirmAddress');
 
   if (confirmation) {
@@ -1983,12 +1872,12 @@ function openAddressForm(addressId = null) {
     return;
   }
 
-  // Preserve the page the customer should return to.
   if (
     $('checkoutPage') &&
     !$('checkoutPage').hidden
   ) {
     addressReturnPage = 'checkout';
+
   } else if (
     !$('addressPage') ||
     $('addressPage').hidden
@@ -2034,8 +1923,6 @@ function openAddressForm(addressId = null) {
       idInput.value = address.id;
     }
 
-    // Match the actual form field names in the
-    // storefront address form.
     for (const field of [
       'label',
       'recipient',
@@ -2090,7 +1977,6 @@ async function saveAddress(event) {
     $('addressId')?.value ||
     '';
 
-  // These field names match the Django address view.
   const payload = {
     label: String(data.label || 'Home').trim(),
     recipient: String(data.recipient || '').trim(),
@@ -2112,6 +1998,7 @@ async function saveAddress(event) {
         ...payload
       }
     );
+
   } else {
     await req(
       'addresses/',
@@ -2157,7 +2044,6 @@ async function deleteAddress(addressId) {
     return;
   }
 
-  // The backend expects address_id in the JSON body.
   await req(
     'addresses/',
     'DELETE',
@@ -2215,25 +2101,7 @@ async function setDefaultAddress(addressId) {
 
 // ==========================================================
 // END OF PART 4 OF 8
-//
-// NEXT: PART 5 — CHECKOUT AND ORDER SUBMISSION
 // ==========================================================
-
-/*
-============================================================
- HONEYBAIL CUSTOMER STOREFRONT
- ICE BLUE EDITION
-
- PART 5 OF 8
-
- CHECKOUT
- SHIPPING CALCULATION
- STOCK VALIDATION
- ORDER SUBMISSION
-============================================================
-*/
-
-
 // ==========================================================
 // 45. GET CHECKOUT ITEMS
 // ==========================================================
@@ -2322,48 +2190,112 @@ function renderCheckoutSummary() {
   const items = checkoutItems();
 
   container.innerHTML = items.length
-    ? items.map(item => `
-        <div class="cartrow checkout-item">
+    ? items.map(item => {
 
-          <div class="cart-product">
+        const quantity = Number(item.quantity);
+        const stock = productStock(item.product);
 
-            <div class="cart-thumbnail">
-              ${productImage(item.product)}
+        // Editable quantity is only for Buy Now.
+        // Cart quantities are already editable
+        // on the Shopping Cart page.
+
+        const quantityDisplay = checkoutMode === 'buy'
+          ? `
+              <div
+                class="cart-quantity-editor checkout-buy-quantity"
+                aria-label="Change Buy Now quantity"
+              >
+
+                <button
+                  type="button"
+                  data-buy-now-quantity="-1"
+                  aria-label="Decrease quantity"
+                  ${
+                    quantity <= 1 || submittingOrder
+                      ? 'disabled'
+                      : ''
+                  }
+                >
+                  −
+                </button>
+
+                <span
+                  class="cart-quantity-value"
+                  aria-live="polite"
+                >
+                  ${quantity}
+                </span>
+
+                <button
+                  type="button"
+                  data-buy-now-quantity="1"
+                  aria-label="Increase quantity"
+                  ${
+                    quantity >= stock || submittingOrder
+                      ? 'disabled'
+                      : ''
+                  }
+                >
+                  +
+                </button>
+
+              </div>
+
+              <small class="muted">
+                Available stock: ${stock}
+              </small>
+            `
+          : `
+              <p class="muted">
+                Quantity: ${quantity}
+              </p>
+            `;
+
+        return `
+          <div class="cartrow checkout-item">
+
+            <div class="cart-product">
+
+              <div class="cart-thumbnail">
+                ${productImage(item.product)}
+              </div>
+
+              <div class="cart-details">
+
+                <strong>
+                  ${html(item.product.name || 'Product')}
+                </strong>
+
+                <p class="muted">
+                  ${peso(item.product.price)} each
+                </p>
+
+                ${quantityDisplay}
+
+              </div>
+
             </div>
 
-            <div class="cart-details">
-
-              <strong>
-                ${html(item.product.name || 'Product')}
-              </strong>
-
-              <p class="muted">
-                ${peso(item.product.price)} each
-              </p>
-
-              <p class="muted">
-                Quantity: ${Number(item.quantity)}
-              </p>
-
-            </div>
+            <strong>
+              ${peso(
+                Number(item.product.price || 0) *
+                quantity
+              )}
+            </strong>
 
           </div>
+        `;
 
-          <strong>
-            ${peso(
-              Number(item.product.price || 0) *
-              Number(item.quantity)
-            )}
-          </strong>
-
-        </div>
-      `).join('')
+      }).join('')
 
     : `
         <div class="card cart-empty">
           <p>No products selected for checkout.</p>
         </div>
       `;
+
+
+  // UPDATE ORDER TOTALS
 
   const subtotalElement = $('checkoutSubtotal');
   const deliveryElement = $('checkoutDeliveryFee');
@@ -2390,10 +2322,15 @@ function renderCheckoutSummary() {
       `${checkoutQuantity()} item(s)`;
   }
 
+
+  // VALIDATE PRODUCT STOCK
+
   const submitButton = $('placeOrderBtn');
 
   if (submitButton) {
+
     const invalidItem = items.some(item => {
+
       const quantity = Number(item.quantity);
       const stock = productStock(item.product);
 
@@ -2404,6 +2341,7 @@ function renderCheckoutSummary() {
         quantity < 1 ||
         quantity > stock
       );
+
     });
 
     submitButton.disabled =
@@ -2417,7 +2355,68 @@ function renderCheckoutSummary() {
       : invalidItem
         ? 'Stock Unavailable'
         : 'Confirm & Place Order';
+
   }
+}
+
+
+// ==========================================================
+// 50.1 BUY NOW QUANTITY CONTROL
+// ==========================================================
+
+function changeBuyNowQuantity(change) {
+
+  if (
+    checkoutMode !== 'buy' ||
+    !buyNowItem ||
+    submittingOrder
+  ) {
+    return;
+  }
+
+  const amount = Number(change);
+
+  if (amount !== 1 && amount !== -1) {
+    return;
+  }
+
+  const product = buyNowItem.product;
+  const stock = productStock(product);
+
+  if (
+    product?.is_active === false ||
+    stock < 1
+  ) {
+    notify(
+      'This product is currently unavailable.'
+    );
+
+    return;
+  }
+
+  const currentQuantity =
+    Number(buyNowItem.quantity) || 1;
+
+  const newQuantity =
+    currentQuantity + amount;
+
+  if (newQuantity < 1) {
+    return;
+  }
+
+  if (newQuantity > stock) {
+    notify(
+      `Only ${stock} item(s) are available.`
+    );
+
+    return;
+  }
+
+  // Update Buy Now quantity.
+  buyNowItem.quantity = newQuantity;
+
+  // Recalculate the checkout immediately.
+  renderCheckoutSummary();
 }
 
 
@@ -2444,6 +2443,7 @@ async function loadCheckout() {
 
     if (!currentProduct) {
       buyNowItem = null;
+
     } else {
       buyNowItem.product = currentProduct;
     }
@@ -2531,7 +2531,6 @@ async function validateCheckoutStock() {
 // 53. SUBMIT CHECKOUT
 // ==========================================================
 
-
 async function submitCheckout(event) {
   event.preventDefault();
 
@@ -2548,6 +2547,7 @@ async function submitCheckout(event) {
   renderCheckoutSummary();
 
   try {
+
     if (savingCartItemIds.size > 0) {
       throw Error(
         'Please wait until your cart changes finish saving.'
@@ -2570,7 +2570,9 @@ async function submitCheckout(event) {
       new FormData(form)
     );
 
-    // Cash on Delivery only.
+
+    // CASH ON DELIVERY ONLY
+
     if (
       formData.payment_method &&
       formData.payment_method !== 'COD'
@@ -2580,11 +2582,13 @@ async function submitCheckout(event) {
       );
     }
 
-    // Validate order policy.
+
+    // VALIDATE ORDER POLICY
+
     const policyCheckbox = $('orderPolicy');
 
     if (
-      policyCheckbox &&
+      !policyCheckbox ||
       !policyCheckbox.checked
     ) {
       throw Error(
@@ -2592,7 +2596,9 @@ async function submitCheckout(event) {
       );
     }
 
-    // Load customer delivery addresses.
+
+    // LOAD CUSTOMER DELIVERY ADDRESSES
+
     await loadAddresses();
 
     const address = addresses.find(
@@ -2606,6 +2612,9 @@ async function submitCheckout(event) {
       );
     }
 
+
+    // CONFIRM DELIVERY ADDRESS
+
     const confirmation = $('confirmAddress');
 
     if (!confirmation || !confirmation.checked) {
@@ -2614,10 +2623,14 @@ async function submitCheckout(event) {
       );
     }
 
-    // Validate current product stock before checkout.
+
+    // VALIDATE CURRENT PRODUCT STOCK
+
     const items = await validateCheckoutStock();
 
-    // Prepare order information for Django.
+
+    // PREPARE ORDER INFORMATION FOR DJANGO
+
     const orderPayload = {
       address_id: Number(address.id),
       payment_method: 'COD',
@@ -2626,8 +2639,11 @@ async function submitCheckout(event) {
       checkout_mode: checkoutMode
     };
 
+
     // BUY NOW CHECKOUT
+
     if (checkoutMode === 'buy') {
+
       if (!buyNowItem) {
         throw Error(
           'Please select a product to purchase.'
@@ -2640,7 +2656,9 @@ async function submitCheckout(event) {
       };
 
     } else {
+
       // CART CHECKOUT
+
       const selectedIds = items.map(
         item => Number(item.cart_item_id)
       );
@@ -2660,15 +2678,18 @@ async function submitCheckout(event) {
         selectedIds;
     }
 
-    // Submit order to Django.
-    // The backend must save the order and deduct stock.
+
+    // SUBMIT ORDER TO DJANGO
+
     const result = await req(
       'orders/',
       'POST',
       orderPayload
     );
 
-    // Save order information before resetting checkout.
+
+    // SAVE ORDER INFORMATION
+
     const orderNumber =
       result.order_id ?? result.id ?? 'New';
 
@@ -2678,7 +2699,9 @@ async function submitCheckout(event) {
       checkoutGrandTotal()
     );
 
-    // Reset checkout only after Django confirms success.
+
+    // RESET CHECKOUT ONLY AFTER SUCCESS
+
     checkoutMode = 'cart';
     buyNowItem = null;
 
@@ -2687,13 +2710,15 @@ async function submitCheckout(event) {
 
     form.reset();
 
-    // IMPORTANT FIX:
-    // Get the latest cart and product stock from Django.
+
+    // REFRESH CART AND PRODUCT STOCK
+
     try {
       await Promise.all([
         loadCart(),
         loadProducts()
       ]);
+
     } catch (refreshError) {
       console.warn(
         'Order saved, but refreshing store data failed:',
@@ -2701,7 +2726,9 @@ async function submitCheckout(event) {
       );
     }
 
-    // Open order history.
+
+    // OPEN ORDER HISTORY
+
     page('orders');
 
     notify(
@@ -2713,52 +2740,32 @@ async function submitCheckout(event) {
     await loadOrders();
 
   } finally {
+
     submittingOrder = false;
+
     renderCheckoutSummary();
   }
 }
 
 
-
 // ==========================================================
 // END OF PART 5 OF 8
-//
-// NEXT: PART 6 — ORDER HISTORY,
-// TRACKING AND PRODUCT REVIEWS
 // ==========================================================
-
-/*
-============================================================
- HONEYBAIL CUSTOMER STOREFRONT
- ICE BLUE EDITION
-
- PART 6 OF 8
-
- ORDER HISTORY
- ORDER TRACKING
- CUSTOMER REVIEWS
-============================================================
-*/
-
-
 // ==========================================================
 // 54. ORDER STATUS CONFIGURATION
 // ==========================================================
 
-// These statuses reflect the customer order status
-// returned by the Django backend.
-
 const ORDER_STEPS = [
   'Pending',
-  'Processing',
   'Shipped',
+  'Out for Delivery',
   'Delivered'
 ];
 
 const ORDER_STATUS_PROGRESS = {
   'Pending': 0,
-  'Processing': 1,
-  'Shipped': 2,
+  'Shipped': 1,
+  'Out for Delivery': 2,
   'Delivered': 3
 };
 
@@ -2936,6 +2943,7 @@ async function loadOrders() {
             const name = item.name || 'Product';
             const quantity = Number(item.quantity || 0);
             const price = Number(item.price || 0);
+
             const itemSubtotal = Number(
               item.subtotal ?? price * quantity
             );
@@ -3031,7 +3039,6 @@ async function loadReviews(productId) {
       `${product?.name || 'Product'} — Customer Reviews`;
   }
 
-  // GET reviews is public in the Django backend.
   const data = await req(`reviews/${id}/`);
 
   const reviews = Array.isArray(data.reviews)
@@ -3051,6 +3058,7 @@ async function loadReviews(productId) {
       summary.textContent =
         `${reviews.length} review(s) · ` +
         `Average rating: ${average.toFixed(1)} / 5`;
+
     } else {
       summary.textContent = 'No customer reviews yet.';
     }
@@ -3087,11 +3095,11 @@ async function loadReviews(productId) {
 
             </div>
 
-            <p class="price review-stars"
-               aria-label="${rating} out of 5 stars">
-
+            <p
+              class="price review-stars"
+              aria-label="${rating} out of 5 stars"
+            >
               ${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}
-
             </p>
 
             <p>
@@ -3208,8 +3216,6 @@ async function submitReview(event) {
 
   const productId = reviewProduct;
 
-  // Django verifies that this customer has a delivered
-  // order containing the product before saving the review.
   await req(
     `reviews/${productId}/`,
     'POST',
@@ -3272,27 +3278,7 @@ async function deleteReview() {
 
 // ==========================================================
 // END OF PART 6 OF 8
-//
-// NEXT: PART 7 — LOGIN, REGISTRATION,
-// LOGOUT AND EVENT HANDLERS
 // ==========================================================
-
-/*
-============================================================
- HONEYBAIL CUSTOMER STOREFRONT
- ICE BLUE EDITION
-
- PART 7 OF 8
-
- AUTHENTICATION
- EVENT HANDLERS
- ADDRESS FORMS
- CHECKOUT
- REVIEWS
-============================================================
-*/
-
-
 // ==========================================================
 // 61. LOGOUT CONFIRMATION
 // ==========================================================
@@ -3321,7 +3307,6 @@ function showLogoutConfirmation() {
 async function confirmLogout() {
   await req('logout/', 'POST', {});
 
-  // Clear local customer data after successful logout.
   user = null;
   cart = [];
   favorites = [];
@@ -3362,9 +3347,6 @@ async function confirmLogout() {
 // 63. CENTRAL BUTTON EVENT HANDLER
 // ==========================================================
 
-// Handles static buttons and buttons created dynamically
-// inside product cards, Favorites, Cart, and addresses.
-
 document.addEventListener('click', event => {
   const button = event.target.closest(
     '[data-page], [data-action]'
@@ -3375,6 +3357,7 @@ document.addEventListener('click', event => {
   }
 
   // Navigation buttons.
+
   if (button.dataset.page) {
     event.preventDefault();
 
@@ -3506,7 +3489,6 @@ if (loginForm) {
         new FormData(form)
       );
 
-      // Django expects email and password.
       await req('login/', 'POST', {
         email: formData.email,
         password: formData.password
@@ -3520,7 +3502,6 @@ if (loginForm) {
         );
       }
 
-      // Load data belonging to this customer.
       cart = [];
       favorites = [];
       addresses = [];
@@ -3575,7 +3556,6 @@ if (registerForm) {
         throw Error('Your passwords do not match.');
       }
 
-      // The backend expects name, email, and password.
       await req('register/', 'POST', {
         name: formData.name,
         email: formData.email,
@@ -3627,7 +3607,6 @@ function bindClick(id, callback) {
   const element = $(id);
 
   if (!element) {
-    // Some optional controls may not exist in every page.
     return;
   }
 
@@ -3678,6 +3657,43 @@ bindClick('refresh', loadProducts);
 // ==========================================================
 
 bindClick('checkoutStart', startCartCheckout);
+
+
+// ==========================================================
+// BUY NOW QUANTITY BUTTONS
+// ==========================================================
+
+// This listener handles the dynamically rendered
+// plus and minus buttons inside checkoutItems.
+
+const checkoutItemsContainer = $('checkoutItems');
+
+if (checkoutItemsContainer) {
+
+  checkoutItemsContainer.addEventListener(
+    'click',
+    event => {
+
+      const button = event.target.closest?.(
+        '[data-buy-now-quantity]'
+      );
+
+      if (!button || button.disabled) {
+        return;
+      }
+
+      event.preventDefault();
+
+      const change = Number(
+        button.dataset.buyNowQuantity
+      );
+
+      act(() => changeBuyNowQuantity(change));
+
+    }
+  );
+
+}
 
 
 // ==========================================================
@@ -3770,24 +3786,7 @@ bindClick('deleteReview', deleteReview);
 
 // ==========================================================
 // END OF PART 7 OF 8
-//
-// NEXT: PART 8 — INITIALIZATION AND STARTUP
 // ==========================================================
-  
-/*
-============================================================
- HONEYBAIL CUSTOMER STOREFRONT
- ICE BLUE EDITION
-
- PART 8 OF 8
-
- CART CHECKOUT
- STOREFRONT INITIALIZATION
- APPLICATION STARTUP
-============================================================
-*/
-
-
 // ==========================================================
 // 81. START CHECKOUT FOR SELECTED CART ITEMS
 // ==========================================================
@@ -3795,12 +3794,17 @@ bindClick('deleteReview', deleteReview);
 async function startCartCheckout() {
   if (!user) {
     page('login');
+
     notify('Please log in before checking out.');
+
     return;
   }
 
   if (savingCartItemIds.size > 0) {
-    notify('Please wait while your cart updates are saved.');
+    notify(
+      'Please wait while your cart updates are saved.'
+    );
+
     return;
   }
 
@@ -3808,14 +3812,20 @@ async function startCartCheckout() {
   await loadCart();
 
   if (savingCartItemIds.size > 0) {
-    notify('Please wait while your cart updates are saved.');
+    notify(
+      'Please wait while your cart updates are saved.'
+    );
+
     return;
   }
 
   const items = selectedCartItems();
 
   if (!items.length) {
-    notify('Please select at least one available product.');
+    notify(
+      'Please select at least one available product.'
+    );
+
     return;
   }
 
@@ -3830,6 +3840,7 @@ async function startCartCheckout() {
       notify(
         `${item.product?.name || 'A product'} is unavailable.`
       );
+
       return;
     }
 
@@ -3841,6 +3852,7 @@ async function startCartCheckout() {
       notify(
         `Please check the quantity for ${item.product.name}.`
       );
+
       return;
     }
   }
@@ -3857,6 +3869,7 @@ async function startCartCheckout() {
 // ==========================================================
 
 async function refreshStorefront() {
+
   // Restore the current Django customer session.
   await session();
 
@@ -3864,6 +3877,7 @@ async function refreshStorefront() {
   await loadProducts();
 
   if (user) {
+
     // Load only the signed-in customer's data.
     await Promise.all([
       loadCart(),
@@ -3878,6 +3892,7 @@ async function refreshStorefront() {
     updateCartCount();
 
   } else {
+
     // Clear customer-specific state for guests.
     cart = [];
     favorites = [];
@@ -3952,15 +3967,13 @@ function startHoneybail() {
 // 85. START APPLICATION
 // ==========================================================
 
-// Supports a script loaded with defer or one loaded
-// after the HTML document has finished parsing.
-
 if (document.readyState === 'loading') {
   document.addEventListener(
     'DOMContentLoaded',
     startHoneybail,
     { once: true }
   );
+
 } else {
   startHoneybail();
 }

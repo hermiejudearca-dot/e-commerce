@@ -1,11 +1,13 @@
-
 /* =========================================================
    HONEYBAIL STOREFRONT
-   ICE BLUE RESPONSIVE DESIGN
+   ICE BLUE THEME — UPDATED BRAND DESIGN
    Complete replacement for frontend/store.css
    ========================================================= */
 
-/* ---------- 1. THEME ---------- */
+
+/* =========================================================
+   1. THEME
+   ========================================================= */
 
 :root {
   --ice-white: #f0faff;
@@ -23,8 +25,13 @@
   --surface-soft: #f5fbff;
   --shadow: 0 5px 20px rgba(48, 91, 118, 0.07);
   --radius: 15px;
-  --content-width: 1160px;
+  --content-width: 1100px;
 }
+
+
+/* =========================================================
+   2. GLOBAL RESET
+   ========================================================= */
 
 *,
 *::before,
@@ -35,7 +42,7 @@
 html {
   min-height: 100%;
   scroll-behavior: smooth;
-  scroll-padding-top: 90px;
+  scroll-padding-top: 85px;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -142,12 +149,15 @@ p {
   text-transform: uppercase;
 }
 
-/* ---------- 2. MAIN CONTAINERS ---------- */
+
+/* =========================================================
+   3. MAIN CONTAINERS
+   ========================================================= */
 
 .wrap {
   width: min(var(--content-width), calc(100% - 40px));
   margin-inline: auto;
-  padding: 24px 0 45px;
+  padding: 20px 0 40px;
 }
 
 main {
@@ -157,7 +167,7 @@ main {
 main > section {
   width: 100%;
   min-width: 0;
-  padding: 16px 0 30px;
+  padding: 13px 0 25px;
 }
 
 main > section[hidden] {
@@ -181,13 +191,95 @@ main > section[hidden] {
   padding: 20px;
 }
 
-/* ---------- 3. HEADER AND NAVIGATION ---------- */
+
+/* =========================================================
+   4. BUTTONS
+   BLUE BACKGROUND DESIGN
+   ========================================================= */
+
+button,
+.outline,
+.primary,
+.light {
+  min-height: 36px;
+  padding: 8px 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--deep-blue);
+  background: #e4f5ff;
+  border: 1px solid #c5e6f5;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+button:hover:not(:disabled),
+.outline:hover:not(:disabled),
+.light:hover:not(:disabled) {
+  background: #ccecff;
+  border-color: var(--sky-blue);
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Main blue buttons */
+
+.primary {
+  color: #ffffff;
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.primary:hover:not(:disabled) {
+  color: #ffffff;
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
+/* Secondary blue buttons */
+
+.outline {
+  color: var(--deep-blue);
+  background: #eaf7ff;
+  border-color: #c8e7f5;
+}
+
+/* Hero button */
+
+.light {
+  color: var(--deep-blue);
+  background: #d9f0ff;
+  border-color: #b8e2f5;
+}
+
+/* Keep button labels readable */
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   5. HEADER AND NAVIGATION
+   ========================================================= */
 
 .top {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.97);
+  background: rgba(255, 255, 255, 0.98);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(12px);
 }
@@ -195,14 +287,16 @@ main > section[hidden] {
 .navwrap {
   width: min(1320px, calc(100% - 32px));
   min-width: 0;
-  min-height: 66px;
+  min-height: 58px;
   margin-inline: auto;
-  padding: 10px 0;
+  padding: 7px 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
 }
+
+/* HONEYBAIL LOGO */
 
 .brand {
   flex-shrink: 0;
@@ -217,6 +311,83 @@ main > section[hidden] {
   text-decoration: none;
 }
 
+.brand-word {
+  display: inline-flex;
+  align-items: center;
+  color: var(--deep-blue);
+  line-height: 1;
+}
+
+/* DONUT O */
+
+.donut-o {
+  position: relative;
+  display: inline-block;
+  width: 0.88em;
+  height: 0.88em;
+  margin: 0 1px;
+  flex: 0 0 0.88em;
+  color: transparent;
+  vertical-align: -0.08em;
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at center,
+      var(--donut-hole, #ffffff) 0 20%,
+      transparent 21%
+    ),
+    radial-gradient(
+      circle at center,
+      #96533f 0 57%,
+      #c47b56 58% 73%,
+      #efb58b 74% 100%
+    );
+
+  box-shadow:
+    inset 0 -2px 3px rgba(70, 35, 24, 0.18),
+    0 1px 2px rgba(48, 91, 118, 0.12);
+}
+
+/* Donut sprinkles */
+
+.donut-o::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at 27% 24%,
+      #ff75a8 0 2px,
+      transparent 2.7px
+    ),
+    radial-gradient(
+      ellipse at 69% 20%,
+      #71c9ff 0 2px,
+      transparent 2.7px
+    ),
+    radial-gradient(
+      ellipse at 80% 51%,
+      #ffe16c 0 2px,
+      transparent 2.7px
+    ),
+    radial-gradient(
+      ellipse at 65% 76%,
+      #c99aff 0 2px,
+      transparent 2.7px
+    ),
+    radial-gradient(
+      ellipse at 26% 70%,
+      #75d8bc 0 2px,
+      transparent 2.7px
+    );
+}
+
+/* Navigation buttons */
+
 nav {
   min-width: 0;
   display: flex;
@@ -226,40 +397,23 @@ nav {
   gap: 7px;
 }
 
-nav button,
-.outline,
-.primary,
-.light {
-  min-height: 38px;
-  padding: 8px 13px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.3;
-  text-align: center;
-  white-space: normal;
-  transition:
-    background-color 0.16s ease,
-    border-color 0.16s ease,
-    color 0.16s ease;
-}
-
-nav button,
-.outline {
+nav button {
+  min-height: 34px;
+  padding: 7px 11px;
   color: var(--deep-blue);
-  background: #fff;
-  border: 1px solid var(--line);
+  background: #e6f5ff;
+  border: 1px solid #c9e8f6;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
 }
 
-nav button:hover,
-.outline:hover:not(:disabled) {
-  background: var(--ice-blue);
-  border-color: var(--frost-blue);
+nav button:hover:not(:disabled) {
+  background: #ccecff;
+  border-color: var(--sky-blue);
 }
+
+/* Cart quantity badge */
 
 #cartCount {
   min-width: 20px;
@@ -269,89 +423,109 @@ nav button:hover,
   align-items: center;
   justify-content: center;
   color: var(--deep-blue);
-  background: var(--ice-blue);
+  background: #c8ebff;
   border-radius: 20px;
   font-size: 11px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
 }
 
-.primary {
-  color: #fff;
-  background: var(--primary);
-  border: 1px solid var(--primary);
-}
 
-.primary:hover:not(:disabled) {
-  background: var(--primary-dark);
-  border-color: var(--primary-dark);
-}
-
-.light {
-  color: var(--deep-blue);
-  background: #fff;
-  border: 1px solid var(--frost-blue);
-}
-
-.light:hover {
-  background: var(--ice-blue);
-}
-
-/* ---------- 4. HERO ---------- */
+/* =========================================================
+   6. HERO / BRAND BANNER
+   SMALLER TOP PANEL
+   ========================================================= */
 
 .hero {
   position: relative;
+  min-height: 0;
   overflow: hidden;
-  padding: clamp(25px, 4vw, 48px) 0;
+  padding: 17px 0 19px;
+
   background:
-    radial-gradient(circle at 88% 18%, #c9edfc 0, transparent 36%),
-    linear-gradient(135deg, #ffffff 0%, var(--ice-blue) 100%);
+    radial-gradient(
+      circle at 90% 20%,
+      #d0efff 0,
+      transparent 38%
+    ),
+    linear-gradient(
+      110deg,
+      #ffffff 0%,
+      #eaf7ff 52%,
+      #dff3ff 100%
+    );
+
   border-bottom: 1px solid var(--line);
 }
 
-.herowrap {
-  position: relative;
-  z-index: 1;
-  width: min(var(--content-width), calc(100% - 40px));
-  margin-inline: auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(180px, 0.8fr);
-  align-items: center;
-  gap: clamp(18px, 4vw, 45px);
-}
-
-.hero h1 {
-  max-width: 560px;
-  margin: 5px 0 12px;
-  font-size: clamp(30px, 4.3vw, 50px);
-  line-height: 1.12;
-  letter-spacing: -1px;
-}
-
-.hero p {
-  max-width: 480px;
-  margin-bottom: 17px;
-  color: var(--muted);
-  font-size: clamp(13px, 1.3vw, 16px);
-}
+/* No center donut illustration */
 
 .heroart {
-  justify-self: center;
-  font-size: clamp(70px, 10vw, 130px);
-  line-height: 1;
-  pointer-events: none;
+  display: none !important;
 }
 
-/* ---------- 5. SECTION HEADINGS ---------- */
+.herowrap {
+  width: min(var(--content-width), calc(100% - 40px));
+  min-height: 115px;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+}
+
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+
+/* Main Honeybail title */
+
+.hero-brand-title {
+  margin: 0;
+  color: var(--deep-blue);
+  font-size: clamp(29px, 3.5vw, 39px);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: 0.4px;
+}
+
+/* The donut hole matches the hero background */
+
+.hero-brand-title .donut-o {
+  --donut-hole: #eaf7ff;
+}
+
+/* Tagline directly underneath Honeybail */
+
+.hero-tagline {
+  margin: 3px 0 9px;
+  color: #527b95;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.hero-button {
+  min-height: 33px;
+  padding: 7px 13px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   7. SECTION HEADINGS
+   ========================================================= */
 
 .sectionhead {
   min-width: 0;
-  margin-bottom: 20px;
+  margin-bottom: 17px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 12px;
 }
 
 .sectionhead > * {
@@ -360,7 +534,7 @@ nav button:hover,
 
 .sectionhead h1,
 .sectionhead h2 {
-  margin: 0 0 7px;
+  margin: 0 0 6px;
   letter-spacing: -0.5px;
 }
 
@@ -372,15 +546,18 @@ nav button:hover,
   flex-shrink: 0;
 }
 
-/* ---------- 6. NOTICE MESSAGE ---------- */
+
+/* =========================================================
+   8. NOTICE MESSAGE
+   ========================================================= */
 
 #notice {
   width: 100%;
-  margin: 0 auto 20px;
+  margin: 0 auto 17px;
   padding: 11px 15px;
   color: var(--deep-blue);
-  background: var(--ice-blue);
-  border: 1px solid var(--frost-blue);
+  background: #dff3ff;
+  border: 1px solid #c3e7f7;
   border-radius: 10px;
   overflow-wrap: anywhere;
 }
@@ -389,76 +566,109 @@ nav button:hover,
   display: none;
 }
 
-/* ---------- 7. PRODUCT GRID AND CARDS ---------- */
+
+/* =========================================================
+   9. PRODUCT GRID
+   ========================================================= */
 
 .productgrid {
   min-width: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: stretch;
-  gap: 18px;
+  gap: 15px;
 }
+
+
+/* =========================================================
+   10. PRODUCT CARDS
+   ========================================================= */
 
 .product {
   min-width: 0;
+  height: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
   transition:
-    transform 0.16s ease,
-    box-shadow 0.16s ease;
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 .product:hover {
   transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(48, 91, 118, 0.11);
 }
+
+
+/* =========================================================
+   11. STANDARD PRODUCT IMAGE SIZE
+   ALL PRODUCT PHOTOS USE THE SAME FRAME
+   ========================================================= */
 
 .productimage {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 0.8;
-  min-height: 130px;
-  max-height: 230px;
+  height: 185px;
+  min-height: 185px;
+  max-height: 185px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   color: var(--deep-blue);
-  background: var(--surface-soft);
+  background: #f2faff;
   font-size: 45px;
 }
+
+/* Keep the complete product image visible */
 
 .productimage img {
   width: 100%;
   height: 100%;
+  display: block;
   object-fit: contain;
+  object-position: center;
+  background: #f2faff;
 }
+
+/* Placeholder for missing product photos */
 
 .product-placeholder {
   width: 100%;
-  min-height: 130px;
+  height: 100%;
+  min-height: 185px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--surface-soft);
+  background: #f2faff;
   font-size: 44px;
 }
 
+
+/* =========================================================
+   12. PRODUCT INFORMATION
+   ========================================================= */
+
 .productbody {
   min-width: 0;
-  padding: 15px;
+  padding: 13px;
   display: flex;
   flex: 1;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 7px;
 }
 
 .productbody h3 {
   margin: 3px 0;
   color: var(--ink);
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.35;
 }
 
@@ -469,18 +679,19 @@ nav button:hover,
   -webkit-line-clamp: 3;
   line-clamp: 3;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .product-meta {
   margin: 0;
-  font-size: 12px;
+  color: var(--muted);
+  font-size: 11px;
 }
 
 .price {
   margin: 2px 0;
   color: var(--deep-blue);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
 }
@@ -496,7 +707,10 @@ nav button:hover,
   font-weight: 700;
 }
 
-/* Product buttons */
+
+/* =========================================================
+   13. PRODUCT ACTION BUTTONS
+   ========================================================= */
 
 .actions,
 .product-actions {
@@ -504,7 +718,7 @@ nav button:hover,
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 7px;
 }
 
 .productbody .actions {
@@ -516,25 +730,26 @@ nav button:hover,
 .product-actions button {
   min-width: 0;
   max-width: 100%;
+  min-height: 32px;
+  padding: 6px 9px;
+  font-size: 11px;
 }
 
+/* Favorite button */
+
 .favorite-button {
-  min-height: 36px;
-  padding: 7px 11px;
+  min-height: 32px;
+  padding: 6px 10px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 5px;
   color: var(--deep-blue);
-  background: #fff;
-  border: 1px solid var(--line);
+  background: #eaf7ff;
+  border: 1px solid #c8e7f5;
   border-radius: 9px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
-  transition:
-    background-color 0.16s ease,
-    color 0.16s ease,
-    border-color 0.16s ease;
 }
 
 .favorite-button > span:first-child {
@@ -543,7 +758,7 @@ nav button:hover,
 }
 
 .favorite-button:hover {
-  background: var(--ice-blue);
+  background: #d6efff;
 }
 
 .favorite-button.is-favorite {
@@ -556,7 +771,10 @@ nav button:hover,
   color: #c64c71;
 }
 
-/* ---------- 8. FAVORITES ---------- */
+
+/* =========================================================
+   14. FAVORITES PAGE
+   ========================================================= */
 
 #favorites {
   min-width: 0;
@@ -566,7 +784,10 @@ nav button:hover,
   height: 100%;
 }
 
-/* ---------- 9. SHOPPING CART ---------- */
+
+/* =========================================================
+   15. SHOPPING CART
+   ========================================================= */
 
 .shopping-cart-card {
   padding: clamp(14px, 2.5vw, 24px);
@@ -608,15 +829,16 @@ nav button:hover,
 .cart-select-label input,
 .cart-item-checkbox,
 .checkout-address-option input,
-.agree input,
-.checkout-address-confirmation input,
-.checkout-address-option input[type="radio"] {
+.agree input {
   width: 16px;
   height: 16px;
   margin: 0;
   flex-shrink: 0;
   accent-color: var(--primary);
 }
+
+
+/* Cart item */
 
 .cart-item {
   min-width: 0;
@@ -692,6 +914,9 @@ nav button:hover,
   font-weight: 700;
 }
 
+
+/* Cart quantity controls */
+
 .cart-controls {
   min-width: 0;
   display: flex;
@@ -710,27 +935,27 @@ nav button:hover,
 }
 
 .cart-quantity-editor button {
-  width: 28px;
-  min-width: 28px;
-  max-width: 28px;
+  width: 29px;
+  min-width: 29px;
+  max-width: 29px;
   height: 32px;
   min-height: 32px;
   padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 28px;
+  flex: 0 0 29px;
   color: var(--deep-blue);
-  background: #fff;
-  border: 1px solid var(--frost-blue);
+  background: #e4f5ff;
+  border: 1px solid #c5e6f5;
   border-radius: 7px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   line-height: 1;
 }
 
 .cart-quantity-editor button:hover:not(:disabled) {
-  background: var(--ice-blue);
+  background: #ccecff;
   border-color: var(--sky-blue);
 }
 
@@ -743,7 +968,7 @@ nav button:hover,
   padding: 0;
   flex: 0 0 38px;
   color: var(--deep-blue);
-  background: #fff;
+  background: #ffffff;
   border: 1px solid var(--line);
   border-radius: 7px;
   font-size: 13px;
@@ -770,8 +995,8 @@ nav button:hover,
   min-height: 32px;
   padding: 6px 10px;
   color: var(--deep-blue);
-  background: #fff;
-  border: 1px solid var(--line);
+  background: #eaf7ff;
+  border: 1px solid #c8e7f5;
   border-radius: 8px;
   font-size: 12px;
   font-weight: 700;
@@ -795,7 +1020,10 @@ nav button:hover,
   color: var(--muted);
 }
 
-/* Cart summary */
+
+/* =========================================================
+   16. CART ORDER SUMMARY
+   ========================================================= */
 
 .cart-summary {
   width: min(100%, 440px);
@@ -853,29 +1081,23 @@ nav button:hover,
 
 #checkoutStart {
   width: 100%;
-  min-height: 44px;
+  min-height: 43px;
   margin-top: 8px;
   padding: 10px 14px;
-  color: #fff;
-  background: var(--primary);
-  border: 1px solid var(--primary);
-  border-radius: 10px;
-  font-weight: 800;
 }
 
-#checkoutStart:hover:not(:disabled) {
-  background: var(--primary-dark);
-}
 
-/* ---------- 10. CHECKOUT ---------- */
+/* =========================================================
+   17. CHECKOUT PAGE
+   ========================================================= */
 
 .checkout-layout {
-  width: min(100%, 920px);
+  width: min(100%, 820px);
   margin-inline: auto;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
-  gap: 12px;
+  gap: 11px;
 }
 
 .checkout-layout > *,
@@ -885,7 +1107,7 @@ nav button:hover,
 }
 
 .checkout-layout > .card {
-  padding: clamp(15px, 2.2vw, 23px);
+  padding: clamp(15px, 2.2vw, 22px);
 }
 
 .checkout-layout h3 {
@@ -911,6 +1133,21 @@ nav button:hover,
   margin-bottom: 14px;
 }
 
+
+/* Checkout quantity label */
+
+.checkout-quantity-label {
+  margin-bottom: 10px !important;
+  font-size: 12px;
+}
+
+.checkout-quantity-label strong {
+  color: var(--deep-blue);
+}
+
+
+/* Checkout product rows */
+
 .checkout-item {
   min-width: 0;
   padding: 12px 0;
@@ -934,6 +1171,23 @@ nav button:hover,
   color: var(--deep-blue);
   font-variant-numeric: tabular-nums;
 }
+
+.checkout-item .cart-thumbnail {
+  width: 55px;
+  height: 55px;
+}
+
+.checkout-buy-quantity {
+  margin: 5px 0;
+}
+
+.checkout-buy-quantity + small {
+  display: block;
+  font-size: 11px;
+}
+
+
+/* Checkout totals */
 
 .checkout-totals {
   margin-top: 16px;
@@ -971,7 +1225,10 @@ nav button:hover,
   font-size: 12px;
 }
 
-/* Address choices */
+
+/* =========================================================
+   18. DELIVERY ADDRESS OPTIONS
+   ========================================================= */
 
 .checkout-address-option {
   min-width: 0;
@@ -980,10 +1237,18 @@ nav button:hover,
   display: flex;
   align-items: flex-start;
   gap: 11px;
-  background: #fff;
+  background: #ffffff;
   border: 1px solid var(--line);
   border-radius: 11px;
   cursor: pointer;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.checkout-address-option:hover {
+  background: #f7fcff;
+  border-color: var(--sky-blue);
 }
 
 .checkout-address-option:has(input:checked) {
@@ -1012,7 +1277,10 @@ nav button:hover,
   display: none !important;
 }
 
-/* Payment options */
+
+/* =========================================================
+   19. PAYMENT OPTIONS
+   ========================================================= */
 
 .payment-options {
   display: flex;
@@ -1026,7 +1294,7 @@ nav button:hover,
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  background: #fff;
+  background: #ffffff;
   border: 1px solid var(--line);
   border-radius: 10px;
   cursor: pointer;
@@ -1058,7 +1326,10 @@ nav button:hover,
   min-height: 90px;
 }
 
-/* Policy and final order button */
+
+/* =========================================================
+   20. ORDER POLICY
+   ========================================================= */
 
 .policy,
 .checkout-policy,
@@ -1114,7 +1385,13 @@ nav button:hover,
   font-size: 12px;
 }
 
-/* ---------- 11. ACCOUNT ---------- */
+
+/* =========================================================
+   END OF PART 1 OF 2
+   ========================================================= */
+   /* =========================================================
+   21. MY ACCOUNT
+   ========================================================= */
 
 .account-layout {
   display: grid;
@@ -1165,6 +1442,11 @@ nav button:hover,
   flex-shrink: 0;
 }
 
+
+/* =========================================================
+   22. GENERAL STACK AND ADDRESS CARDS
+   ========================================================= */
+
 .stack {
   min-width: 0;
   display: grid;
@@ -1187,7 +1469,7 @@ nav button:hover,
 .address-card {
   min-width: 0;
   padding: 15px;
-  background: #fff;
+  background: #ffffff;
   border: 1px solid var(--line);
   border-radius: 12px;
 }
@@ -1209,14 +1491,22 @@ nav button:hover,
   margin-top: 12px;
 }
 
-/* ---------- 12. FORMS ---------- */
+.address-empty {
+  padding: 20px;
+  text-align: center;
+}
+
+
+/* =========================================================
+   23. LOGIN, REGISTRATION AND ADDRESS FORMS
+   ========================================================= */
 
 .auth,
 .address-form-card {
   width: min(100%, 560px);
   margin: 12px auto;
   padding: clamp(18px, 3vw, 28px);
-  background: #fff;
+  background: #ffffff;
   border: 1px solid var(--line);
   border-radius: 16px;
   box-shadow: var(--shadow);
@@ -1241,7 +1531,7 @@ form textarea {
   margin-top: 6px;
   padding: 10px 12px;
   color: var(--ink);
-  background: #fff;
+  background: #ffffff;
   border: 1px solid var(--frost-blue);
   border-radius: 9px;
 }
@@ -1289,7 +1579,10 @@ form textarea:focus {
   flex: 0 1 auto;
 }
 
-/* ---------- 13. ORDER HISTORY ---------- */
+
+/* =========================================================
+   24. ORDER HISTORY
+   ========================================================= */
 
 .orders-list {
   gap: 16px;
@@ -1361,7 +1654,10 @@ form textarea:focus {
   gap: 10px;
 }
 
-/* Tracking */
+
+/* =========================================================
+   25. ORDER TRACKING
+   ========================================================= */
 
 .order-tracking {
   min-width: 0;
@@ -1393,7 +1689,7 @@ form textarea:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
+  background: #ffffff;
   border: 1px solid var(--line);
   border-radius: 50%;
 }
@@ -1404,7 +1700,7 @@ form textarea:focus {
 }
 
 .tracking-step.completed .tracking-icon {
-  color: #fff;
+  color: #ffffff;
   background: var(--primary);
   border-color: var(--primary);
 }
@@ -1420,7 +1716,10 @@ form textarea:focus {
   border-color: #f0d1d5;
 }
 
-/* ---------- 14. REVIEWS ---------- */
+
+/* =========================================================
+   26. CUSTOMER REVIEWS
+   ========================================================= */
 
 .review-summary-card {
   margin-bottom: 15px;
@@ -1464,14 +1763,17 @@ form textarea:focus {
   margin-top: 8px;
 }
 
-/* ---------- 15. LOGOUT DIALOG ---------- */
+
+/* =========================================================
+   27. LOGOUT DIALOG
+   ========================================================= */
 
 dialog {
   width: min(420px, calc(100% - 32px));
   max-width: 100%;
   padding: 0;
   color: var(--ink);
-  background: #fff;
+  background: #ffffff;
   border: 1px solid var(--line);
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(36, 62, 80, 0.22);
@@ -1494,10 +1796,13 @@ dialog::backdrop {
   justify-content: flex-end;
 }
 
-/* ---------- 16. FOOTER ---------- */
+
+/* =========================================================
+   28. FOOTER
+   ========================================================= */
 
 footer {
-  padding: 22px 16px;
+  padding: 20px 16px;
   color: var(--muted);
   background: #e7f6fd;
   border-top: 1px solid var(--line);
@@ -1505,11 +1810,14 @@ footer {
   text-align: center;
 }
 
-/* ---------- 17. LAPTOP AND SMALL DESKTOP ---------- */
+
+/* =========================================================
+   29. LAPTOP AND SMALL DESKTOP
+   ========================================================= */
 
 @media (max-width: 1050px) {
+
   .navwrap {
-    align-items: flex-start;
     gap: 12px;
   }
 
@@ -1518,18 +1826,18 @@ footer {
   }
 
   nav button {
-    min-height: 35px;
-    padding: 7px 10px;
-    font-size: 12px;
+    min-height: 33px;
+    padding: 6px 9px;
+    font-size: 11px;
   }
 
   .productgrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
+    gap: 13px;
   }
 
   .productbody {
-    padding: 12px;
+    padding: 11px;
   }
 
   .product-actions {
@@ -1537,32 +1845,42 @@ footer {
   }
 
   .product-actions button {
-    font-size: 12px;
+    font-size: 11px;
   }
+
+  .productimage {
+    height: 175px;
+    min-height: 175px;
+    max-height: 175px;
+  }
+
 }
 
-/* ---------- 18. TABLETS AND NARROW WINDOWS ---------- */
+
+/* =========================================================
+   30. TABLETS AND NARROW WINDOWS
+   ========================================================= */
 
 @media (max-width: 800px) {
+
   .wrap {
     width: calc(100% - 30px);
-    padding-top: 20px;
+    padding-top: 17px;
   }
 
   .navwrap {
     width: calc(100% - 28px);
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
+    flex-wrap: wrap;
+    gap: 9px;
   }
 
   .brand {
-    align-self: flex-start;
+    align-self: center;
   }
 
   nav {
-    width: 100%;
-    justify-content: flex-start;
+    flex: 1;
+    justify-content: flex-end;
   }
 
   nav button {
@@ -1571,12 +1889,11 @@ footer {
 
   .herowrap {
     width: calc(100% - 30px);
-    grid-template-columns: minmax(0, 1fr) minmax(90px, 0.35fr);
-    gap: 14px;
+    min-height: 105px;
   }
 
-  .heroart {
-    font-size: clamp(55px, 9vw, 85px);
+  .hero-brand-title {
+    font-size: 32px;
   }
 
   .productgrid {
@@ -1585,7 +1902,9 @@ footer {
   }
 
   .productimage {
-    aspect-ratio: 1 / 0.85;
+    height: 175px;
+    min-height: 175px;
+    max-height: 175px;
   }
 
   .account-layout {
@@ -1613,36 +1932,47 @@ footer {
   }
 
   .checkout-layout {
-    gap: 11px;
+    gap: 10px;
   }
+
 }
 
-/* ---------- 19. MOBILE ---------- */
+
+/* =========================================================
+   31. MOBILE
+   ========================================================= */
 
 @media (max-width: 540px) {
+
   body {
     font-size: 13px;
   }
 
   .wrap {
     width: calc(100% - 24px);
-    padding: 15px 0 30px;
+    padding: 14px 0 28px;
   }
 
   main > section {
-    padding: 12px 0 22px;
+    padding: 11px 0 21px;
   }
+
+  /* Navigation */
 
   .navwrap {
     width: calc(100% - 24px);
-    padding: 10px 0;
+    padding: 9px 0;
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .brand {
+    align-self: flex-start;
     font-size: 18px;
   }
 
   nav {
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 6px;
@@ -1650,33 +1980,38 @@ footer {
 
   nav button {
     min-width: 0;
-    min-height: 35px;
-    padding: 7px 5px;
-    font-size: 11px;
+    min-height: 34px;
+    padding: 6px 4px;
+    font-size: 10px;
   }
 
+  /* Compact hero */
+
   .hero {
-    padding: 24px 0;
+    padding: 13px 0;
   }
 
   .herowrap {
     width: calc(100% - 28px);
-    grid-template-columns: minmax(0, 1fr) 65px;
-    gap: 8px;
+    min-height: 95px;
   }
 
-  .hero h1 {
-    font-size: clamp(25px, 7vw, 34px);
-    letter-spacing: -0.5px;
+  .hero-brand-title {
+    font-size: 28px;
   }
 
-  .hero p {
+  .hero-tagline {
+    margin: 3px 0 7px;
     font-size: 12px;
   }
 
-  .heroart {
-    font-size: 55px;
+  .hero-button {
+    min-height: 30px;
+    padding: 6px 10px;
+    font-size: 10px;
   }
+
+  /* Section headings */
 
   .sectionhead {
     align-items: flex-start;
@@ -1684,17 +2019,19 @@ footer {
   }
 
   .sectionhead h2 {
-    font-size: 24px;
+    font-size: 23px;
   }
 
   .sectionhead > button {
-    font-size: 11px;
-    padding: 7px 9px;
+    font-size: 10px;
+    padding: 6px 8px;
   }
+
+  /* Product grid */
 
   .productgrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    gap: 9px;
   }
 
   .product {
@@ -1702,21 +2039,23 @@ footer {
   }
 
   .productimage {
-    min-height: 105px;
-    aspect-ratio: 1 / 0.9;
+    width: 100%;
+    height: 145px;
+    min-height: 145px;
+    max-height: 145px;
   }
 
   .productbody {
-    padding: 10px;
+    padding: 9px;
     gap: 6px;
   }
 
   .productbody h3 {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .product-description {
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .product-meta,
@@ -1725,7 +2064,7 @@ footer {
   }
 
   .price {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .productbody .actions {
@@ -1735,20 +2074,16 @@ footer {
 
   .product-actions button {
     width: 100%;
-    min-height: 33px;
-    padding: 6px;
-    font-size: 11px;
-  }
-
-  .favorite-button {
-    min-height: 30px;
-    padding: 6px 8px;
-    font-size: 11px;
+    min-height: 31px;
+    padding: 5px;
+    font-size: 10px;
   }
 
   .card {
     padding: 14px;
   }
+
+  /* Cart */
 
   .shopping-cart-card {
     padding: 12px;
@@ -1788,8 +2123,14 @@ footer {
     font-size: 17px;
   }
 
+  /* Checkout */
+
+  .checkout-layout {
+    gap: 9px;
+  }
+
   .checkout-layout > .card {
-    padding: 14px;
+    padding: 13px;
   }
 
   .checkout-address-option {
@@ -1826,6 +2167,8 @@ footer {
     width: 100%;
   }
 
+  /* Orders */
+
   .order-header {
     flex-direction: column;
   }
@@ -1848,6 +2191,8 @@ footer {
     height: 22px;
   }
 
+  /* Forms */
+
   .auth,
   .address-form-card {
     padding: 16px;
@@ -1861,15 +2206,22 @@ footer {
     flex: 1 1 auto;
   }
 
+  /* Notification */
+
   #notice {
     padding: 10px 12px;
     font-size: 12px;
   }
+
 }
 
-/* ---------- 20. VERY SMALL PHONES ---------- */
+
+/* =========================================================
+   32. VERY SMALL PHONES
+   ========================================================= */
 
 @media (max-width: 360px) {
+
   nav {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1879,7 +2231,9 @@ footer {
   }
 
   .productimage {
-    max-height: 220px;
+    height: 190px;
+    min-height: 190px;
+    max-height: 190px;
   }
 
   .cart-product {
@@ -1913,11 +2267,16 @@ footer {
     padding: 5px 7px;
     font-size: 11px;
   }
+
 }
 
-/* ---------- 21. ACCESSIBILITY ---------- */
+
+/* =========================================================
+   33. ACCESSIBILITY
+   ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -1926,279 +2285,509 @@ footer {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
+
 }
+
 
 /* =========================================================
-   22. HONEYBAIL — FINAL CONSOLIDATED SIZING
-   One responsive sizing system; no duplicate overrides.
+   END OF HONEYBAIL STORE.CSS
    ========================================================= */
-
-/* Main content and page width */
-:root {
-  --content-width: 1388px;
-}
-
-.wrap,
-main.wrap {
-  width: min(1388px, calc(100% - 40px));
-  max-width: 1388px;
-  margin-inline: auto;
-  padding-top: 18px;
-  padding-bottom: 32px;
-}
-
-/* Header */
-.navwrap {
-  width: min(1388px, calc(100% - 40px));
-  min-height: 58px;
-  padding: 7px 0;
-  gap: 12px;
-}
-
-.brand {
-  font-size: 19px;
-  letter-spacing: 1px;
-}
-
-nav {
-  gap: 7px;
-}
-
-nav button {
-  min-height: 34px;
-  padding: 7px 11px;
-  font-size: 12px;
-}
-
-/* Hero banner */
-.hero {
-  padding: 20px 0;
-}
-
-.herowrap {
-  position: relative;
-  width: min(1388px, calc(100% - 40px));
-  max-width: 1388px;
-  min-height: 175px;
-  margin-inline: auto;
-  padding: 8px 175px 8px 0;
-  display: block;
-}
-
-.hero .herowrap > .eyebrow {
-  margin-bottom: 7px;
-  font-size: 10px;
-}
-
-.hero .herowrap > h1 {
-  max-width: 470px;
-  margin: 0 0 9px;
-  font-size: clamp(28px, 2.6vw, 36px);
-  line-height: 1.13;
-  letter-spacing: -0.5px;
-}
-
-.hero .herowrap > p {
-  max-width: 460px;
-  margin-bottom: 10px;
-  font-size: 13px;
-  line-height: 1.45;
-}
-
-.hero .herowrap > .light {
-  width: fit-content;
-  max-width: 100%;
-  min-height: 34px;
-  padding: 7px 12px;
-  font-size: 12px;
-}
-
-.hero .herowrap > .heroart {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  width: 135px;
-  margin: 0;
-  transform: translateY(-50%);
-  font-size: 78px;
-  line-height: 1;
-  text-align: center;
-}
-
-/* Section spacing */
-.sectionhead {
-  margin-bottom: 15px;
-  gap: 10px;
-}
-
-.sectionhead h1,
-.sectionhead h2 {
-  margin-bottom: 5px;
-}
-
-.sectionhead h2 {
-  font-size: 25px;
-}
-
-/* Product grid */
-.productgrid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-}
+   /* ==========================================
+   HONEYBAIL - STANDARD PRODUCT IMAGE SIZE
+   ========================================== */
 
 .productimage {
-  min-height: 110px;
-  max-height: 175px;
-  aspect-ratio: 1 / 0.8;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    aspect-ratio: 1 / 1 !important;
+
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f2faff;
+    flex-shrink: 0;
 }
 
-.productbody {
-  padding: 12px;
-  gap: 6px;
+.productimage img {
+    width: 100% !important;
+    height: 100% !important;
+
+    object-fit: cover !important;
+    object-position: center;
+
+    display: block;
 }
 
-.productbody h3 {
-  font-size: 14px;
+.product-placeholder {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+/* =====================================================
+   HONEYBAIL FINAL COMBINED HEADER
+   BRANDING AT TOP + NAVIGATION BELOW
+   ===================================================== */
 
-.product-description,
-.product-meta {
-  font-size: 12px;
-}
 
-.price {
-  font-size: 15px;
-}
+/* MAIN BLUE PANEL */
 
-.product-actions button,
-.favorite-button {
-  min-height: 32px;
-  padding: 6px 9px;
-  font-size: 12px;
-}
+.top.honeybail-top {
+    position: sticky;
+    top: 0;
+    z-index: 100;
 
-/* Account and checkout widths */
-.account-profile-card,
-.account-address-card {
-  padding: 18px;
-}
-
-.checkout-layout {
-  width: min(100%, 820px);
-  max-width: 820px;
-  margin-inline: auto;
-  gap: 10px;
-}
-
-.checkout-layout > .card {
-  padding: 16px;
-}
-
-/* Tablet sizing */
-@media (max-width: 800px) {
-  .wrap,
-  main.wrap {
-    width: calc(100% - 30px);
-  }
-
-  .navwrap {
-    width: calc(100% - 28px);
-  }
-
-  .herowrap {
-    width: calc(100% - 30px);
-    min-height: 150px;
-    padding-right: 125px;
-  }
-
-  .hero .herowrap > .heroart {
-    right: 0;
-    width: 100px;
-    font-size: 60px;
-  }
-
-  .productgrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
-}
-
-/* Mobile sizing */
-@media (max-width: 540px) {
-  .wrap,
-  main.wrap {
-    width: calc(100% - 24px);
-    padding-top: 15px;
-    padding-bottom: 28px;
-  }
-
-  .navwrap {
-    width: calc(100% - 24px);
-    min-height: 52px;
-  }
-
-  .hero {
-    padding: 16px 0;
-  }
-
-  .herowrap {
-    width: calc(100% - 28px);
-    min-height: 0;
+    width: 100%;
     padding: 0;
-  }
 
-  .hero .herowrap > h1 {
-    max-width: 100%;
-    font-size: 27px;
-  }
+    background: linear-gradient(
+        110deg,
+        #ffffff 0%,
+        #eaf7ff 48%,
+        #d7f1ff 100%
+    );
 
-  .hero .herowrap > p {
-    max-width: 100%;
-    font-size: 12px;
-  }
+    border-bottom: 1px solid #cce8f5;
 
-  .hero .herowrap > .heroart {
-    position: static;
-    width: auto;
-    margin-top: 10px;
-    transform: none;
-    font-size: 48px;
-    text-align: left;
-  }
-
-  .hero .herowrap > .light {
-    width: fit-content;
-  }
-
-  .productgrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 9px;
-  }
-
-  .productimage {
-    min-height: 105px;
-    max-height: 160px;
-  }
-
-  .productbody {
-    padding: 8px;
-  }
-
-  .checkout-layout > .card,
-  .account-profile-card,
-  .account-address-card {
-    padding: 12px;
-  }
+    box-shadow: 0 3px 12px rgba(48, 91, 118, 0.06);
 }
 
-/* Very small screens */
-@media (max-width: 360px) {
-  .wrap,
-  main.wrap {
-    width: calc(100% - 20px);
-  }
 
-  .productgrid {
-    grid-template-columns: minmax(0, 1fr);
-  }
+/* HEADER CONTENT */
+
+.honeybail-top-inner {
+    width: min(1320px, calc(100% - 36px));
+    margin: 0 auto;
+    padding: 13px 0 11px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+
+/* =====================================================
+   BRANDING - FIRST ROW
+   ===================================================== */
+
+.honeybail-top .hero-copy {
+    order: 1;
+
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+}
+
+
+/* HONEYBAIL TITLE */
+
+.honeybail-top .hero-brand-title {
+    margin: 0;
+
+    color: #305b76;
+
+    font-size: clamp(30px, 3.5vw, 40px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: 0.4px;
+}
+
+
+/* DONUT LETTER O */
+
+.honeybail-top .hero-brand-title .donut-o {
+    --donut-hole: #eaf7ff;
+}
+
+
+/* TAGLINE */
+
+.honeybail-top .hero-tagline {
+    margin: 4px 0 7px;
+
+    color: #527b95;
+
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+
+
+/* EXPLORE TREATS */
+
+.honeybail-top .hero-button {
+    min-height: 33px;
+    padding: 7px 13px;
+
+    color: #305b76;
+    background: #d9f0ff;
+
+    border: 1px solid #b8e2f5;
+    border-radius: 10px;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.honeybail-top .hero-button:hover {
+    background: #c5e9ff;
+    border-color: #76bbd9;
+}
+
+
+/* =====================================================
+   NAVIGATION - SECOND ROW
+   ===================================================== */
+
+.honeybail-nav-row {
+    order: 2;
+
+    width: 100%;
+    min-height: 42px;
+
+    padding-top: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    border-top: 1px solid #cce8f5;
+}
+
+
+/* NAVIGATION LAYOUT */
+
+.honeybail-nav-row nav {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+
+    gap: 7px;
+}
+
+
+/* NAVIGATION BUTTONS */
+
+.honeybail-nav-row nav button {
+    min-height: 34px;
+    padding: 7px 12px;
+
+    color: #305b76;
+    background: #e1f3ff;
+
+    border: 1px solid #c3e5f5;
+    border-radius: 10px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    transition: 0.2s ease;
+}
+
+.honeybail-nav-row nav button:hover:not(:disabled) {
+    color: #305b76;
+    background: #c9eaff;
+    border-color: #76bbd9;
+}
+
+
+/* CART COUNT */
+
+.honeybail-nav-row #cartCount {
+    min-width: 19px;
+    height: 19px;
+
+    padding: 0 5px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #305b76;
+    background: #c4eaff;
+
+    border-radius: 50%;
+
+    font-size: 10px;
+    font-weight: 800;
+}
+
+
+/* =====================================================
+   REMOVE OLD SEPARATE HERO STYLING
+   ===================================================== */
+
+.heroart {
+    display: none !important;
+}
+
+.honeybail-top .herowrap {
+    display: none !important;
+}
+
+
+/* =====================================================
+   TABLET RESPONSIVENESS
+   ===================================================== */
+
+@media (max-width: 800px) {
+
+    .honeybail-top-inner {
+        width: calc(100% - 28px);
+    }
+
+    .honeybail-nav-row nav {
+        gap: 5px;
+    }
+
+    .honeybail-nav-row nav button {
+        padding: 6px 9px;
+        font-size: 11px;
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE RESPONSIVENESS
+   ===================================================== */
+
+@media (max-width: 540px) {
+
+    .honeybail-top-inner {
+        width: calc(100% - 22px);
+        padding: 11px 0;
+        gap: 11px;
+    }
+
+    .honeybail-top .hero-brand-title {
+        font-size: 29px;
+    }
+
+    .honeybail-top .hero-tagline {
+        font-size: 12px;
+    }
+
+    .honeybail-nav-row {
+        justify-content: center;
+    }
+
+    .honeybail-nav-row nav {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+    }
+
+    .honeybail-nav-row nav button {
+        width: 100%;
+        min-width: 0;
+        min-height: 34px;
+        padding: 6px 3px;
+        font-size: 10px;
+    }
+
+}
+/* ==========================================
+   HONEYBAIL FINAL HEADER LAYOUT
+   BRAND LEFT - NAVIGATION RIGHT
+   ========================================== */
+
+.top.honeybail-top {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+
+    background: linear-gradient(
+        110deg,
+        #ffffff 0%,
+        #eaf7ff 48%,
+        #d7f1ff 100%
+    );
+
+    border-bottom: 1px solid #cce8f5;
+}
+
+/* HEADER CONTAINER */
+
+.honeybail-top-inner {
+    width: min(1320px, calc(100% - 36px));
+    margin: auto;
+    padding: 12px 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+/* BRAND AND NAVIGATION ON SAME LINE */
+
+.honeybail-main-row {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+/* BRAND */
+
+.honeybail-brand {
+    flex-shrink: 0;
+}
+
+.honeybail-brand .hero-brand-title {
+    margin: 0;
+    color: #305b76;
+
+    font-size: clamp(23px, 2.5vw, 31px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: 0.4px;
+}
+
+.honeybail-brand .donut-o {
+    --donut-hole: #eaf7ff;
+}
+
+/* NAVIGATION */
+
+.honeybail-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    min-width: 0;
+}
+
+.honeybail-navigation button {
+    min-height: 34px;
+    padding: 7px 10px;
+
+    color: #305b76;
+    background: #e1f3ff;
+
+    border: 1px solid #c3e5f5;
+    border-radius: 10px;
+
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.honeybail-navigation button:hover:not(:disabled) {
+    background: #c9eaff;
+    border-color: #76bbd9;
+}
+
+/* TAGLINE */
+
+.honeybail-subtitle {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    margin-top: 2px;
+}
+
+.honeybail-subtitle .hero-tagline {
+    margin: 0;
+    color: #527b95;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* EXPLORE BUTTON */
+
+.honeybail-subtitle .hero-button {
+    min-height: 31px;
+    padding: 6px 12px;
+
+    color: #305b76;
+    background: #d9f0ff;
+    border: 1px solid #b8e2f5;
+    border-radius: 9px;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+/* CART COUNT */
+
+.honeybail-navigation #cartCount {
+    min-width: 19px;
+    height: 19px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #305b76;
+    background: #c4eaff;
+    border-radius: 50%;
+    font-size: 10px;
+}
+
+/* TABLET */
+
+@media (max-width: 800px) {
+
+    .honeybail-top-inner {
+        width: calc(100% - 24px);
+    }
+
+    .honeybail-main-row {
+        flex-wrap: wrap;
+    }
+
+    .honeybail-navigation {
+        gap: 4px;
+    }
+
+    .honeybail-navigation button {
+        padding: 6px 7px;
+        font-size: 10px;
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 540px) {
+
+    .honeybail-main-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .honeybail-navigation {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .honeybail-navigation button {
+        width: 100%;
+        min-width: 0;
+        white-space: normal;
+    }
+
 }
