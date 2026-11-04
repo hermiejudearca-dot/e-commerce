@@ -159,6 +159,7 @@ class Favorite(models.Model):
         return f"{self.user_id} - {self.product_id}"
 
 
+    
 # ==========================================
 # CUSTOMER ORDERS
 # ==========================================

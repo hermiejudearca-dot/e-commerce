@@ -39,6 +39,71 @@ FIXED_DELIVERY_FEE = FIRST_ITEM_DELIVERY_FEE
 AVAILABLE_PAYMENT_METHODS = ("COD",)
 
 
+# ==========================================================
+# ORDER STATUS WORKFLOW
+# ==========================================================
+
+# The four official order statuses.
+ORDER_STAGES = (
+    "Pending",
+    "Shipped",
+    "Out for Delivery",
+    "Delivered",
+)
+
+# Convert statuses from the previous workflow.
+# These mappings do not directly modify database records.
+LEGACY_ORDER_STATUS_MAP = {
+    "Confirmed": "Pending",
+    "Processing": "Pending",
+    "Preparing": "Pending",
+    "Packed": "Pending",
+    "In Transit": "Shipped",
+    "Completed": "Delivered",
+}
+
+
+def normalize_order_status(status):
+    """
+    Convert an old order status into the current
+    Honeybail order status when a legacy mapping exists.
+    """
+
+    current = str(status or ORDER_STAGES[0])
+
+    return LEGACY_ORDER_STATUS_MAP.get(
+        current,
+        current,
+    )
+
+
+def next_order_status(status):
+    """
+    Determine the next order status.
+
+    Pending -> Shipped
+    Shipped -> Out for Delivery
+    Out for Delivery -> Delivered
+    Delivered -> None
+    """
+
+    current_status = normalize_order_status(status)
+
+    try:
+        index = ORDER_STAGES.index(current_status)
+    except ValueError:
+        return None
+
+    if index >= len(ORDER_STAGES) - 1:
+        return None
+
+    return ORDER_STAGES[index + 1]
+
+
+# ==========================================================
+# DELIVERY FEE CALCULATION
+# ==========================================================
+
 def calculate_delivery_fee(total_quantity):
     """
     First item: PHP 50
@@ -154,7 +219,10 @@ def serialize_order(order):
 
     return {
         "id": order.id,
-        "status": order.status,
+
+        # Return the normalized order status.
+        "status": normalize_order_status(order.status),
+
         "total": str(order.total),
         "subtotal": str(subtotal),
         "delivery_fee": str(recorded_delivery_fee),
@@ -346,6 +414,10 @@ def products(request):
     })
 
 
+# ==========================================================
+# CART ACTIVITY HELPERS
+# ==========================================================
+
 def record_cart_activity(user, product, action, quantity):
     """
     Save a storefront cart event for the Honeybail admin dashboard.
@@ -355,6 +427,7 @@ def record_cart_activity(user, product, action, quantity):
     directly to the authenticated Django user; it does not create a
     second Customer record.
     """
+
     if product is None:
         return
 
@@ -369,6 +442,7 @@ def record_cart_activity(user, product, action, quantity):
 
 def cart_customer_name(user=None, legacy_customer=None):
     """Return a readable customer name for admin cart records."""
+
     if user is not None:
         profile = getattr(user, "store_profile", None)
 
@@ -570,8 +644,6 @@ def cart(request):
                 )
 
     return JsonResponse({"ok": True})
-
-
 # ==========================================================
 # ADMIN CART OVERVIEW
 # Current cart contents + historical cart activity
@@ -1014,10 +1086,13 @@ def reviews(request, product_id):
 
     # Customers may only submit reviews after their
     # orders have been marked Delivered.
+    #
+    # "Completed" is included for older orders because
+    # the previous workflow used that status.
 
     purchased = StoreOrderItem.objects.filter(
         order__user=request.user,
-        order__status="Delivered",
+        order__status__in=("Delivered", "Completed"),
         product=product,
     ).exists()
 
@@ -1064,8 +1139,6 @@ def reviews(request, product_id):
     )
 
     return JsonResponse({"ok": True})
-
-
 # ==========================================================
 # CUSTOMER ORDERS + SELECTED CHECKOUT + DISCOUNTED SHIPPING
 # ==========================================================
@@ -1385,7 +1458,10 @@ def orders(request):
             address=selected_address.full_address,
             delivery_address=selected_address,
             notes=notes,
-            status="Pending",
+
+            # Every newly placed order starts as Pending.
+            status=ORDER_STAGES[0],
+
             payment_method="COD",
             payment_status="Unpaid",
             checkout_mode=checkout_mode,
@@ -1465,7 +1541,7 @@ def orders(request):
             "payment_method": "COD",
             "payment_status": "Unpaid",
             "checkout_mode": checkout_mode,
-            "status": "Pending",
+            "status": ORDER_STAGES[0],
         },
         status=201,
     )

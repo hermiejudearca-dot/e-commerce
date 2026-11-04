@@ -1,4 +1,3 @@
-
 import json
 from io import BytesIO
 from datetime import date
@@ -325,34 +324,50 @@ def restore_product(request, product_id):
 # ==========================================================
 # STOREFRONT ORDERS - ADMIN
 # ==========================================================
+# The admin dashboard uses these four official order stages.
+# Staff can select any of the four order stages.
+# Paid or customer-confirmed deliveries cannot be moved backward.
+# Cancelled remains a separate terminal status.
 
 ORDER_PROGRESS = [
     "Pending",
-    "Confirmed",
-    "Processing",
-    "Preparing",
-    "Packed",
     "Shipped",
-    "In Transit",
     "Out for Delivery",
     "Delivered",
-]
+]# Normalize statuses created by older versions of the workflow.
+# This keeps existing database records usable without deleting data
+# or requiring a database reset.
+
+LEGACY_ORDER_STATUS_MAP = {
+    "Confirmed": "Pending",
+    "Processing": "Pending",
+    "Preparing": "Pending",
+    "Packed": "Pending",
+    "In Transit": "Shipped",
+    "Completed": "Delivered",
+}
+
+
+def normalize_order_status(status):
+    current = str(status or "Pending")
+    return LEGACY_ORDER_STATUS_MAP.get(current, current)
+
+
+# Keep the separate delivery tracking field compatible with
+# StoreOrder.DELIVERY_STATUSES in storefront/models.py.
 
 DELIVERY_STATUS_MAP = {
     "Pending": "Not Shipped",
-    "Confirmed": "Not Shipped",
-    "Processing": "Not Shipped",
-    "Preparing": "Not Shipped",
-    "Packed": "Ready for Pickup",
     "Shipped": "Picked Up",
-    "In Transit": "In Transit",
     "Out for Delivery": "Out for Delivery",
     "Delivered": "Delivered",
 }
 
+
 DELIVERY_STATUSES = {
     value for value, _ in StoreOrder.DELIVERY_STATUSES
 }
+
 
 PAYMENT_STATUSES = {
     value for value, _ in StoreOrder.PAYMENT_STATUSES
@@ -386,7 +401,11 @@ def serialize_order(order):
         "address": order.address,
         "phone": order.phone,
         "notes": order.notes,
-        "status": order.status,
+
+        # Return the canonical status even when an older
+        # value is still stored in the database.
+        "status": normalize_order_status(order.status),
+
         "delivery_status": order.delivery_status,
         "payment_status": order.payment_status,
         "payment_method": order.payment_method,
@@ -402,23 +421,29 @@ def serialize_order(order):
         "updated_at": order.updated_at.isoformat(),
         "courier_name": order.courier_name,
         "tracking_number": order.tracking_number,
+
         "estimated_delivery_start": (
             order.estimated_delivery_start.isoformat()
             if order.estimated_delivery_start else None
         ),
+
         "estimated_delivery_end": (
             order.estimated_delivery_end.isoformat()
             if order.estimated_delivery_end else None
         ),
+
         "delivered_at": (
             order.delivered_at.isoformat()
             if order.delivered_at else None
         ),
+
         "received_at": (
             order.received_at.isoformat()
             if order.received_at else None
         ),
+
         "has_delivery_proof": bool(order.proof_of_delivery),
+
         "items": [
             {
                 "product_id": item.product_id,
@@ -430,6 +455,7 @@ def serialize_order(order):
             }
             for item in items
         ],
+
         "tracking_events": [
             {
                 "id": event.id,
@@ -453,6 +479,34 @@ def admin_orders_queryset():
     )
 
 
+def order_status_counts():
+    """
+    Count orders using the four current statuses.
+
+    Older database values are normalized before counting so
+    dashboard totals match the statuses shown in the admin panel.
+
+    Cancelled orders are intentionally not included in these
+    four progression counts.
+    """
+
+    counts = {
+        status: 0
+        for status in ORDER_PROGRESS
+    }
+
+    for raw_status in StoreOrder.objects.values_list(
+        "status",
+        flat=True,
+    ):
+        status = normalize_order_status(raw_status)
+
+        if status in counts:
+            counts[status] += 1
+
+    return counts
+
+
 def paid_sales_total():
     result = StoreOrder.objects.filter(
         payment_status="Paid"
@@ -467,6 +521,8 @@ def dashboard_stats(request):
     if permission_error:
         return permission_error
 
+    status_counts = order_status_counts()
+
     return JsonResponse({
         "dashboard": {
             "total_orders": StoreOrder.objects.count(),
@@ -475,16 +531,16 @@ def dashboard_stats(request):
                 is_active=True
             ).count(),
             "total_customers": CustomerProfile.objects.count(),
-            "pending_orders": StoreOrder.objects.filter(
-                status="Pending"
-            ).count(),
-            "shipped_orders": StoreOrder.objects.filter(
-                status__in=[
-                    "Shipped",
-                    "In Transit",
-                    "Out for Delivery",
-                ]
-            ).count(),
+
+            # Current order workflow counts.
+            "pending_orders": status_counts["Pending"],
+            "shipped_orders": status_counts["Shipped"],
+
+            "out_for_delivery_orders": status_counts[
+                "Out for Delivery"
+            ],
+
+            "delivered_orders": status_counts["Delivered"],
         }
     })
 
@@ -518,6 +574,8 @@ def order_update(request, order_id):
         "status",
         "payment_status",
         "delivery_status",
+        "checkout_mode",
+        "payment_reference",
         "courier_name",
         "tracking_number",
         "estimated_delivery_start",
@@ -534,6 +592,7 @@ def order_update(request, order_id):
         "tracking_number": 150,
         "tracking_message": 1000,
         "tracking_location": 200,
+        "payment_reference": 150,
     }
 
     for field, limit in text_limits.items():
@@ -555,6 +614,7 @@ def order_update(request, order_id):
 
             if value is None or value == "":
                 parsed_dates[field] = None
+
             elif isinstance(value, str):
                 try:
                     parsed_dates[field] = date.fromisoformat(value)
@@ -562,10 +622,12 @@ def order_update(request, order_id):
                     return json_error(
                         f"{field} must use YYYY-MM-DD."
                     )
+
             else:
                 return json_error(f"Invalid {field}.")
 
     with transaction.atomic():
+
         order = (
             StoreOrder.objects
             .select_for_update()
@@ -576,76 +638,172 @@ def order_update(request, order_id):
         if order is None:
             return json_error("Order not found.", 404)
 
-        if order.status in ("Cancelled", "Completed"):
+        if normalize_order_status(order.status) == "Cancelled":
             return json_error(
-                "Cancelled or completed orders cannot be "
-                "modified through this endpoint.",
+                "Cancelled orders cannot be modified.",
                 409,
             )
 
         previous_status = order.status
+
+        current_status = normalize_order_status(
+            previous_status
+        )
+
         previous_delivery = order.delivery_status
+        previous_checkout_mode = order.checkout_mode
+        previous_payment_reference = order.payment_reference
+
+        # --------------------------------------------------
+        # CHECKOUT MODE
+        # --------------------------------------------------
+
+        # A staff member may correct checkout mode only
+        # while the order is pending and unpaid.
+
+        if "checkout_mode" in data:
+
+            new_mode = data["checkout_mode"]
+
+            valid_modes = {
+                value for value, _ in StoreOrder.CHECKOUT_MODES
+            }
+
+            if (
+                not isinstance(new_mode, str)
+                or new_mode not in valid_modes
+            ):
+                return json_error("Invalid checkout mode.")
+
+            if new_mode != order.checkout_mode:
+
+                if (
+                    current_status != "Pending"
+                    or order.payment_status == "Paid"
+                ):
+                    return json_error(
+                        "Checkout mode can only be corrected "
+                        "while an order is Pending and unpaid.",
+                        409,
+                    )
+
+                order.checkout_mode = new_mode
+
+        # --------------------------------------------------
+        # PAYMENT REFERENCE
+        # --------------------------------------------------
+
+        # Payment method intentionally remains unchanged.
+        # COD is the only supported payment method for now.
+
+        if "payment_reference" in data:
+            order.payment_reference = data[
+                "payment_reference"
+            ].strip()
+
+        # --------------------------------------------------
+                # ORDER STATUS - ADMIN MANUAL SELECTION
+        # --------------------------------------------------
 
         if "status" in data:
             new_status = data["status"]
 
-            if new_status not in ORDER_PROGRESS:
+            if (
+                not isinstance(new_status, str)
+                or new_status not in ORDER_PROGRESS
+            ):
                 return json_error(
-                    "Invalid status. Cancellation and completion "
-                    "require separate workflows."
+                    "Invalid status. Use Pending, Shipped, "
+                    "Out for Delivery, or Delivered."
                 )
 
-            if previous_status not in ORDER_PROGRESS:
+            if current_status not in ORDER_PROGRESS:
                 return json_error(
-                    "Current status cannot be advanced.",
+                    "Current order status is not supported.",
                     409,
                 )
 
-            old_index = ORDER_PROGRESS.index(previous_status)
-            new_index = ORDER_PROGRESS.index(new_status)
+            # Do not reopen a collected COD order or an
+            # already-confirmed customer delivery.
+            if new_status != "Delivered":
+                if order.payment_status == "Paid":
+                    return json_error(
+                        "A paid order cannot be changed to a "
+                        "non-delivered status. Handle refunds "
+                        "through a separate process.",
+                        409,
+                    )
 
-            if new_index < old_index:
-                return json_error(
-                    "Order status cannot move backwards.",
-                    409,
-                )
+                if current_status == "Delivered" and (
+                    order.received_at or order.proof_of_delivery
+                ):
+                    return json_error(
+                        "This delivery was already confirmed by "
+                        "the customer or has proof of delivery.",
+                        409,
+                    )
 
-            if new_index > old_index + 1:
-                return json_error(
-                    "Advance the order one stage at a time.",
-                    409,
-                )
-
+            # An admin can select any valid stage, including
+            # skipping or correcting earlier stages.
             order.status = new_status
 
-            if new_status != previous_status:
+            if new_status != current_status:
                 order.delivery_status = DELIVERY_STATUS_MAP[
                     new_status
                 ]
 
                 if new_status == "Delivered":
-                    order.delivered_at = timezone.now()
+                    order.delivered_at = (
+                        order.delivered_at or timezone.now()
+                    )
+                else:
+                    # Reopen only unpaid, unconfirmed deliveries.
+                    order.delivered_at = None
+
+        # --------------------------------------------------
+        # DELIVERY STATUS
+        # --------------------------------------------------
 
         if "delivery_status" in data:
             new_delivery = data["delivery_status"]
 
-            if new_delivery not in DELIVERY_STATUSES:
+            if (
+                not isinstance(new_delivery, str)
+                or new_delivery not in DELIVERY_STATUSES
+            ):
                 return json_error("Invalid delivery status.")
+
+            # When both fields are provided, they must agree.
+            if "status" in data and (
+                new_delivery != DELIVERY_STATUS_MAP[order.status]
+            ):
+                return json_error(
+                    "Delivery status must match the "
+                    "selected order status."
+                )
 
             if (
                 new_delivery == "Delivered"
-                and order.status != "Delivered"
+                and normalize_order_status(order.status) != "Delivered"
             ):
                 return json_error(
-                    "Advance the order to Delivered first."
+                    "Set the order status to Delivered first."
                 )
 
             order.delivery_status = new_delivery
 
+        # --------------------------------------------------
+        # PAYMENT STATUS
+        # --------------------------------------------------
+
         if "payment_status" in data:
+
             new_payment = data["payment_status"]
 
-            if new_payment not in PAYMENT_STATUSES:
+            if (
+                not isinstance(new_payment, str)
+                or new_payment not in PAYMENT_STATUSES
+            ):
                 return json_error("Invalid payment status.")
 
             if new_payment == "Refunded":
@@ -653,30 +811,38 @@ def order_update(request, order_id):
                     "Refunds require a separate refund workflow."
                 )
 
-            if new_payment == "Paid":
-                if order.payment_method != "COD":
-                    return json_error(
-                        "Online payments require verified "
-                        "payment integration."
-                    )
+            if new_payment != order.payment_status:
 
-                if order.status != "Delivered":
-                    return json_error(
-                        "Confirm COD collection after delivery "
-                        "before marking payment as Paid."
-                    )
+                if new_payment == "Paid":
 
-                if order.payment_status != "Paid":
+                    if order.payment_method != "COD":
+                        return json_error(
+                            "Online payments are not enabled. "
+                            "Only COD orders can be marked Paid "
+                            "through this dashboard."
+                        )
+
+                    if normalize_order_status(order.status) != "Delivered":
+                        return json_error(
+                            "Confirm COD collection after delivery "
+                            "before marking payment as Paid."
+                        )
+
                     order.paid_at = timezone.now()
 
-            elif order.payment_status == "Paid":
-                return json_error(
-                    "Paid orders cannot be reverted here."
-                )
+                elif order.payment_status == "Paid":
+                    return json_error(
+                        "Paid orders cannot be reverted here."
+                    )
 
-            order.payment_status = new_payment
+                order.payment_status = new_payment
+
+        # --------------------------------------------------
+        # COURIER AND TRACKING INFORMATION
+        # --------------------------------------------------
 
         for field in ("courier_name", "tracking_number"):
+
             if field in data:
                 setattr(order, field, data[field].strip())
 
@@ -694,6 +860,10 @@ def order_update(request, order_id):
                 "after the end date."
             )
 
+        # --------------------------------------------------
+        # TRACKING HISTORY
+        # --------------------------------------------------
+
         tracking_changed = (
             order.status != previous_status
             or order.delivery_status != previous_delivery
@@ -702,9 +872,14 @@ def order_update(request, order_id):
         message = data.get("tracking_message", "").strip()
         location = data.get("tracking_location", "").strip()
 
+        # Save all order changes.
         order.save()
 
+        # Record tracking history whenever the status changes
+        # or the admin supplies a tracking message.
+
         if tracking_changed or message:
+
             OrderTrackingEvent.objects.create(
                 order=order,
                 status=order.status,
@@ -717,6 +892,32 @@ def order_update(request, order_id):
                 updated_by=request.user,
             )
 
+        # --------------------------------------------------
+        # ADMIN AUDIT TRAIL
+        # --------------------------------------------------
+
+        if (
+            order.checkout_mode != previous_checkout_mode
+            or order.payment_reference != previous_payment_reference
+        ):
+
+            changes = []
+
+            if order.checkout_mode != previous_checkout_mode:
+                changes.append("checkout mode corrected")
+
+            if order.payment_reference != previous_payment_reference:
+                changes.append("payment reference updated")
+
+            OrderTrackingEvent.objects.create(
+                order=order,
+                status=order.status,
+                message="Admin: " + ", ".join(changes) + ".",
+                source="ADMIN",
+                updated_by=request.user,
+            )
+
+    # Retrieve the updated order after saving.
     updated_order = (
         admin_orders_queryset()
         .filter(pk=order_id)
@@ -732,7 +933,6 @@ def order_update(request, order_id):
 # ==========================================================
 # ADMIN CUSTOMERS
 # ==========================================================
-
 @require_http_methods(["GET"])
 def customer_list(request):
     permission_error = require_staff(request)
@@ -785,16 +985,26 @@ def reports_data(request):
         .order_by("-units_sold")[:5]
     )
 
+    status_counts = order_status_counts()
+
     return JsonResponse({
         "report": {
             "total_orders": StoreOrder.objects.count(),
             "total_sales": str(paid_sales_total()),
+
             "paid_orders": StoreOrder.objects.filter(
                 payment_status="Paid"
             ).count(),
-            "pending_orders": StoreOrder.objects.filter(
-                status="Pending"
-            ).count(),
+
+            "pending_orders": status_counts["Pending"],
+            "shipped_orders": status_counts["Shipped"],
+
+            "out_for_delivery_orders": status_counts[
+                "Out for Delivery"
+            ],
+
+            "delivered_orders": status_counts["Delivered"],
+
             "sales_by_month": [
                 {
                     "month": row["month"].strftime("%B %Y"),
@@ -805,6 +1015,7 @@ def reports_data(request):
                 for row in sales_by_month
                 if row["month"] is not None
             ],
+
             "top_products": [
                 {
                     "product_id": row["product_id"],
@@ -820,7 +1031,6 @@ def reports_data(request):
 # ==========================================================
 # ORIGINAL CUSTOMER AUTHENTICATION API
 # ==========================================================
-
 @ensure_csrf_cookie
 @require_http_methods(["GET"])
 def csrf_token(request):
@@ -862,6 +1072,7 @@ def register(request):
 
     try:
         with transaction.atomic():
+
             user = User.objects.create_user(
                 username=email,
                 email=email,
@@ -874,6 +1085,7 @@ def register(request):
                 name=name,
                 email=email,
             )
+
     except IntegrityError:
         return json_error(
             "An account with this email already exists.",
@@ -1022,6 +1234,7 @@ def cart(request):
         return error
 
     if request.method == "GET":
+
         items = list(
             CartItem.objects.filter(
                 customer=customer,
@@ -1051,6 +1264,7 @@ def cart(request):
         return json_error("Request body must be valid JSON.")
 
     if request.method == "POST":
+
         product_id = positive_int(data.get("product_id"))
         quantity = positive_int(data.get("quantity", 1))
 
@@ -1060,6 +1274,7 @@ def cart(request):
             )
 
         with transaction.atomic():
+
             product = (
                 Product.objects
                 .select_for_update()
@@ -1085,15 +1300,22 @@ def cart(request):
             created = item is None
 
             if created:
+
                 item = CartItem.objects.create(
                     customer=customer,
                     product=product,
                     quantity=quantity,
                 )
+
                 log_cart_activity(
-                    customer, product, "Added", quantity
+                    customer,
+                    product,
+                    "Added",
+                    quantity,
                 )
+
             else:
+
                 new_quantity = item.quantity + quantity
 
                 if new_quantity > product.stock:
@@ -1102,6 +1324,7 @@ def cart(request):
                     )
 
                 item.quantity = new_quantity
+
                 item.save(
                     update_fields=["quantity", "updated_at"]
                 )
@@ -1124,6 +1347,7 @@ def cart(request):
         return json_error("A valid item_id is required.")
 
     with transaction.atomic():
+
         item = (
             CartItem.objects
             .select_for_update()
@@ -1136,6 +1360,7 @@ def cart(request):
             return json_error("Cart item not found.", 404)
 
         if request.method == "PATCH":
+
             quantity = positive_int(data.get("quantity"))
 
             if not quantity:
@@ -1152,6 +1377,7 @@ def cart(request):
                 )
 
             item.quantity = quantity
+
             item.save(
                 update_fields=["quantity", "updated_at"]
             )
@@ -1173,6 +1399,7 @@ def cart(request):
             "Removed",
             item.quantity,
         )
+
         item.delete()
 
     return JsonResponse({
@@ -1183,7 +1410,6 @@ def cart(request):
 # ==========================================================
 # ADMIN CART ACTIVITY
 # ==========================================================
-
 @require_http_methods(["GET"])
 def cart_activity(request):
     permission_error = require_staff(request)
@@ -1231,6 +1457,7 @@ def favorites(request):
         return error
 
     if request.method == "GET":
+
         items = (
             Favorite.objects
             .filter(
@@ -1267,6 +1494,7 @@ def favorites(request):
         )
 
     if request.method == "POST":
+
         product = Product.objects.filter(
             pk=product_id,
             is_active=True,
@@ -1317,6 +1545,7 @@ def store_settings(request):
     )
 
     if request.method == "GET":
+
         return JsonResponse({
             "settings": {
                 "store_name": settings_obj.store_name,
@@ -1362,7 +1591,9 @@ def store_settings(request):
         "phone",
         "address",
     ):
+
         if field in data:
+
             value = data[field]
 
             if not isinstance(value, str):
@@ -1373,6 +1604,7 @@ def store_settings(request):
             setattr(settings_obj, field, value.strip())
 
     if "preferences" in data:
+
         if not isinstance(data["preferences"], dict):
             return json_error(
                 "preferences must be a JSON object."
@@ -1402,6 +1634,7 @@ def store_settings(request):
         },
     })
 
+
 # ==========================================================
 # ADMIN FAVORITES REPORT
 # Reads actual customer favorites from the Storefront app
@@ -1416,6 +1649,7 @@ def admin_favorites_report(request):
 
     # Import separately so we don't interfere with
     # the original Product app's Favorite model.
+
     from storefront.models import Favorite as StorefrontFavorite
 
     favorites = (
@@ -1428,6 +1662,7 @@ def admin_favorites_report(request):
     product_counts = {}
 
     for favorite in favorites:
+
         user = favorite.user
         product = favorite.product
 
@@ -1448,6 +1683,7 @@ def admin_favorites_report(request):
         })
 
         if product.id not in product_counts:
+
             product_counts[product.id] = {
                 "product_id": product.id,
                 "product_name": product.name,
